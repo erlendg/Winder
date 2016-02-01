@@ -1,8 +1,14 @@
 package com.eim.winder;
 
 /**
- * Created by Mari on 31.01.2016.
+ * Created by Erlend on 01.02.2016.
  */
-public class Location {
-    public static final String[] locations = {"Trondheim Sentrum", "Lade", "Ila", "Orkanger", "Stjørdal"};
+public interface Location {
+    public String getName();
+    public String getType();
+    public String getCountry();
+    public String getTimezoneID();
+    public int utcOffsetMinutes();
+    
+
 }

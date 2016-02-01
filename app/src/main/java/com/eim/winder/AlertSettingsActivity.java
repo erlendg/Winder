@@ -1,23 +1,11 @@
 package com.eim.winder;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent.Callback;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.text.TextUtils;
-import android.widget.Toast;
-
-import com.touchboarder.weekdaysbuttons.WeekdaysDataItem;
-import com.touchboarder.weekdaysbuttons.WeekdaysDataSource;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Mari on 31.01.2016.
@@ -29,7 +17,7 @@ public class AlertSettingsActivity extends AppCompatActivity implements SearchVi
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
 
-    private final String[] mStrings = Location.locations;
+    private final String[] mStrings = Locations.locations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
