@@ -5,4 +5,6 @@ package com.eim.winder;
  */
 public class Location {
     public static final String[] locations = {"Trondheim Sentrum", "Lade", "Ila", "Orkanger", "Stjørdal"};
+
+
 }
