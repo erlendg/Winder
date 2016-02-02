@@ -36,5 +36,51 @@ public class Location {
 
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getTimeZoneID() {
+        return timeZoneID;
+    }
+
+    public int getUtcOffsetMinutes() {
+        return utcOffsetMinutes;
+    }
+
+    public int getAltitude() {
+        return altitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getGeoBase() {
+        return geoBase;
+    }
+
+    public int getGeoBaseID() {
+        return geoBaseID;
+    }
+
+    public ArrayList<TextInfo> getTextList() {
+        return textList;
+    }
+
+    public ArrayList<TabularInfo> getTabularList() {
+        return tabularList;
+    }
 }
