@@ -9,8 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
+    private ListView alertList;
+    private ListAdapter customListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +22,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Initialiserer vasellisten og adapteren som "lytter" på listen:
+        //bruker hardkodet liste som midlertidige listeelementer.
+        String[] tempListItems = Locations.locations;
+        customListAdapter = new CustomArrayAdapter(this, tempListItems);
+        ListView alertList = (ListView) findViewById(R.id.alert_listview);
+        alertList.setAdapter(customListAdapter);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
