@@ -5,4 +5,8 @@
     <string name="temp_interval">Temperatur intervall:</string>
     <string name="nedboer_intervall">Nedbør: </string>
     <string name="vind_styrke">Vindstyrke:</string>
+    <string name="vind_retning">Vindretning:</string>
+    <string name="sjekk_intervall">Sjekkintervall:</string>
+    <string name="sol_varsel">Solvarsel:</string>
+    <string name="lagre_varsel_button">Lagre</string>
 </resources>

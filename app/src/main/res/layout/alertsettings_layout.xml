@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
     <SearchView
         android:id="@+id/search_view"
@@ -13,6 +13,7 @@
         android:id="@+id/list_view"
         android:layout_width="wrap_content"
         android:layout_height="74dp" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,8 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
             android:text="@string/temp_interval"
             android:id="@+id/textView" />
         <TextView
@@ -30,10 +32,9 @@
         <Spinner
             android:layout_width="130dp"
             android:layout_height="31dp"
-            android:id="@+id/temp_spinner"
-            android:layout_gravity="bottom"/>
-
+            android:id="@+id/temp_spinner" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -42,7 +43,8 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
             android:text="@string/nedboer_intervall"
             android:id="@+id/nedboer_textview" />
         <TextView
@@ -51,29 +53,128 @@
         <Spinner
             android:layout_width="130dp"
             android:layout_height="31dp"
-            android:id="@+id/nedboer_spinner"
-            android:layout_gravity="left"/>
+            android:id="@+id/nedboer_spinner" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/vindstyrke_layout">
+        android:id="@+id/vindstyrke_layout"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
             android:text="@string/vind_styrke"
             android:id="@+id/vindstyrke_textview" />
         <TextView
-            android:layout_width="165dp"
+            android:layout_width="160dp"
             android:layout_height="match_parent" />
         <Spinner
             android:layout_width="130dp"
             android:layout_height="31dp"
-            android:id="@+id/vindstyrke_spinner"
-            android:layout_gravity="left"/>
-
+            android:id="@+id/vindstyrke_spinner" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/vindretning_layout"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:text="@string/vind_retning"
+            android:id="@+id/vindretning_textview" />
+        <TextView
+            android:layout_width="155dp"
+            android:layout_height="match_parent" />
+        <Spinner
+            android:layout_width="130dp"
+            android:layout_height="31dp"
+            android:id="@+id/vindretning_spinner" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/solvarsel_layout"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:text="@string/sol_varsel"
+            android:id="@+id/solvarsel_textview" />
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="match_parent" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:id="@+id/solvarsel_checkBox"
+            android:checked="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/sjekkintervall_layout"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/sjekk_intervall"
+            android:id="@+id/sjekkintervall_textview"
+            android:gravity="center_vertical"/>
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="match_parent" />
+        <Spinner
+            android:layout_width="130dp"
+            android:layout_height="31dp"
+            android:id="@+id/sjekkintervall_spinner" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|bottom">
+
+        <Button
+            android:id="@+id/save_button"
+            android:text="@string/lagre_varsel_button"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:layout_width="190dp"
+            android:layout_height="50dp"
+            android:background="@drawable/addbuttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5" />
+    </LinearLayout>
+
+
 
 </LinearLayout>
