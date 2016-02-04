@@ -3,7 +3,7 @@ package com.eim.winder;
 /**
  * Created by Mari on 03.02.2016.
  */
-public class Alert {
+public class AlertSettings {
     private Location location;
     private String temp;
     private String windSpeed;
@@ -11,7 +11,7 @@ public class Alert {
     private boolean Sun;
     private int checkIntervall;
 
-    public Alert(){
+    public AlertSettings(){
 
     }
 
