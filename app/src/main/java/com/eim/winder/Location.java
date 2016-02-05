@@ -11,108 +11,46 @@ import java.util.ArrayList;
  */
 public class Location {
     private String name;
-    private String type;
-    private String country;
-    private String timeZoneID;
-    private int utcOffsetMinutes;
-    private int altitude;
-    private double latitude;
-    private double longitude;
-    private String geoBase;
-    private int geoBaseID;
-    private ArrayList<TextInfo> textList;
-    private ArrayList<TabularInfo> tabularList;
+    private String municipality;
+    private String county;
+    private String xmlURL;
 
-    public Location(String name, String type, String country, String timeZoneID, int utcOffsetMinutes, int altitude, double latitude, double longitude, String geoBase, int geoBaseID) {
+    public Location(String name, String municipality, String county, String xmlURL) {
         this.name = name;
-        this.type = type;
-        this.country = country;
-        this.timeZoneID = timeZoneID;
-        this.utcOffsetMinutes = utcOffsetMinutes;
-        this.altitude = altitude;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.geoBase = geoBase;
-        this.geoBaseID = geoBaseID;
-    }
-
-    public Location(){
-
+        this.municipality = municipality;
+        this.county = county;
+        this.xmlURL = xmlURL;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getType() {
-        return type;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCountry() {
-        return country;
+    public String getMunicipality() {
+        return municipality;
     }
 
-    public String getTimeZoneID() {
-        return timeZoneID;
+    public void setMunicipality(String municipality) {
+        this.municipality = municipality;
     }
 
-    public int getUtcOffsetMinutes() {
-        return utcOffsetMinutes;
+    public String getCounty() {
+        return county;
     }
 
-    public int getAltitude() {
-        return altitude;
+    public void setCounty(String county) {
+        this.county = county;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public String getXmlURL() {
+        return xmlURL;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public void setXmlURL(String xmlURL) {
+        this.xmlURL = xmlURL;
     }
-
-    public String getGeoBase() {
-        return geoBase;
-    }
-
-    public int getGeoBaseID() {
-        return geoBaseID;
-    }
-
-    public ArrayList<TextInfo> getTextList() {
-        return textList;
-    }
-
-    public ArrayList<TabularInfo> getTabularList() {
-        return tabularList;
-    }
-
-    public void setTextList(ArrayList<TextInfo> textList){
-        this.textList = textList;
-    }
-
-    public void setTabularList(ArrayList<TabularInfo> tabularList) {
-        this.tabularList = tabularList;
-
-    }
-
-    public void addTextListItem(TextInfo newTextInfo){
-        this.textList.add(newTextInfo);
-    }
-
-    public void addTabularListItem(TabularInfo newTabularInfo){
-        this.tabularList.add(newTabularInfo);
-    }
-
-    public TextInfo getTextListItemByID(int i){
-        return textList.get(i);
-    }
-
-    public TabularInfo getTabularListItemByID(int i){
-        return tabularList.get(i);
-    }
-
-
-
 }

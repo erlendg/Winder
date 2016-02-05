@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
                         //.setAction("Action", null).show();
             }
         });
+        fab.setAlpha(0);
     }
     public void startAlertSettingsActivity(View v){
         Intent intent = new Intent(this, AlertSettingsActivity.class);
