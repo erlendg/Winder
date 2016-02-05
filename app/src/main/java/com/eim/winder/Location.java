@@ -1,5 +1,9 @@
 package com.eim.winder;
 
+import android.support.design.widget.TabLayout;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -83,4 +87,32 @@ public class Location {
     public ArrayList<TabularInfo> getTabularList() {
         return tabularList;
     }
+
+    public void setTextList(ArrayList<TextInfo> textList){
+        this.textList = textList;
+    }
+
+    public void setTabularList(ArrayList<TabularInfo> tabularList) {
+        this.tabularList = tabularList;
+
+    }
+
+    public void addTextListItem(TextInfo newTextInfo){
+        this.textList.add(newTextInfo);
+    }
+
+    public void addTabularListItem(TabularInfo newTabularInfo){
+        this.tabularList.add(newTabularInfo);
+    }
+
+    public TextInfo getTextListItemByID(int i){
+        return textList.get(i);
+    }
+
+    public TabularInfo getTabularListItemByID(int i){
+        return tabularList.get(i);
+    }
+
+
+
 }

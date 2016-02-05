@@ -22,11 +22,11 @@ public class TabularInfo {
     private float windSpeed;
     private String windSpeedName;
     private String temperatureUnit;
-    private float temberatureValue;
+    private float temperatureValue;
     private String pressureUnit;
     private float pressureValue;
 
-    public TabularInfo(Date from, Date to, int period, int symbolNumber, int symbolNumberEx, String symbolName, String symbolVar, float precipitationValue, float precipitationMin, float precipitationMax, float windDirectionDeg, String windDirectionCode, String windDirectionName, float windSpeed, String windSpeedName, String temperatureUnit, float temberatureValue, String pressureUnit, float pressureValue) {
+    public TabularInfo(Date from, Date to, int period, int symbolNumber, int symbolNumberEx, String symbolName, String symbolVar, float precipitationValue, float precipitationMin, float precipitationMax, float windDirectionDeg, String windDirectionCode, String windDirectionName, float windSpeed, String windSpeedName, String temperatureUnit, float temperatureValue, String pressureUnit, float pressureValue) {
         this.from = from;
         this.to = to;
         this.period = period;
@@ -43,7 +43,7 @@ public class TabularInfo {
         this.windSpeed = windSpeed;
         this.windSpeedName = windSpeedName;
         this.temperatureUnit = temperatureUnit;
-        this.temberatureValue = temberatureValue;
+        this.temperatureValue = temperatureValue;
         this.pressureUnit = pressureUnit;
         this.pressureValue = pressureValue;
     }
@@ -179,12 +179,12 @@ public class TabularInfo {
         this.temperatureUnit = temperatureUnit;
     }
 
-    public float getTemberatureValue() {
-        return temberatureValue;
+    public float getTemperatureValue() {
+        return temperatureValue;
     }
 
-    public void setTemberatureValue(float temberatureValue) {
-        this.temberatureValue = temberatureValue;
+    public void setTemperatureValue(float temperatureValue) {
+        this.temperatureValue = temperatureValue;
     }
 
     public String getPressureUnit() {

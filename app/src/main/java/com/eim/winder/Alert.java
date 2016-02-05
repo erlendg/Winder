@@ -9,7 +9,7 @@ public class Alert {
     private String windSpeed;
     private String windDirection;
     private boolean Sun;
-    private int checkIntervall;
+    private int checkInterval;
 
     public Alert(){
 
@@ -55,11 +55,11 @@ public class Alert {
         Sun = sun;
     }
 
-    public int getCheckIntervall() {
-        return checkIntervall;
+    public int getCheckInterval() {
+        return checkInterval;
     }
 
-    public void setCheckIntervall(int checkIntervall) {
-        this.checkIntervall = checkIntervall;
+    public void setCheckInterval(int checkInterval) {
+        this.checkInterval = checkInterval;
     }
 }
