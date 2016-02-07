@@ -13,6 +13,7 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
     public static final String TABLE_LOCATIONS = "locations";
     public static final String COLUMN_LOC_ID = "loc_id";
     public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_TYPE = "type";
     public static final String COLUMN_MUNICIPALITY = "municipality";
     public static final String COLUMN_COUNTY = "county";
     public static final String COLUMN_XMLURL = "xmlURL";
@@ -28,9 +29,10 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
     public static final String COLUMN_SUN ="sun";
     public static final String COLUM_CHECKINTERVAL = "checkinterval";
 
-    private static final String locationQuery = "CREATE TABLE " + TABLE_LOCATIONS + "{" +
+    private static final String createLocationsQuery = "CREATE TABLE " + TABLE_LOCATIONS + "{" +
             COLUMN_LOC_ID + "INTEGER PRIMARY KEY AUTOINCREMENT" +
             COLUMN_NAME + "TEXT" +
+            COLUMN_TYPE + "TEXT" +
             COLUMN_MUNICIPALITY + "TEXT" +
             COLUMN_COUNTY + "TEXT" +
             COLUMN_XMLURL + "TEXT" +
@@ -43,7 +45,7 @@ public class SQLiteDatabase extends SQLiteOpenHelper {
     @Override
     //Run when database gets created for the very first time:
     public void onCreate(android.database.sqlite.SQLiteDatabase db) {
-        db.execSQL(locationQuery);
+        db.execSQL(createLocationsQuery);
     }
 
     @Override
