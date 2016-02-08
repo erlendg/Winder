@@ -12,9 +12,14 @@ import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.eim.winder.db.LocationDataSourceService;
+
+import java.sql.SQLException;
+
 public class MainActivity extends AppCompatActivity {
     private ListView alertList;
     private ListAdapter customListAdapter;
+    private LocationDataSourceService datasource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +28,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Initialiserer vasellisten og adapteren som "lytter" på listen:
+        //Initialiserer varsellisten og adapteren som "lytter" på listen:
         //bruker hardkodet liste som midlertidige listeelementer.
-        String[] tempListItems = Locations.locations;
+        datasource = new LocationDataSourceService(this);
+        String[] tempListItems = datasource.getArray();
         customListAdapter = new CustomArrayAdapter(this, tempListItems);
-        ListView alertList = (ListView) findViewById(R.id.alert_listview);
+        alertList = (ListView) findViewById(R.id.alert_listview);
         alertList.setAdapter(customListAdapter);
 
 

@@ -1,10 +1,10 @@
-package com.eim.winder;
+package com.eim.winder.db;
 
 /**
  * Created by Mari on 03.02.2016.
  */
-public class AlertSettings {
-    private Location location;
+public class AlertSettingsDAO {
+    private LocationDAO location;
     private String temp;
     private double precipitationMin;
     private double precipitationMax;
@@ -14,7 +14,7 @@ public class AlertSettings {
     private boolean Sun;
     private int checkInterval;
 
-    public AlertSettings(){
+    public AlertSettingsDAO(){
 
     }
 
@@ -50,11 +50,11 @@ public class AlertSettings {
         this.precipitationMax = precipitationMax;
     }
 
-    public Location getLocation() {
+    public LocationDAO getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationDAO location) {
         this.location = location;
     }
 
