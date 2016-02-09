@@ -74,4 +74,17 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    protected void onResume() {
+        //datasource.open();
+        datasource = new LocationDataSourceService(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        datasource.close();
+        super.onPause();
+    }
+
 }
