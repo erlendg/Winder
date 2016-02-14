@@ -6,6 +6,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.eim.winder.db.LocationDAO;
+
 import java.lang.reflect.Constructor;
 
 /**
@@ -29,13 +31,12 @@ public class CustomTextChangedListener implements TextWatcher{
         Log.e(TAG, "User input: " + input);
         AlertSettingsActivity alertsetActivity = ((AlertSettingsActivity) context);
         //send query to database based on user input:
-        alertsetActivity.searchLocations = alertsetActivity.getSearchedItemsFromDb(input.toString());
+        alertsetActivity.searchLocations = alertsetActivity.datasource.readSearch(input.toString());
 
         // update the adapater
         alertsetActivity.searchAdapter.notifyDataSetChanged();
-        alertsetActivity.searchAdapter = new ArrayAdapter<String>(alertsetActivity, android.R.layout.simple_dropdown_item_1line, alertsetActivity.searchLocations);
+        alertsetActivity.searchAdapter = new ArrayAdapter<LocationDAO>(alertsetActivity, android.R.layout.simple_dropdown_item_1line, alertsetActivity.searchLocations);
         alertsetActivity.searchView.setAdapter(alertsetActivity.searchAdapter);
-
     }
 
     @Override

@@ -5,14 +5,18 @@ package com.eim.winder.db;
  */
 public class AlertSettingsDAO {
     private LocationDAO location;
-    private String temp;
+    private int tempMin;
+    private int tempMax;
     private double precipitationMin;
     private double precipitationMax;
     private double windSpeedMin;
     private double windSpeedMax;
     private String windDirection;
-    private boolean Sun;
+    private boolean checkSun;
     private int checkInterval;
+    private boolean mon, tue, wed, thu, fri, sat, sun;
+
+
 
     public AlertSettingsDAO(){
 
@@ -58,12 +62,20 @@ public class AlertSettingsDAO {
         this.location = location;
     }
 
-    public String getTemp() {
-        return temp;
+    public int getTempMin() {
+        return tempMin;
     }
 
-    public void setTemp(String temp) {
-        this.temp = temp;
+    public void setTempMin(int tempMin) {
+        this.tempMin = tempMin;
+    }
+
+    public int getTempMax() {
+        return tempMax;
+    }
+
+    public void setTempMax(int tempMax) {
+        this.tempMax = tempMax;
     }
 
     public String getWindDirection() {
@@ -74,12 +86,12 @@ public class AlertSettingsDAO {
         this.windDirection = windDirection;
     }
 
-    public boolean isSun() {
-        return Sun;
+    public boolean isCheckSun() {
+        return checkSun;
     }
 
-    public void setSun(boolean sun) {
-        Sun = sun;
+    public void setCheckSun(boolean checkSun) {
+        this.checkSun = checkSun;
     }
 
     public int getCheckInterval() {
@@ -88,5 +100,61 @@ public class AlertSettingsDAO {
 
     public void setCheckInterval(int checkInterval) {
         this.checkInterval = checkInterval;
+    }
+
+    public boolean isSun() {
+        return sun;
+    }
+
+    public void setSun(boolean sun) {
+        this.sun = sun;
+    }
+
+    public boolean isMon() {
+        return mon;
+    }
+
+    public void setMon(boolean mon) {
+        this.mon = mon;
+    }
+
+    public boolean isTue() {
+        return tue;
+    }
+
+    public void setTue(boolean tue) {
+        this.tue = tue;
+    }
+
+    public boolean isWed() {
+        return wed;
+    }
+
+    public void setWed(boolean wed) {
+        this.wed = wed;
+    }
+
+    public boolean isThu() {
+        return thu;
+    }
+
+    public void setThu(boolean thu) {
+        this.thu = thu;
+    }
+
+    public boolean isFri() {
+        return fri;
+    }
+
+    public void setFri(boolean fri) {
+        this.fri = fri;
+    }
+
+    public boolean isSat() {
+        return sat;
+    }
+
+    public void setSat(boolean sat) {
+        this.sat = sat;
     }
 }

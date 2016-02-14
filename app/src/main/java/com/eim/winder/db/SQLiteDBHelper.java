@@ -13,31 +13,41 @@ public class SQLiteDBHelper extends SQLiteAssetHelper {
 
     //Variables for table locations:
     public static final String TABLE_LOCATIONS = "locations";
-    public static final String COLUMN_LOCATION_ID = "_id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_TYPE = "type";
-    public static final String COLUMN_MUNICIPALITY = "municipality";
-    public static final String COLUMN_COUNTY = "county";
-    public static final String COLUMN_XMLURL = "xmlURL";
+    public static final String C_LOCATION_ID = "_id";
+    public static final String C_NAME = "name";
+    public static final String C_TYPE = "type";
+    public static final String C_MUNICIPALITY = "municipality";
+    public static final String C_COUNTY = "county";
+    public static final String C_XMLURL = "xmlURL";
     //Variables for table alertsettings:
     public static final String TABLE_ALERTSETTINGS = "alertsettings";
-    public static final String COLUMN_ALERT_ID = "_id";
-    public static final String COLUMN_TEMP = "temp";
-    public static final String COLUMN_PERCIPITATIONMIN = "percipitationmin";
-    public static final String COLUMN_PERCIPITATIONMAX = "percipitationmax";
-    public static final String COLUMN_WINDSPEEDMIN = "windspeedmin";
-    public static final String COLUMN_WINDSPEEDMAX = "windspeedmax";
-    public static final String COLUMN_WINDIRECTION = "winddirection";
-    public static final String COLUMN_SUN ="sun";
-    public static final String COLUM_CHECKINTERVAL = "checkinterval";
+    public static final String C_ALERT_ID = "_id";
+    public static final String C_TEMPMIN = "tempmin";
+    public static final String C_TEMPMAX = "tempmax";
+    public static final String C_PERCIPITATIONMIN = "percipitationmin";
+    public static final String C_PERCIPITATIONMAX = "percipitationmax";
+    public static final String C_WINDSPEEDMIN = "windspeedmin";
+    public static final String C_WINDSPEEDMAX = "windspeedmax";
+    public static final String C_WINDIRECTION = "winddirection";
+    public static final String C_CHECKSUN ="checksun";
+    public static final String C_CHECKINTERVAL = "checkinterval";
+    public static final String C_MON = "mon";
+    public static final String C_TUE = "tue";
+    public static final String C_WED = "wed";
+    public static final String C_THU = "thu";
+    public static final String C_FRI = "fri";
+    public static final String C_SAT = "sat";
+    public static final String C_SUN = "sun";
+    public static final String C_LOC_ID = "loc_id";
+
 
     private static final String createLocationsQuery = "CREATE TABLE " + TABLE_LOCATIONS + "{" +
-            COLUMN_LOCATION_ID + "INTEGER PRIMARY KEY AUTOINCREMENT" +
-            COLUMN_NAME + "TEXT" +
-            COLUMN_TYPE + "TEXT" +
-            COLUMN_MUNICIPALITY + "TEXT" +
-            COLUMN_COUNTY + "TEXT" +
-            COLUMN_XMLURL + "TEXT" +
+            C_LOCATION_ID + "INTEGER PRIMARY KEY AUTOINCREMENT" +
+            C_NAME + "TEXT" +
+            C_TYPE + "TEXT" +
+            C_MUNICIPALITY + "TEXT" +
+            C_COUNTY + "TEXT" +
+            C_XMLURL + "TEXT" +
             "};";
 
     public SQLiteDBHelper(Context context) {

@@ -9,4 +9,6 @@
     <string name="sjekk_intervall">Sjekkintervall:</string>
     <string name="sol_varsel">Solvarsel:</string>
     <string name="lagre_varsel_button">Lagre</string>
+    <string name="from">Fra:</string>
+    <string name="til">Til:</string>
 </resources>

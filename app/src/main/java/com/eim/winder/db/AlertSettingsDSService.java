@@ -1,0 +1,89 @@
+package com.eim.winder.db;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.eim.winder.AlertSettingsActivity;
+
+import java.sql.SQLException;
+
+/**
+ * Created by Mari on 11.02.2016.
+ */
+public class AlertSettingsDSService {
+    public final static String TAG = "AlertSettingsDSService";
+    private SQLiteDatabase database;
+    private SQLiteDBHelper dbHelper;
+    private String table = SQLiteDBHelper.TABLE_ALERTSETTINGS;
+    private String[] allColumns = { SQLiteDBHelper.C_ALERT_ID, SQLiteDBHelper.C_TEMPMIN, SQLiteDBHelper.C_TEMPMAX,
+            SQLiteDBHelper.C_PERCIPITATIONMIN, SQLiteDBHelper.C_PERCIPITATIONMAX, SQLiteDBHelper.C_WINDSPEEDMIN,
+            SQLiteDBHelper.C_WINDSPEEDMAX, SQLiteDBHelper.C_WINDIRECTION, SQLiteDBHelper.C_CHECKSUN, SQLiteDBHelper.C_CHECKINTERVAL,
+            SQLiteDBHelper.C_MON, SQLiteDBHelper.C_TUE, SQLiteDBHelper.C_WED, SQLiteDBHelper.C_THU,
+            SQLiteDBHelper.C_FRI, SQLiteDBHelper.C_SAT, SQLiteDBHelper.C_SUN};
+
+    public AlertSettingsDSService( Context context) {
+        this.dbHelper = new SQLiteDBHelper(context);
+    }
+    public void open()throws SQLException {
+        Log.i(TAG, "open()");
+        database = dbHelper.getWritableDatabase();
+
+    }
+
+    public void close() {
+        dbHelper.close();
+        Log.i(TAG, "close()");
+    }
+    // Check if an alert already is added for the location:
+    public boolean alertAlreadyExist(LocationDAO location){
+        boolean exist = false;
+        Cursor cursor = null;
+        try{
+            open();
+            cursor = database.rawQuery("SELECT " + SQLiteDBHelper.C_ALERT_ID + " FROM " + table + " WHERE " + SQLiteDBHelper.C_ALERT_ID + " = '" + location.getId() + "'", null);
+            if(cursor!=null) {
+                if(cursor.getCount()>0) {
+                    exist = true;
+                }
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        cursor.close();
+        close();
+        return exist;
+    }
+    public boolean insertAlertSettings(AlertSettingsDAO alert){
+        boolean ok = false;
+        try{
+            open();
+            ContentValues values = new ContentValues();
+            values.put(SQLiteDBHelper.C_TEMPMIN, alert.getTempMin());
+            values.put(SQLiteDBHelper.C_TEMPMAX, alert.getTempMax());
+            values.put(SQLiteDBHelper.C_PERCIPITATIONMIN, alert.getPrecipitationMin());
+            values.put(SQLiteDBHelper.C_PERCIPITATIONMAX, alert.getPrecipitationMax());
+            values.put(SQLiteDBHelper.C_WINDSPEEDMIN, alert.getWindSpeedMin());
+            values.put(SQLiteDBHelper.C_WINDSPEEDMAX, alert.getWindSpeedMax());
+            values.put(SQLiteDBHelper.C_WINDIRECTION, alert.getWindDirection());
+            values.put(SQLiteDBHelper.C_CHECKSUN, alert.isCheckSun());
+            values.put(SQLiteDBHelper.C_CHECKINTERVAL, alert.getCheckInterval());
+            values.put(SQLiteDBHelper.C_MON, alert.isMon());
+            values.put(SQLiteDBHelper.C_TUE, alert.isTue());
+            values.put(SQLiteDBHelper.C_WED, alert.isWed());
+            values.put(SQLiteDBHelper.C_THU, alert.isThu());
+            values.put(SQLiteDBHelper.C_FRI, alert.isFri());
+            values.put(SQLiteDBHelper.C_SAT, alert.isSat());
+            values.put(SQLiteDBHelper.C_SUN, alert.isSun());
+            values.put(SQLiteDBHelper.C_LOC_ID, alert.getLocation().getId());
+            database.insert(table, null, values);
+            ok = true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        close();
+        return ok;
+    }
+}

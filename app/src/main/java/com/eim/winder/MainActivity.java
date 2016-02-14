@@ -3,23 +3,21 @@ package com.eim.winder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.eim.winder.db.LocationDataSourceService;
-
-import java.sql.SQLException;
+import com.eim.winder.db.LocationDSService;
 
 public class MainActivity extends AppCompatActivity {
     private ListView alertList;
-    private ListAdapter customListAdapter;
-    private LocationDataSourceService datasource;
+    private ArrayAdapter customListAdapter;
+    private LocationDSService datasource;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Initialiserer varsellisten og adapteren som "lytter" på listen:
         //bruker hardkodet liste som midlertidige listeelementer.
-        datasource = new LocationDataSourceService(this);
+        datasource = new LocationDSService(this);
         String[] tempListItems = datasource.getArray();
         customListAdapter = new CustomArrayAdapter(this, tempListItems);
         alertList = (ListView) findViewById(R.id.alert_listview);
         alertList.setAdapter(customListAdapter);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         //.setAction("Action", null).show();
             }
         });
-        fab.setAlpha(0);
+
     }
     public void startAlertSettingsActivity(View v){
         Intent intent = new Intent(this, AlertSettingsActivity.class);
@@ -74,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    @Override
+    /*@Override
     protected void onResume() {
         //datasource.open();
-        datasource = new LocationDataSourceService(this);
+        datasource = new LocationDSService(this);
         super.onResume();
     }
 
@@ -85,6 +83,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         datasource.close();
         super.onPause();
-    }
+    }*/
 
 }
