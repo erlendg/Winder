@@ -35,21 +35,25 @@ public class LocationDSService {
         Log.i(TAG, "close()");
     }
 
-    public List<LocationDAO> getAllLocations() {
+    public ArrayList<LocationDAO> getAllLocations() {
         Log.i(TAG, "getAllLocations");
-        List<LocationDAO> locations = new ArrayList<LocationDAO>();
-
-        Cursor cursor = database.query(SQLiteDBHelper.TABLE_LOCATIONS,
-                allColumns, null, null, null, null, "10");
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            LocationDAO location = cursorToLocation(cursor);
-            locations.add(location);
-            cursor.moveToNext();
+        ArrayList<LocationDAO> locations = new ArrayList<LocationDAO>();
+        Cursor res = null;
+        try{
+            open();
+            res = database.rawQuery("select * from " + SQLiteDBHelper.TABLE_LOCATIONS + " ORDER BY " + SQLiteDBHelper.C_NAME + " ASC", null);
+            res.moveToFirst();
+            while (!res.isAfterLast()) {
+                LocationDAO location = cursorToLocation(res);
+                locations.add(location);
+                res.moveToNext();
+            }
+            res.close();
+            // make sure to close the cursor
+        }catch (SQLException e){
+            e.printStackTrace();
         }
-        // make sure to close the cursor
-        cursor.close();
+        close();
         return locations;
     }
     public String[] getArray(){
@@ -79,7 +83,7 @@ public class LocationDSService {
         sql += " WHERE " + SQLiteDBHelper.C_NAME + " LIKE '" + searchTerm + "%'";
         //sql += " OR " + SQLiteDBHelper.COLUMN_TYPE + " LIKE '" + searchTerm + "%'";
         sql += " ORDER BY " + SQLiteDBHelper.C_NAME + " ASC";
-        sql += " LIMIT 0,20";
+       //sql += " LIMIT 0,20";
         // execute the query
         try{
             open();

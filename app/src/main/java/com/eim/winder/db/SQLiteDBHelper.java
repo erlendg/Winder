@@ -24,8 +24,8 @@ public class SQLiteDBHelper extends SQLiteAssetHelper {
     public static final String C_ALERT_ID = "_id";
     public static final String C_TEMPMIN = "tempmin";
     public static final String C_TEMPMAX = "tempmax";
-    public static final String C_PERCIPITATIONMIN = "percipitationmin";
-    public static final String C_PERCIPITATIONMAX = "percipitationmax";
+    public static final String C_PRECIPITATIONMIN = "precipitationmin";
+    public static final String C_PRECIPITATIONMAX = "precipitationmax";
     public static final String C_WINDSPEEDMIN = "windspeedmin";
     public static final String C_WINDSPEEDMAX = "windspeedmax";
     public static final String C_WINDIRECTION = "winddirection";
