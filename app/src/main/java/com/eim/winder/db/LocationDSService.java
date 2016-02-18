@@ -3,6 +3,7 @@ package com.eim.winder.db;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import java.sql.SQLException;
@@ -68,9 +69,28 @@ public class LocationDSService {
         cursor.close();
         return names.toArray(new String[names.size()]);
     }
+    public LocationDAO getLocationFromID(int id){
+        Cursor cursor;
+        LocationDAO location = null;
+        try{
+            open();
+            cursor = database.query(table,null,SQLiteDBHelper.C_LOCATION_ID + " = ?", new String[]{""+id}, null, null, null);
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                location = cursorToLocation(cursor);
+                // add to list
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        close();
+        return location;
+    }
 
     private LocationDAO cursorToLocation(Cursor cursor) {
-        LocationDAO location = new LocationDAO(cursor.getLong(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+        LocationDAO location = new LocationDAO(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
         return location;
     }
     //Read records related to the search term:

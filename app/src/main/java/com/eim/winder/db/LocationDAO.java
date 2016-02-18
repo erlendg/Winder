@@ -4,14 +4,14 @@ package com.eim.winder.db;
  * Created by Mari on 08.02.2016.
  */
 public class LocationDAO {
-    private long id;
+    private int id;
     private String name;
     private String type;
     private String municipality;
     private String county;
     private String xmlURL;
 
-    public LocationDAO(long id, String name, String type, String municipality, String county, String xmlURL) {
+    public LocationDAO(int id, String name, String type, String municipality, String county, String xmlURL) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -27,7 +27,7 @@ public class LocationDAO {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

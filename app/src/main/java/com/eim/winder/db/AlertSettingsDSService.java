@@ -111,7 +111,9 @@ public class AlertSettingsDSService {
     private AlertSettingsDAO cursorToAlertSettings(Cursor cursor) {
         AlertSettingsDAO alert = new AlertSettingsDAO(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6),
                 cursor.getString(7),cursor.getInt(8),cursor.getDouble(9),cursor.getInt(10),cursor.getInt(11),cursor.getInt(12),cursor.getInt(13),cursor.getInt(14),cursor.getInt(15), cursor.getInt(16), null);
-
+        LocationDAO location = new LocationDAO();
+        location.setId(cursor.getInt(17));
+        alert.setLocation(location);
         return alert;
     }
 }

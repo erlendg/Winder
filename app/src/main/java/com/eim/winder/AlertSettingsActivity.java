@@ -61,7 +61,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 locationSelected = (LocationDAO) arg0.getItemAtPosition(position);
-                Log.d("############", locationSelected.toString());
+                Log.d("############", locationSelected.getId()+ " "+ locationSelected.toString());
             }
         });
         tempIntervall = getResources().getStringArray(R.array.temp_array);
@@ -106,18 +106,18 @@ public class AlertSettingsActivity extends AppCompatActivity {
         boolean ok = saveAlertSettings(asd);
         if(!ok){
             Toast.makeText(this, "Fyll inn sted!", Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
             ArrayList<AlertSettingsDAO> test;
             test = alertdatasource.getAllAlertSettings();
             for(int i = 0; i < test.size(); i++){
-                Log.i("TEST",  "Indeks: " + i + " " + test.get(i).getCheckInterval());
+                Log.i("TEST",  "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
             }
-        }else {
-            Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
         }
 
     }
     public boolean saveAlertSettings(AlertSettingsDAO asd){
-
+        Log.i(TAG,"saveAlertSettings()" );
         boolean ok = false;
         if(locationSelected != null){
             asd.setLocation(locationSelected);
@@ -127,26 +127,28 @@ public class AlertSettingsActivity extends AppCompatActivity {
     }
     public AlertSettingsDAO makeObjFromSettings(){
         AlertSettingsDAO asd = new AlertSettingsDAO();
+        //Temperature:
         int tempMin = tempMinPicker.getValue();
         int tempMax = tempMaxPicker.getValue();
-
         if(tempMin != tempMax){
             String[] temp = getResources().getStringArray(R.array.temp_array);
             asd.setTempMin(Integer.parseInt(temp[tempMin]));
             asd.setTempMax(Integer.parseInt(temp[tempMax]));
-            Log.i(TAG, "Temp: Min: " + tempMin + " Max: " + tempMax + " " + temp);
+            Log.i(TAG, "Temp: Min: " + tempMin + " Max: " + tempMax);
         }
-        String regn = percipitationSpinner.getSelectedItem().toString();
-        String[] regnTab = regn.split("-");
-        if(regnTab.length ==2 && !regn.equals("Not specified(mm)")){
-            asd.setPrecipitationMin(Double.parseDouble(regnTab[0].toString()));
-            asd.setPrecipitationMax(Double.parseDouble(regnTab[1]));
-            Log.i(TAG, "Regn: Min: " + regnTab[0] + " Max: " + regnTab[1]);
-        }else if(regnTab[0].equals("More then 9.0")){
+        //Rain:
+        String rain = percipitationSpinner.getSelectedItem().toString();
+        String[] rainTab = rain.split("-");
+        if(rainTab.length ==2 && !rain.equals("Not specified(mm)")){
+            asd.setPrecipitationMin(Double.parseDouble(rainTab[0].toString()));
+            asd.setPrecipitationMax(Double.parseDouble(rainTab[1]));
+            Log.i(TAG, "Regn: Min: " + rainTab[0] + " Max: " + rainTab[1]);
+        }else if(rainTab[0].equals("More then 9.0")){
             asd.setPrecipitationMin(9);
             asd.setPrecipitationMax(50);
             Log.i(TAG, "Regn: Min: " + 9 + " Max: " + 50);
         }
+        //Wind:
         String wind = windspeedSpinner.getSelectedItem().toString();
         String[] windTab = wind.split("-");
         if(windTab.length ==2 && !wind.equals("Not specified (m/s)")){
@@ -158,6 +160,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
             asd.setWindSpeedMax(50);
             Log.i(TAG, "Vind: Min: " + 9 + " Max: " + 50);
         }
+        //Check interval:
         String interval = checkintervalSpinner.getSelectedItem().toString();
         asd.setCheckInterval(Double.parseDouble(interval));
         asd.setCheckSun(checkSun.isChecked());
