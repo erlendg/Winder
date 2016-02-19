@@ -6,9 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.eim.winder.AlertSettingsActivity;
-
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by Mari on 11.02.2016.
@@ -19,7 +18,7 @@ public class AlertSettingsDSService {
     private SQLiteDBHelper dbHelper;
     private String table = SQLiteDBHelper.TABLE_ALERTSETTINGS;
     private String[] allColumns = { SQLiteDBHelper.C_ALERT_ID, SQLiteDBHelper.C_TEMPMIN, SQLiteDBHelper.C_TEMPMAX,
-            SQLiteDBHelper.C_PERCIPITATIONMIN, SQLiteDBHelper.C_PERCIPITATIONMAX, SQLiteDBHelper.C_WINDSPEEDMIN,
+            SQLiteDBHelper.C_PRECIPITATIONMIN, SQLiteDBHelper.C_PRECIPITATIONMAX, SQLiteDBHelper.C_WINDSPEEDMIN,
             SQLiteDBHelper.C_WINDSPEEDMAX, SQLiteDBHelper.C_WINDIRECTION, SQLiteDBHelper.C_CHECKSUN, SQLiteDBHelper.C_CHECKINTERVAL,
             SQLiteDBHelper.C_MON, SQLiteDBHelper.C_TUE, SQLiteDBHelper.C_WED, SQLiteDBHelper.C_THU,
             SQLiteDBHelper.C_FRI, SQLiteDBHelper.C_SAT, SQLiteDBHelper.C_SUN};
@@ -56,15 +55,17 @@ public class AlertSettingsDSService {
         close();
         return exist;
     }
+    //Lagre varselinstillinger i database:
     public boolean insertAlertSettings(AlertSettingsDAO alert){
+        Log.i(TAG, "insertAlertSettings()");
         boolean ok = false;
         try{
             open();
             ContentValues values = new ContentValues();
             values.put(SQLiteDBHelper.C_TEMPMIN, alert.getTempMin());
             values.put(SQLiteDBHelper.C_TEMPMAX, alert.getTempMax());
-            values.put(SQLiteDBHelper.C_PERCIPITATIONMIN, alert.getPrecipitationMin());
-            values.put(SQLiteDBHelper.C_PERCIPITATIONMAX, alert.getPrecipitationMax());
+            values.put(SQLiteDBHelper.C_PRECIPITATIONMIN, alert.getPrecipitationMin());
+            values.put(SQLiteDBHelper.C_PRECIPITATIONMAX, alert.getPrecipitationMax());
             values.put(SQLiteDBHelper.C_WINDSPEEDMIN, alert.getWindSpeedMin());
             values.put(SQLiteDBHelper.C_WINDSPEEDMAX, alert.getWindSpeedMax());
             values.put(SQLiteDBHelper.C_WINDIRECTION, alert.getWindDirection());
@@ -78,12 +79,41 @@ public class AlertSettingsDSService {
             values.put(SQLiteDBHelper.C_SAT, alert.isSat());
             values.put(SQLiteDBHelper.C_SUN, alert.isSun());
             values.put(SQLiteDBHelper.C_LOC_ID, alert.getLocation().getId());
-            database.insert(table, null, values);
+            long res = database.insert(table, null, values);
+            if(res==-1)ok = false;
             ok = true;
         }catch (SQLException e){
             e.printStackTrace();
         }
         close();
         return ok;
+    }
+    public ArrayList<AlertSettingsDAO> getAllAlertSettings(){
+        Log.i(TAG, "getAllAlertSettings()");
+        ArrayList<AlertSettingsDAO> alertsettings = new ArrayList<>();
+        Cursor res = null;
+        try{
+            open();
+            res = database.rawQuery("select * from " + table + " limit 10", null);
+            res.moveToFirst();
+            while(!res.isAfterLast()) {
+                AlertSettingsDAO alert = cursorToAlertSettings(res);
+                // add to list
+                alertsettings.add(alert);
+                res.moveToNext();
+            }
+            res.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return alertsettings;
+    }
+    private AlertSettingsDAO cursorToAlertSettings(Cursor cursor) {
+        AlertSettingsDAO alert = new AlertSettingsDAO(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6),
+                cursor.getString(7),cursor.getInt(8),cursor.getDouble(9),cursor.getInt(10),cursor.getInt(11),cursor.getInt(12),cursor.getInt(13),cursor.getInt(14),cursor.getInt(15), cursor.getInt(16), null);
+        LocationDAO location = new LocationDAO();
+        location.setId(cursor.getInt(17));
+        alert.setLocation(location);
+        return alert;
     }
 }

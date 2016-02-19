@@ -29,6 +29,8 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.github.TouchBoarder:weekdays-buttons-bar:v0.2-alpha'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
+    compile 'com.android.support:cardview-v7:23.0.+'
+    compile 'com.android.support:recyclerview-v7:23.0.+'
 
 
 }
