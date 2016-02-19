@@ -1,8 +1,11 @@
 package com.eim.winder;
 
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,80 +15,65 @@ import java.util.ArrayList;
  * Created by topkek on 09/02/16.
  */
 public class HandleXML {
+    private String locationName = "locationName";
+    private String locationType = "type";
+    private String locationCountry = "country";
 
-    private String name;
-    private String type;
-    private String country;
-    private String timezoneId;
-    private int utcoffsetMinutes;
-    private int altitude;
-    private double latitude;
-    private double longitude;
-    private String geobase;
-    private int geobaseId;
+    private int locationGeobaseID = 0;
+    private double locationLatitude = 0.0;
+    private double locationAltitude = 0.0;
+    private double locationLongitude = 0.0;
 
-    private String lastupdate;
-    private String nextupdate;
+    private String lastupdate  = "lastupdate";
+    private String nextupdate = "nextupdate";
 
-    private String sunrise;
-    private String sunset;
+    private String sunrise = "sunrise";
+    private String sunset = "sunset";
 
-    private ArrayList<TabularInfo> forecastList;
+    private ArrayList<TabularInfo> tabularList = new ArrayList<>();
+    private TabularInfo tabular;
 
-    private String urlString;
-    private XmlPullParserFactory xmlFactoryObj;
-    private volatile boolean parsingComplete = true;
+    private String urlString = null;
+    private int counter = 0;
+    private boolean checkFlag = false;
+    private boolean checkFlag2 = false;
+    private XmlPullParserFactory xmlFactoryObject;
+    public volatile boolean parsingComplete = true;
 
     public HandleXML(String url){
-            this.urlString = url;
+        this.urlString = url;
     }
 
-    public String getName() {
-        return name;
+    public String getLocationName() {
+        return locationName;
     }
 
-    public String getType() {
-        return type;
+    public int getLocationGeobaseID() {
+        return locationGeobaseID;
     }
 
-    public String getCountry() {
-        return country;
+    public double getLocationLatitude() {
+        return locationLatitude;
     }
 
-    public String getTimezoneId() {
-        return timezoneId;
+    public ArrayList<TabularInfo> getTabularList() {
+        return tabularList;
     }
 
-    public int getUtcoffsetMinutes() {
-        return utcoffsetMinutes;
+    public double getLocationLongitude() {
+        return locationLongitude;
     }
 
-    public int getAltitude() {
-        return altitude;
+    public String getLocationType() {
+        return locationType;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public String getLocationCountry() {
+        return locationCountry;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public String getGeobase() {
-        return geobase;
-    }
-
-    public int getGeobaseId() {
-        return geobaseId;
-    }
-
-    public String getLastupdate() {
-        return lastupdate;
-    }
-
-    public String getNextupdate() {
-        return nextupdate;
+    public double getLocationAltitude() {
+        return locationAltitude;
     }
 
     public String getSunrise() {
@@ -96,64 +84,221 @@ public class HandleXML {
         return sunset;
     }
 
-    public ArrayList<TabularInfo> getForecastList() {
-        return forecastList;
+    public String getLastupdate() {
+        return lastupdate;
     }
 
-    public String getUrlString() {
-        return urlString;
+    public String getNextupdate() {
+        return nextupdate;
     }
-    /*
-    * Todo:
-    *
-    * implement parseAndStoreXML method adapted to the XML-structure provided by Yr.no
-    *
-    * */
-    public void parseAndStoreXML(XmlPullParser myParser){
+
+    public void parseXMLAndStoreIt(XmlPullParser myParser) {
         int event;
-        String text = null;
+        String text=null;
 
-        try{
+        try {
             event = myParser.getEventType();
 
-            while(event != XmlPullParser.END_DOCUMENT){
+            while (event != XmlPullParser.END_DOCUMENT) {
+                String name=myParser.getName();
 
+                switch (event){
+                    case XmlPullParser.START_TAG:
+                        if (name.equalsIgnoreCase("location")) {
+
+                            for (int i = 0; i<myParser.getAttributeCount(); i++) {
+                                if (myParser.getAttributeName(i).equalsIgnoreCase("geobaseid")) {
+                                    locationGeobaseID = Integer.parseInt(myParser.getAttributeValue(i));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("latitude")){
+                                    locationLatitude = Double.parseDouble(myParser.getAttributeValue(i));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("altitude")){
+                                    locationAltitude = Double.parseDouble(myParser.getAttributeValue(i));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("longitude")){
+                                    locationLongitude = Double.parseDouble(myParser.getAttributeValue(i));
+                                }
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("sun")){
+                            for (int i = 0; i<myParser.getAttributeCount(); i++) {
+                                if (myParser.getAttributeName(i).equalsIgnoreCase("rise")) {
+                                    sunrise = myParser.getAttributeValue(i);
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("set")){
+                                    sunset = myParser.getAttributeValue(i);
+                                }
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("text")){
+                            checkFlag=true;
+                        }
+                        else if (name.equalsIgnoreCase("time")){
+                            if (!checkFlag) {
+                                counter++;
+                                tabular = new TabularInfo();
+                                tabular.setCounter(counter);
+                                for (int i = 0; i < myParser.getAttributeCount(); i++) {
+                                    if (myParser.getAttributeName(i).equalsIgnoreCase("from")) {
+                                        tabular.setFrom(myParser.getAttributeValue(i));
+                                    } else if (myParser.getAttributeName(i).equalsIgnoreCase("to")) {
+                                        tabular.setTo(myParser.getAttributeValue(i));
+                                    } else if (myParser.getAttributeName(i).equalsIgnoreCase("period")) {
+                                        tabular.setPeriod(Integer.parseInt(myParser.getAttributeValue(i)));
+                                    }
+                                }
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("symbol")){
+                            for (int i = 0; i<myParser.getAttributeCount(); i++){
+                                if (myParser.getAttributeName(i).equalsIgnoreCase("number")){
+                                    tabular.setSymbolNumber(Integer.parseInt(myParser.getAttributeValue(i)));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("numberex")){
+                                    tabular.setSymbolNumberEx(Integer.parseInt(myParser.getAttributeValue(i)));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("name")){
+                                    tabular.setSymbolName(myParser.getAttributeValue(i));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("var")){
+                                    tabular.setSymbolVar(myParser.getAttributeValue(i));
+                                }
+
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("precipitation")){
+                            for (int i = 0; i<myParser.getAttributeCount(); i++){
+                                if(myParser.getAttributeName(i).equalsIgnoreCase("value")){
+                                    tabular.setPrecipitationValue(Double.parseDouble(myParser.getAttributeValue(i)));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("minvalue")){
+                                    tabular.setPrecipitationMin(Double.parseDouble(myParser.getAttributeValue(i)));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("maxvalue")){
+                                    tabular.setPrecipitationMax(Double.parseDouble(myParser.getAttributeValue(i)));
+                                }
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("windDirection")){
+                            for (int i = 0; i<myParser.getAttributeCount(); i++){
+                                if(myParser.getAttributeName(i).equalsIgnoreCase("deg")){
+                                    tabular.setWindDirectionDeg(Double.parseDouble(myParser.getAttributeValue(i)));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("code")){
+                                    tabular.setWindDirectionCode(myParser.getAttributeValue(i));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("name")){
+                                    tabular.setWindDirectionName(myParser.getAttributeValue(i));
+                                }
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("windspeed")){
+                            for (int i = 0; i<myParser.getAttributeCount(); i++){
+                                if(myParser.getAttributeName(i).equalsIgnoreCase("mps")){
+                                    tabular.setWindSpeed(Double.parseDouble(myParser.getAttributeValue(i)));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("name")){
+                                    tabular.setWindSpeedName(myParser.getAttributeValue(i));
+                                }
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("temperature")){
+                            if (!checkFlag2){
+                                for (int i = 0; i<myParser.getAttributeCount(); i++){
+                                    if(myParser.getAttributeName(i).equalsIgnoreCase("unit")){
+                                        tabular.setTemperatureUnit(myParser.getAttributeValue(i));
+                                    }
+                                    else if (myParser.getAttributeName(i).equalsIgnoreCase("value")){
+                                        tabular.setTemperatureValue(Double.parseDouble(myParser.getAttributeValue(i)));
+                                    }
+                                }
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("pressure")){
+
+                            for (int i = 0; i<myParser.getAttributeCount(); i++){
+                                if(myParser.getAttributeName(i).equalsIgnoreCase("unit")){
+                                    tabular.setPressureUnit(myParser.getAttributeValue(i));
+                                }
+                                else if (myParser.getAttributeName(i).equalsIgnoreCase("value")){
+                                    tabular.setPressureValue(Double.parseDouble(myParser.getAttributeValue(i)));
+                                }
+                            }
+                        }
+                        break;
+
+                    case XmlPullParser.TEXT:
+                        text = myParser.getText();
+                        break;
+
+                    case XmlPullParser.END_TAG:
+
+                        if(name.equalsIgnoreCase("name")){
+                            locationName = text;
+                        }
+                        else if (name.equalsIgnoreCase("text")){
+                            checkFlag = false;
+                        }
+                        else if (name.equalsIgnoreCase("tabular")){
+                            checkFlag2 = true;
+                        }
+                        else if (name.equalsIgnoreCase("type")){
+                            locationType = text;
+                        }
+                        else if (name.equalsIgnoreCase("country")){
+                            locationCountry = text;
+                        }
+                        else if(name.equalsIgnoreCase("time")){
+                            if (!checkFlag) {
+                                tabularList.add(tabular);
+                            }
+                        }
+                        else if (name.equalsIgnoreCase("lastupdate")){
+                            lastupdate = text;
+                        }
+                        else if (name.equalsIgnoreCase("nextupdate")){
+                            nextupdate = text;
+                        }
+                        break;
+                }
+                event = myParser.next();
             }
-
+            parsingComplete = false;
         }
-        catch (Exception e){
+
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void fetchXML(){
-        Thread thread = new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
-               try {
-                   URL url = new URL(urlString);
-                   HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+                try {
+                    URL url = new URL(urlString);
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
-                   connection.setReadTimeout(10000);
-                   connection.setConnectTimeout(15000);
-                   connection.setRequestMethod("GET");
-                   connection.setDoInput(true);
-                   connection.connect();
+                    conn.setReadTimeout(10000 /* milliseconds */);
+                    conn.setConnectTimeout(15000 /* milliseconds */);
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.connect();
 
-                   InputStream stream = connection.getInputStream();
-                   xmlFactoryObj = XmlPullParserFactory.newInstance();
-                   XmlPullParser myparser = xmlFactoryObj.newPullParser();
+                    InputStream stream = conn.getInputStream();
+                    xmlFactoryObject = XmlPullParserFactory.newInstance();
+                    XmlPullParser myparser = xmlFactoryObject.newPullParser();
 
-                   myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-                   myparser.setInput(stream, null);
+                    myparser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+                    myparser.setInput(stream, null);
 
-                   parseAndStoreXML(myparser);
-                   stream.close();
-
-               }
-               catch (Exception e) {
-                   e.printStackTrace();
-               }
+                    parseXMLAndStoreIt(myparser);
+                    stream.close();
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         thread.start();

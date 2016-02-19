@@ -1,69 +1,57 @@
 package com.eim.winder;
 
-import java.util.Date;
 
 /**
  * Created by Erlend on 01.02.2016.
  */
 public class TabularInfo {
-    private Date from;
-    private Date to;
-    private int period;
-    private int symbolNumber;
-    private int symbolNumberEx;
-    private String symbolName;
-    private String symbolVar;
-    private float precipitationValue;
-    private float precipitationMin;
-    private float precipitationMax;
-    private float windDirectionDeg;
-    private String windDirectionCode;
-    private String windDirectionName;
-    private float windSpeed;
-    private String windSpeedName;
-    private String temperatureUnit;
-    private float temperatureValue;
-    private String pressureUnit;
-    private float pressureValue;
+    private String from = "from";
+    private String to = "to";
+    private int period = 0;
 
-    public TabularInfo(Date from, Date to, int period, int symbolNumber, int symbolNumberEx, String symbolName, String symbolVar, float precipitationValue, float precipitationMin, float precipitationMax, float windDirectionDeg, String windDirectionCode, String windDirectionName, float windSpeed, String windSpeedName, String temperatureUnit, float temperatureValue, String pressureUnit, float pressureValue) {
-        this.from = from;
-        this.to = to;
-        this.period = period;
-        this.symbolNumber = symbolNumber;
-        this.symbolNumberEx = symbolNumberEx;
-        this.symbolName = symbolName;
-        this.symbolVar = symbolVar;
-        this.precipitationValue = precipitationValue;
-        this.precipitationMin = precipitationMin;
-        this.precipitationMax = precipitationMax;
-        this.windDirectionDeg = windDirectionDeg;
-        this.windDirectionCode = windDirectionCode;
-        this.windDirectionName = windDirectionName;
-        this.windSpeed = windSpeed;
-        this.windSpeedName = windSpeedName;
-        this.temperatureUnit = temperatureUnit;
-        this.temperatureValue = temperatureValue;
-        this.pressureUnit = pressureUnit;
-        this.pressureValue = pressureValue;
-    }
+    private int symbolNumber = 0;
+    private int symbolNumberEx = 0;
+    private String symbolName = "symbolName";
+    private String symbolVar = "symbolVar";
+
+    private double precipitationValue = 0.0;
+    private double precipitationMin = 0.0;
+    private double precipitationMax = 0.0;
+
+    private double windDirectionDeg = 0.0;
+    private String windDirectionCode = "windDirectionCode";
+    private String windDirectionName = "windDirectionName";
+    private double windSpeed = 0.0;
+    private String windSpeedName = "windSpeedName";
+
+    private String temperatureUnit = "celsius";
+    private double temperatureValue = 0.0;
+
+    private String pressureUnit = "pressureUnit";
+    private double pressureValue = 0.0;
+
+    private int counter = 0;
 
     public TabularInfo() {
     }
 
-    public Date getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public void setFrom(Date from) {
+    public void setFrom(String from) {
         this.from = from;
     }
 
-    public Date getTo() {
+    public String getTo() {
         return to;
     }
 
-    public void setTo(Date to) {
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
+    public void setTo(String to) {
         this.to = to;
     }
 
@@ -107,35 +95,35 @@ public class TabularInfo {
         this.symbolVar = symbolVar;
     }
 
-    public float getPrecipitationValue() {
+    public double getPrecipitationValue() {
         return precipitationValue;
     }
 
-    public void setPrecipitationValue(float precipitationValue) {
+    public void setPrecipitationValue(double precipitationValue) {
         this.precipitationValue = precipitationValue;
     }
 
-    public float getPrecipitationMin() {
+    public double getPrecipitationMin() {
         return precipitationMin;
     }
 
-    public void setPrecipitationMin(float precipitationMin) {
+    public void setPrecipitationMin(double precipitationMin) {
         this.precipitationMin = precipitationMin;
     }
 
-    public float getPrecipitationMax() {
+    public double getPrecipitationMax() {
         return precipitationMax;
     }
 
-    public void setPrecipitationMax(float precipitationMax) {
+    public void setPrecipitationMax(double precipitationMax) {
         this.precipitationMax = precipitationMax;
     }
 
-    public float getWindDirectionDeg() {
+    public double getWindDirectionDeg() {
         return windDirectionDeg;
     }
 
-    public void setWindDirectionDeg(float windDirectionDeg) {
+    public void setWindDirectionDeg(double windDirectionDeg) {
         this.windDirectionDeg = windDirectionDeg;
     }
 
@@ -155,11 +143,11 @@ public class TabularInfo {
         this.windDirectionName = windDirectionName;
     }
 
-    public float getWindSpeed() {
+    public double getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(float windSpeed) {
+    public void setWindSpeed(double windSpeed) {
         this.windSpeed = windSpeed;
     }
 
@@ -179,11 +167,11 @@ public class TabularInfo {
         this.temperatureUnit = temperatureUnit;
     }
 
-    public float getTemperatureValue() {
+    public double getTemperatureValue() {
         return temperatureValue;
     }
 
-    public void setTemperatureValue(float temperatureValue) {
+    public void setTemperatureValue(double temperatureValue) {
         this.temperatureValue = temperatureValue;
     }
 
@@ -195,11 +183,37 @@ public class TabularInfo {
         this.pressureUnit = pressureUnit;
     }
 
-    public float getPressureValue() {
+    public double getPressureValue() {
         return pressureValue;
     }
 
-    public void setPressureValue(float pressureValue) {
+    public void setPressureValue(double pressureValue) {
         this.pressureValue = pressureValue;
+    }
+
+    @Override
+    public String toString() {
+        return "TabularInfo{" +
+                "from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                ", period=" + period +
+                ", counter =" + counter +
+                ", symbolNumber=" + symbolNumber +
+                ", symbolNumberEx=" + symbolNumberEx +
+                ", symbolName='" + symbolName + '\'' +
+                ", symbolVar='" + symbolVar + '\'' +
+                ", precipitationValue=" + precipitationValue +
+                ", precipitationMin=" + precipitationMin +
+                ", precipitationMax=" + precipitationMax +
+                ", windDirectionDeg=" + windDirectionDeg +
+                ", windDirectionCode='" + windDirectionCode + '\'' +
+                ", windDirectionName='" + windDirectionName + '\'' +
+                ", windSpeed=" + windSpeed +
+                ", windSpeedName='" + windSpeedName + '\'' +
+                ", temperatureUnit='" + temperatureUnit + '\'' +
+                ", temperatureValue=" + temperatureValue +
+                ", pressureUnit='" + pressureUnit + '\'' +
+                ", pressureValue=" + pressureValue +
+                '}';
     }
 }
