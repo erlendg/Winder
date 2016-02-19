@@ -5,6 +5,7 @@ package com.eim.winder.db;
  */
 public class AlertSettingsDAO {
     private LocationDAO location;
+    private int id;
     private int tempMin;
     private int tempMax;
     private double precipitationMin;
@@ -13,13 +14,40 @@ public class AlertSettingsDAO {
     private double windSpeedMax;
     private String windDirection;
     private boolean checkSun;
-    private int checkInterval;
+    private double checkInterval;
     private boolean mon, tue, wed, thu, fri, sat, sun;
 
-
+    public AlertSettingsDAO(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, LocationDAO location) {
+        this.id = id;
+        this.location = location;
+        this.tempMin = tempMin;
+        this.tempMax = tempMax;
+        this.precipitationMin = precipitationMin;
+        this.precipitationMax = precipitationMax;
+        this.windSpeedMin = windSpeedMin;
+        this.windSpeedMax = windSpeedMax;
+        this.windDirection = windDirection;
+        this.checkSun = checkSun > 0;
+        this.checkInterval = checkInterval;
+        this.mon = mon > 0 ;
+        this.tue = tue > 0;
+        this.wed = wed > 0;
+        this.thu = thu > 0;
+        this.fri = fri > 0;
+        this.sat = sat > 0;
+        this.sun = sun > 0;
+    }
 
     public AlertSettingsDAO(){
 
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public double getWindSpeedMin() {
@@ -94,11 +122,11 @@ public class AlertSettingsDAO {
         this.checkSun = checkSun;
     }
 
-    public int getCheckInterval() {
+    public double getCheckInterval() {
         return checkInterval;
     }
 
-    public void setCheckInterval(int checkInterval) {
+    public void setCheckInterval(double checkInterval) {
         this.checkInterval = checkInterval;
     }
 
