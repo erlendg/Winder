@@ -6,12 +6,12 @@ import java.util.Date;
  * Created by Erlend on 01.02.2016.
  */
 public class TextInfo {
-    private Date from;
-    private Date to;
+    private String from;
+    private String to;
     private String title;
     private String body;
 
-    public TextInfo(Date from, String body, String title, Date to) {
+    public TextInfo(String from, String body, String title, String to) {
         this.from = from;
         this.body = body;
         this.title = title;
@@ -21,19 +21,19 @@ public class TextInfo {
 
     }
 
-    public Date getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public void setFrom(Date from) {
+    public void setFrom(String from) {
         this.from = from;
     }
 
-    public Date getTo() {
+    public String getTo() {
         return to;
     }
 
-    public void setTo(Date to) {
+    public void setTo(String to) {
         this.to = to;
     }
 
