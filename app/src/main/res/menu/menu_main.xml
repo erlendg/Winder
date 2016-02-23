@@ -2,6 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.eim.winder.MainActivity">
+
+    <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_refresh_white"
+        android:title="Refresh"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
