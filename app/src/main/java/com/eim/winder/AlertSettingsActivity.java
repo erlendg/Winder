@@ -1,5 +1,7 @@
 package com.eim.winder;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,12 +49,14 @@ public class AlertSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alertsettings_layout);
+        setContentView(R.layout.location_layout);
+
         // instantiate database handler
         datasource = new LocationDSService(this);
         alertdatasource = new AlertSettingsDSService(this);
         searchLocations = datasource.getAllLocations();
-        // autocompletetextview is in alertsettings_layout.xml
+
+        // autocompletetextview is in location_layout.xml
         searchView = (AutoCompleteTextView) findViewById(R.id.search_view);
         //searchView.addTextChangedListener(new CustomTextChangedListener(this));
         searchAdapter = new ArrayAdapter<LocationDAO>(this, android.R.layout.simple_dropdown_item_1line, searchLocations);
@@ -64,6 +68,10 @@ public class AlertSettingsActivity extends AppCompatActivity {
                 Log.d("############", locationSelected.getId()+ " "+ locationSelected.toString());
             }
         });
+
+    }
+    //Initiates all view components in alertsettings_layout when the user has chosen an location for alert
+    public void initiateViewComponents(){
         tempIntervall = getResources().getStringArray(R.array.temp_array);
         tempMinPicker = (NumberPicker) findViewById(R.id.tempMin_spinner);
         tempMinPicker.setMinValue(0);
@@ -90,22 +98,23 @@ public class AlertSettingsActivity extends AppCompatActivity {
         checkintervalSpinner.setAdapter(checkintervalAdapter);
 
         checkSun = (CheckBox) findViewById(R.id.solvarsel_checkBox);
-
-        /*
-        tempMinSpinner = (Spinner) findViewById(R.id.tempMin_spinner);
-        tempMaxSpinner = (Spinner) findViewById(R.id.tempMax_spinner);
-        tempAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tempIntervall);
-        tempMinSpinner.setAdapter(tempAdapter);
-        tempMaxSpinner.setAdapter(tempAdapter);*/
-        // Add custom text changed listener
-
-
     }
-    public void onClickSaveButton(View v) {
+    public void onNextButtonClick(View v){
+        if(locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())){
+            setContentView(R.layout.alertsettings_layout);
+            initiateViewComponents();
+        }else{
+            Toast.makeText(this, "Fyll inn et korrekt stedsnavn!", Toast.LENGTH_LONG).show();
+        }
+    }
+    public void onCancelButtonClick(View v){
+        finish();
+    }
+    public void onSaveButtonClick(View v) {
         AlertSettingsDAO asd = makeObjFromSettings();
         boolean ok = saveAlertSettings(asd);
         if(!ok){
-            Toast.makeText(this, "Fyll inn sted!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
         }else {
             Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
             ArrayList<AlertSettingsDAO> test;
@@ -113,17 +122,16 @@ public class AlertSettingsActivity extends AppCompatActivity {
             for(int i = 0; i < test.size(); i++){
                 Log.i("TEST",  "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
             }
+            //Finishes the Activity and return to MainActivity
+            finish();
         }
 
     }
+
     public boolean saveAlertSettings(AlertSettingsDAO asd){
         Log.i(TAG,"saveAlertSettings()" );
-        boolean ok = false;
-        if(locationSelected != null){
-            asd.setLocation(locationSelected);
-            ok = alertdatasource.insertAlertSettings(asd);
-        }
-        return ok;
+        asd.setLocation(locationSelected);
+        return alertdatasource.insertAlertSettings(asd);
     }
     public AlertSettingsDAO makeObjFromSettings(){
         AlertSettingsDAO asd = new AlertSettingsDAO();
@@ -167,6 +175,12 @@ public class AlertSettingsActivity extends AppCompatActivity {
         return asd;
     }
 
+    @Override
+    public void finish() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
+        super.finish();
+    }
     /* this function is used in CustomAutoCompleteTextChangedListener.java
     public String[] getSearchedItemsFromDb(String searchTerm) {
         Log.i(TAG, "getSearchedItemsFromDb()");

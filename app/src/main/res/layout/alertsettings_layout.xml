@@ -10,20 +10,16 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/mainBase">
-    <AutoCompleteTextView
-        android:drawableEnd="@android:drawable/ic_menu_search"
-        android:text="Søk etter stedsnavn..."
-        android:id="@+id/search_view"
+    <TextView
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:completionThreshold="1"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_for_alert"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:inputType="textAutoComplete"
-        android:imeOptions="actionDone">
-    </AutoCompleteTextView>
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="15dp" />
 
 
     <LinearLayout
@@ -261,7 +257,7 @@
         app:borderWidth="0dp"
         android:src="@drawable/ic_done"
         android:tint="@color/colorWhite"
-        android:onClick="onClickSaveButton"/>
+        android:onClick="onSaveButtonClick"/>
 
 
 </LinearLayout>
