@@ -11,4 +11,9 @@
     <string name="lagre_varsel_button">Lagre</string>
     <string name="from">Fra:</string>
     <string name="til">Til:</string>
+    <string name="choose_location">Velg sted for varsel</string>
+    <string name="soek_hint">Søk etter stedsnavn...</string>
+    <string name="next">Neste</string>
+    <string name="cancel">Avbryt</string>
+    <string name="settings_for_alert">Velg instillinger for varsel</string>
 </resources>

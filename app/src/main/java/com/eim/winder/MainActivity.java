@@ -1,5 +1,6 @@
 package com.eim.winder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -52,7 +53,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         llManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llManager);
-        rvAdapter = new RVAdapter(getAlertSettingsDataSet());
+        rvAdapter = new RVAdapter(getAlertSettingsDataSet(), new RVAdapter.OnItemClickListener(){
+            @Override public void onItemClick(AlertSettingsDAO item) {
+                Log.i(TAG, " " +item.getLocation().getName());
+            }
+        });
         recyclerView.setAdapter(rvAdapter);
         //customListAdapter = new CustomArrayAdapter(this, tempListItems);
         //alertList = (ListView) findViewById(R.id.alert_listview);
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void startAlertSettingsActivity(View v){
         Intent intent = new Intent(this, AlertSettingsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
     private ArrayList<AlertSettingsDAO> getAlertSettingsDataSet() {
         Log.i(TAG, "getAlertSettingsDataSet()");
@@ -92,17 +97,21 @@ public class MainActivity extends AppCompatActivity {
         }
         return results;
     }
-    /*@Override
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
+    @Override
     protected void onResume() {
+        //Updates the view in case of changes in the alertlist
         super.onResume();
-        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
-                .MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
-                Log.i(LOG_TAG, " Clicked on Item " + position);
+        rvAdapter = new RVAdapter(getAlertSettingsDataSet(), new RVAdapter.OnItemClickListener(){
+            @Override public void onItemClick(AlertSettingsDAO item) {
+                Log.i(TAG, " " +item.getLocation().getName());
             }
         });
-    }*/
+        recyclerView.setAdapter(rvAdapter);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
