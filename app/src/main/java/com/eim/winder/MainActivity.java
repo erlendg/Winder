@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager llManager;
     private RecyclerView.Adapter rvAdapter;
-
+    private CompareAXService compare;
+    private HandleXML xmlhandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         //customListAdapter = new CustomArrayAdapter(this, tempListItems);
         //alertList = (ListView) findViewById(R.id.alert_listview);
         //alertList.setAdapter(customListAdapter);
+
+        //div for xmlhandling and comparison:
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -112,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+        /*
+        //Gammel Kode:
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -120,6 +126,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+        */
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_refresh:
+                Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
+                for (AlertSettingsDAO temp : alertdatasource.getAllAlertSettings()){
+                    compare = new CompareAXService(temp);
+
+
+                    //compare.runHandleXML();
+                    //compare.findAllOccurences();
+                    Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            // action with ID action_settings was selected
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
+
+                break;
+            default:
+                break;
+        }
+
+        return true;
+
+
     }
     /*@Override
     protected void onResume() {
