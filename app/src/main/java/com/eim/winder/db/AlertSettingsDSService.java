@@ -57,10 +57,12 @@ public class AlertSettingsDSService {
     }
     // Deletes an alertsetting based on its id:
     public boolean deleteAlertSettings(int id){
+        Log.i(TAG, "deleteAlertSettings: "+ id);
         boolean ok = false;
         try{
             open();
-            ok = database.delete(table, SQLiteDBHelper.C_ALERT_ID + " = " + id + id, null) > 0;
+            ok = database.delete(table, SQLiteDBHelper.C_ALERT_ID + " = " + id, null) > 0;
+            Log.i(TAG, "deleteAlertSettings: "+ ok);
         } catch (SQLException e) {
             e.printStackTrace();
         }

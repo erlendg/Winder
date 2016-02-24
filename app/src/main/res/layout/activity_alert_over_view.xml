@@ -62,6 +62,7 @@
         app:backgroundTint="@color/md_red_500"
         app:layout_anchorGravity="bottom|left|end"
         app:layout_anchor="@id/dummy"
+        android:onClick="onDeleteButtonClick"
         />
 
 </android.support.design.widget.CoordinatorLayout>
