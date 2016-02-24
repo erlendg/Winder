@@ -20,7 +20,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/app_name" android:name="AlertSettingsActivity"/>
+        <activity
+            android:name=".AlertSettingsActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".AlertOverViewActivity"
+            android:label="@string/title_activity_alert_over_view"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="com.eim.winder.MainActivity" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.eim.winder.MainActivity"/>
+        </activity>
+
     </application>
 
 </manifest>

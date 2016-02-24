@@ -1,9 +1,12 @@
 package com.eim.winder.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Mari on 08.02.2016.
  */
-public class LocationDAO {
+public class LocationDAO implements Parcelable{
     private int id;
     private String name;
     private String type;
@@ -70,8 +73,49 @@ public class LocationDAO {
         this.xmlURL = xmlURL;
     }
 
+    LocationDAO(Parcel in){
+        readFromParcel(in);
+    }
+
+    private void readFromParcel(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        type = in.readString();
+        municipality = in.readString();
+        county = in.readString();
+        xmlURL = in.readString();
+    }
+
     @Override
     public String toString() {
         return getName() + ", " + getType() + ", (" + getMunicipality() + ", " + getCounty()+ ")";
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        // We just need to write each field into the
+        // parcel. When we read from parcel, they
+        // will come back in the same order
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(type);
+        dest.writeString(municipality);
+        dest.writeString(county);
+        dest.writeString(xmlURL);
+    }
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public LocationDAO createFromParcel(Parcel in) {
+                    return new LocationDAO(in);
+                }
+
+                public LocationDAO[] newArray(int size) {
+                    return new LocationDAO[size];
+                }
+            };
 }

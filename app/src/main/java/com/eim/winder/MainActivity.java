@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         rvAdapter = new RVAdapter(getAlertSettingsDataSet(), new RVAdapter.OnItemClickListener(){
             @Override public void onItemClick(AlertSettingsDAO item) {
                 Log.i(TAG, " " +item.getLocation().getName());
+                startAlertOverViewActivity(item);
+
             }
         });
         recyclerView.setAdapter(rvAdapter);
@@ -65,21 +67,26 @@ public class MainActivity extends AppCompatActivity {
 
         //div for xmlhandling and comparison:
 
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startAlertSettingsActivity(view);
+                startAlertSettingsActivity();
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         //.setAction("Action", null).show();
             }
         });
 
     }
-    public void startAlertSettingsActivity(View v){
+    public void startAlertSettingsActivity(){
         Intent intent = new Intent(this, AlertSettingsActivity.class);
         startActivityForResult(intent, 1);
+    }
+    public void startAlertOverViewActivity(AlertSettingsDAO asd){
+        Log.i(TAG, "---> startAlertOverViewActivity");
+        Intent intent = new Intent(this, AlertOverViewActivity.class);
+        intent.putExtra("AlertSettingsDAO", asd);
+        startActivity(intent);
     }
     private ArrayList<AlertSettingsDAO> getAlertSettingsDataSet() {
         Log.i(TAG, "getAlertSettingsDataSet()");
@@ -108,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         rvAdapter = new RVAdapter(getAlertSettingsDataSet(), new RVAdapter.OnItemClickListener(){
             @Override public void onItemClick(AlertSettingsDAO item) {
                 Log.i(TAG, " " +item.getLocation().getName());
+                startAlertOverViewActivity(item);
             }
         });
         recyclerView.setAdapter(rvAdapter);

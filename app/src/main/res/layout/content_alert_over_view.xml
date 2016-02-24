@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.eim.winder.AlertOverViewActivity"
+    tools:showIn="@layout/activity_alert_over_view">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/preferences_title"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:text="@string/your_preferences"
+            android:textSize="18sp"
+            android:clickable="true"/>
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/preferences_table"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:shrinkColumns="*"
+            android:stretchColumns="*"
+            android:visibility="visible">
+
+
+            <!-- Row 1 with single column -->
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/row1_title"
+                    android:text="Row 1"
+                    android:layout_span="3"
+                    android:padding="10dip"/>
+            </TableRow>
+
+            <!-- Row 2 with 3 columns -->
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+
+                <TextView
+                    android:id="@+id/row2_column1"
+                    android:text="@string/nedboer_intervall"
+                    android:layout_weight="1"
+                    android:background="#dcdcdc"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/row2_column2"
+                    android:text="Row 2 column 2"
+                    android:layout_weight="1"
+                    android:background="#d3d3d3"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/row2_column3"
+                    android:text="Row 2 column 3"
+                    android:layout_weight="1"
+                    android:background="#cac9c9"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+
+            </TableRow>
+
+            <!-- Row 3 with 3 columns -->
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/row3_column1"
+                    android:text="@string/vind_styrke"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+                <TextView
+                    android:id="@+id/row3_column2"
+                    android:text="Row 3 column 2"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/row3_column3"
+                    android:text="Row 3 column 3"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+            </TableRow>
+            <!-- Row 4 with 2 columns -->
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/row4_column1"
+                    android:text="@string/vind_retning"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"
+                    android:background="#dcdcdc"/>
+                <TextView
+                    android:id="@+id/row4_column2"
+                    android:text="Row 4 column 2"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"
+                    android:background="#dcdcdc"/>
+            </TableRow>
+            <!-- Row 5 with 2 columns -->
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/row5_column1"
+                    android:text="@string/sjekk_intervall"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+                <TextView
+                    android:id="@+id/row5_column2"
+                    android:text="Row 5 column 2"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"/>
+            </TableRow>
+            <!-- Row 6 with 2 columns -->
+            <TableRow
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/row6_column1"
+                    android:text="@string/temp_interval"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"
+                    android:background="#dcdcdc"/>
+                <TextView
+                    android:id="@+id/row6_column2"
+                    android:text="Row 6 column 2"
+                    android:layout_weight="1"
+                    android:padding="10dip"
+                    android:gravity="center"
+                    android:background="#dcdcdc"/>
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

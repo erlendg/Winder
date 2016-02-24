@@ -1,9 +1,12 @@
 package com.eim.winder.db;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Mari on 03.02.2016.
  */
-public class AlertSettingsDAO {
+public class AlertSettingsDAO implements Parcelable{
     private LocationDAO location;
     private int id;
     private int tempMin;
@@ -185,4 +188,72 @@ public class AlertSettingsDAO {
     public void setSat(boolean sat) {
         this.sat = sat;
     }
+
+    //Parcel-methodes and constructor:
+    
+    AlertSettingsDAO(Parcel in){
+        readFromParcel(in);
+    }
+
+    private void readFromParcel(Parcel in) {
+        id = in.readInt();
+        location = in.readParcelable(LocationDAO.class.getClassLoader());
+        tempMin = in.readInt();
+        tempMax = in.readInt();
+        precipitationMin = in.readDouble();
+        precipitationMax = in.readDouble();
+        windSpeedMin = in.readDouble();
+        windSpeedMax = in.readDouble();
+        windDirection = in.readString();
+        checkSun = in.readInt() > 0;
+        checkInterval = in.readDouble();
+        mon = in.readInt() > 0;
+        tue = in.readInt() > 0;
+        wed = in.readInt() > 0;
+        thu = in.readInt() > 0;
+        fri = in.readInt() > 0;
+        sat = in.readInt() > 0;
+        sun = in.readInt() > 0;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeParcelable(location, flags);
+        dest.writeInt(tempMin);
+        dest.writeInt(tempMax);
+        dest.writeDouble(precipitationMin);
+        dest.writeDouble(precipitationMax);
+        dest.writeDouble(windSpeedMin);
+        dest.writeDouble(windSpeedMax);
+        dest.writeString(windDirection);
+        dest.writeInt(checkSun ? 1 : 0);
+        dest.writeDouble(checkInterval);
+        dest.writeInt(mon ? 1 : 0);
+        dest.writeInt(tue ? 1 : 0);
+        dest.writeInt(wed ? 1 : 0);
+        dest.writeInt(thu ? 1 : 0);
+        dest.writeInt(fri ? 1 : 0);
+        dest.writeInt(sat ? 1 : 0);
+        dest.writeInt(sun ? 1 : 0);
+    }
+    /*
+    * This is needed for Android to be able to
+    * create new objects, (or array of objects).
+    * */
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public AlertSettingsDAO createFromParcel(Parcel in) {
+                    return new AlertSettingsDAO(in);
+                }
+
+                public AlertSettingsDAO[] newArray(int size) {
+                    return new AlertSettingsDAO[size];
+                }
+            };
 }
