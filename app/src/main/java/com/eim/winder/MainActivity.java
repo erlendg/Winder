@@ -1,10 +1,15 @@
 package com.eim.winder;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private CompareAXService compare;
     private HandleXML xmlhandler;
     private boolean div = false;
+    private boolean div2;
+    private NotificationCompat.Builder notification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,10 +149,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_refresh:
                 Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
                 for (AlertSettingsDAO temp : getAlertSettingsDataSet()){
+                    //create an instance of CompareAXService:
                     compare = new CompareAXService(temp);
+                    //run the xml-parser:
                     div = compare.runHandleXML();
+                    //if the parsing is done, run findAllOccurences:
                     if(div) {
-                        compare.findAllOccurences();
+                        ArrayList<String> listeTing = compare.findAllOccurences();
+                        generateNotification(listeTing, temp.getId());
                     }
                     Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
                 }
@@ -164,6 +175,44 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private void generateNotification(ArrayList<String> a, int i){
+        notification = new NotificationCompat.Builder(this);
+        notification.setSmallIcon(R.drawable.testicon);
+        if(!a.isEmpty()) {
+            notification.setContentTitle("Vi har en match.");
+            notification.setContentText("for område " + i + "!");
+        }
+        else{
+            notification.setContentTitle("Ingen hendelser");
+            notification.setContentText("for område " +i+ "!");
+        }
+
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, MainActivity.class);
+
+// The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        notification.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(i, notification.build());
+
+    }
+
     /*@Override
     protected void onResume() {
         //datasource.open();

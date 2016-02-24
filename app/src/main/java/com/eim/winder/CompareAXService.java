@@ -7,8 +7,11 @@ import android.widget.ArrayAdapter;
 
 import com.eim.winder.db.AlertSettingsDAO;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Erlend on 19.02.2016.
@@ -17,9 +20,9 @@ public class CompareAXService {
     private HandleXML xmlHandlerObj;
     private AlertSettingsDAO alertSettingsObj;
     private boolean onCreateSuccess = false;
-    private boolean[] occurenceListIntervals;
     private boolean sendNotification;
-
+    private Calendar c;
+    private Date d;
     public CompareAXService(AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
 
@@ -38,27 +41,38 @@ public class CompareAXService {
     public boolean getOnCreateSuccess(){
         return onCreateSuccess;
     }
-
+    private String generateInfo(TabularInfo info){
+        String returnString = "";
+        returnString += "Fra: " + info.getFrom() + ", til: " + info.getTo() + "\n"+
+                        "Temperatur: " + info.getTemperatureValue() + "\u2103";
+        System.err.println(returnString);
+        return returnString;
+    }
     public boolean runHandleXML(){
         xmlHandlerObj.fetchXML();
         while(xmlHandlerObj.parsingComplete);
         return true;
 
     }
-    public boolean findAllOccurences(){
+    public ArrayList<String> findAllOccurences(){
         //todo: implement a loop to compare all TabularInfo objects in HandleXML with the settings defined within AlertSettingsDAO, and populate the bool array.
-        occurenceListIntervals = new boolean[xmlHandlerObj.getTabularList().size()];
-        Arrays.fill(occurenceListIntervals, false);
-        sendNotification = false;
-        for (int i = 0; i<xmlHandlerObj.getTabularList().size(); i++){
 
-            occurenceListIntervals[i] = findOccurence(xmlHandlerObj.getTabularList().get(i));
-            if(occurenceListIntervals[i]){
-                sendNotification = true;
+        ArrayList<TabularInfo> list = xmlHandlerObj.getTabularList();
+        ArrayList<String> returnList = new ArrayList<>();
+        for (int i = 0; i<xmlHandlerObj.getTabularList().size(); i++){
+            sendNotification = findOccurence(list.get(i));
+
+            if (sendNotification){
+                returnList.add(generateInfo(list.get(i)));
             }
+            /*
+            else if(!sendNotification){
+
+            }
+            */
         }
 
-        return sendNotification;
+        return returnList;
     }
 
     private boolean findOccurence(TabularInfo div){
@@ -76,7 +90,20 @@ public class CompareAXService {
 
         return checkFlag;
     }
+    public int checkWeekday(String date){
+        c = Calendar.getInstance();
 
+        try {
+            d = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss").parse(date);
+        }
+        catch (Exception e){
+            System.out.println("div datofeil");
+        }
+
+        c.setTime(d);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek;
+    }
     //private int tempMin;
     //private int tempMax;
     public boolean checkTemp(double value){
