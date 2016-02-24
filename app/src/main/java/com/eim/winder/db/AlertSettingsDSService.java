@@ -55,6 +55,18 @@ public class AlertSettingsDSService {
         close();
         return exist;
     }
+    // Deletes an alertsetting based on its id:
+    public boolean deleteAlertSettings(int id){
+        boolean ok = false;
+        try{
+            open();
+            ok = database.delete(table, SQLiteDBHelper.C_ALERT_ID + " = " + id + id, null) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        close();
+        return ok;
+    }
     //Lagre varselinstillinger i database:
     public boolean insertAlertSettings(AlertSettingsDAO alert){
         Log.i(TAG, "insertAlertSettings()");
