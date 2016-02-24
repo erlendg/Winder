@@ -1,5 +1,8 @@
 package com.eim.winder;
 
+import android.app.TaskStackBuilder;
+import android.content.Intent;
+import android.support.v7.app.NotificationCompat;
 import android.widget.ArrayAdapter;
 
 import com.eim.winder.db.AlertSettingsDAO;
@@ -13,9 +16,9 @@ import java.util.Arrays;
 public class CompareAXService {
     private HandleXML xmlHandlerObj;
     private AlertSettingsDAO alertSettingsObj;
-    private ArrayList<AlertSettingsDAO> alertSettingsObjList;
     private boolean onCreateSuccess = false;
     private boolean[] occurenceListIntervals;
+    private boolean sendNotification;
 
     public CompareAXService(AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
@@ -36,33 +39,43 @@ public class CompareAXService {
         return onCreateSuccess;
     }
 
-    public void runHandleXML(){
+    public boolean runHandleXML(){
         xmlHandlerObj.fetchXML();
         while(xmlHandlerObj.parsingComplete);
+        return true;
 
     }
-    public void findAllOccurences(){
+    public boolean findAllOccurences(){
         //todo: implement a loop to compare all TabularInfo objects in HandleXML with the settings defined within AlertSettingsDAO, and populate the bool array.
         occurenceListIntervals = new boolean[xmlHandlerObj.getTabularList().size()];
         Arrays.fill(occurenceListIntervals, false);
+        sendNotification = false;
         for (int i = 0; i<xmlHandlerObj.getTabularList().size(); i++){
+
             occurenceListIntervals[i] = findOccurence(xmlHandlerObj.getTabularList().get(i));
+            if(occurenceListIntervals[i]){
+                sendNotification = true;
+            }
         }
 
+        return sendNotification;
     }
 
-    public boolean findOccurence(TabularInfo div){
+    private boolean findOccurence(TabularInfo div){
         //todo: implement all comparison method calls and return either true if there is an occurence, or false if not.
+
         boolean checkFlag = false;
-        if(checkTemp(div.getTemperatureValue())) checkFlag = true;
+        /*
+
         if(checkPrecipitation(div.getPrecipitationValue())) checkFlag = true;
         if(checkSymbolSun()) checkFlag = true;
         if (checkWindDirection(div.getWindDirectionName())) checkFlag = true;
         if (checkWindSpeed(div.getWindSpeed())) checkFlag = true;
+        */
+        if(checkTemp(div.getTemperatureValue())) checkFlag = true;
+
         return checkFlag;
     }
-
-
 
     //private int tempMin;
     //private int tempMax;

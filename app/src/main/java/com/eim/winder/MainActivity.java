@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter rvAdapter;
     private CompareAXService compare;
     private HandleXML xmlhandler;
+    private boolean div = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,14 +141,15 @@ public class MainActivity extends AppCompatActivity {
             // action with ID action_refresh was selected
             case R.id.action_refresh:
                 Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
-                for (AlertSettingsDAO temp : alertdatasource.getAllAlertSettings()){
+                for (AlertSettingsDAO temp : getAlertSettingsDataSet()){
                     compare = new CompareAXService(temp);
-
-
-                    //compare.runHandleXML();
-                    //compare.findAllOccurences();
+                    div = compare.runHandleXML();
+                    if(div) {
+                        compare.findAllOccurences();
+                    }
                     Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(this, "... done!", Toast.LENGTH_SHORT);
                 break;
             // action with ID action_settings was selected
             case R.id.action_settings:
