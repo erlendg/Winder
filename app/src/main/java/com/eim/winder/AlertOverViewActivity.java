@@ -9,18 +9,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TableLayout;
+import android.support.v7.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.LocationDAO;
 
 public class AlertOverViewActivity extends AppCompatActivity {
     private AlertSettingsDAO alertSettingsDAO;
+    private LocationDAO location;
     private CollapsingToolbarLayout collapsingToolbar;
     private TextView preferencesTitle;
-    private TableLayout preferencesTable;
+    private GridLayout preferencesTable;
     private TextView preferencesLocation;
     private AlertSettingsDSService datasource;
 
@@ -33,6 +36,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Bundle bundle = getIntent().getExtras();
         alertSettingsDAO = bundle.getParcelable("AlertSettingsDAO");
+        location = alertSettingsDAO.getLocation();
         datasource = new AlertSettingsDSService(this);
 
         collapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
@@ -49,7 +53,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
         preferencesTitle = (TextView) findViewById(R.id.preferences_title);
         preferencesLocation = (TextView) findViewById(R.id.row1_title);
         preferencesLocation.setText(alertSettingsDAO.getLocation().toString());
-        preferencesTable = (TableLayout) findViewById(R.id.preferences_table);
+        preferencesTable = (GridLayout) findViewById(R.id.preferences_table);
         preferencesTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,8 +64,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
     }
     public void onDeleteButtonClick(View v){
         new AlertDialog.Builder(this)
-                .setTitle("Delete")
-                .setMessage("Do you really want to delete the alert?")
+                .setMessage("Do you want to delete the alert?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,155 +26,223 @@
             android:textSize="18sp"
             android:clickable="true"/>
 
-        <TableLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <android.support.v7.widget.GridLayout
             android:id="@+id/preferences_table"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:shrinkColumns="*"
-            android:stretchColumns="*"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/text_margin"
+            app:columnCount="3"
+            app:rowCount="7"
+            app:orientation="horizontal"
+            android:padding="5dp"
             android:visibility="visible">
 
-
-            <!-- Row 1 with single column -->
-            <TableRow
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:gravity="center_horizontal">
+                app:layout_columnSpan="3"
+                app:layout_rowSpan="1"
+                android:id="@+id/row1_title"
+                android:text="Row 1"
+                android:background="@drawable/table_lines"
+                android:padding="5dip"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/row1_title"
-                    android:text="Row 1"
-                    android:layout_span="3"
-                    android:padding="10dip"/>
-            </TableRow>
-
-            <!-- Row 2 with 3 columns -->
-
-            <TableRow
-                android:id="@+id/tableRow1"
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent">
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row2_column1"
+                android:text=""
+                android:gravity="center"
+                android:padding="10dip"
+                android:background="@drawable/table_lines"/>
 
-                <TextView
-                    android:id="@+id/row2_column1"
-                    android:text="@string/nedboer_intervall"
-                    android:layout_weight="1"
-                    android:background="#dcdcdc"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:id="@+id/row2_column2"
-                    android:text="Row 2 column 2"
-                    android:layout_weight="1"
-                    android:background="#d3d3d3"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:id="@+id/row2_column3"
-                    android:text="Row 2 column 3"
-                    android:layout_weight="1"
-                    android:background="#cac9c9"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-
-            </TableRow>
-
-            <!-- Row 3 with 3 columns -->
-            <TableRow
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:gravity="center_horizontal">
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row2_column2"
+                android:text="fra"
+                android:background="@drawable/table_lines"
+                android:padding="10dip"
+                android:gravity="center"/>
 
-                <TextView
-                    android:id="@+id/row3_column1"
-                    android:text="@string/vind_styrke"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-                <TextView
-                    android:id="@+id/row3_column2"
-                    android:text="Row 3 column 2"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-
-                <TextView
-                    android:id="@+id/row3_column3"
-                    android:text="Row 3 column 3"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-            </TableRow>
-            <!-- Row 4 with 2 columns -->
-            <TableRow
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:gravity="center_horizontal">
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row2_column3"
+                android:text="til"
+                android:background="@drawable/table_lines"
+                android:gravity="center"
+                android:padding="10dip"/>
 
-                <TextView
-                    android:id="@+id/row4_column1"
-                    android:text="@string/vind_retning"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"
-                    android:background="#dcdcdc"/>
-                <TextView
-                    android:id="@+id/row4_column2"
-                    android:text="Row 4 column 2"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"
-                    android:background="#dcdcdc"/>
-            </TableRow>
-            <!-- Row 5 with 2 columns -->
-            <TableRow
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:gravity="center_horizontal">
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row3_column1"
+                android:text="@string/nedboer_intervall"
+                android:background="@drawable/table_lines"
+                android:gravity="left"
+                android:padding="10dip"/>
 
-                <TextView
-                    android:id="@+id/row5_column1"
-                    android:text="@string/sjekk_intervall"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-                <TextView
-                    android:id="@+id/row5_column2"
-                    android:text="Row 5 column 2"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"/>
-            </TableRow>
-            <!-- Row 6 with 2 columns -->
-            <TableRow
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_width="fill_parent"
-                android:gravity="center_horizontal">
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row3_column2"
+                android:text="Row 3 column 2"
+                android:background="@drawable/table_lines"
+                android:gravity="center"
+                android:padding="10dip"/>
 
-                <TextView
-                    android:id="@+id/row6_column1"
-                    android:text="@string/temp_interval"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"
-                    android:background="#dcdcdc"/>
-                <TextView
-                    android:id="@+id/row6_column2"
-                    android:text="Row 6 column 2"
-                    android:layout_weight="1"
-                    android:padding="10dip"
-                    android:gravity="center"
-                    android:background="#dcdcdc"/>
-            </TableRow>
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row3_column3"
+                android:text="Row 3 column 3"
+                android:background="@drawable/table_lines"
+                android:gravity="center"
+                android:padding="10dip"/>
 
-        </TableLayout>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row4_column1"
+                android:text="@string/vind_styrke"
+                android:gravity="left"
+                android:padding="10dip"
+                android:background="@drawable/table_lines"/>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row4_column2"
+                android:text="Row 4 column 2"
+                android:gravity="center"
+                android:padding="10dip"
+                android:background="@drawable/table_lines"
+                />
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row4_column3"
+                android:text="Row 4 column 3"
+                android:gravity="center"
+                android:padding="10dip"
+                android:background="@drawable/table_lines"/>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row5_column1"
+                android:text="@string/temp_interval"
+                android:gravity="left"
+                android:padding="10dip"
+                android:background="@drawable/table_lines"/>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row5_column2"
+                android:text="Row 5 column 2"
+                android:gravity="center"
+                android:background="@drawable/table_lines"
+                android:padding="10dip"/>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row5_column3"
+                android:text="Row 5 column 3"
+                android:gravity="center"
+                android:background="@drawable/table_lines"
+                android:padding="10dip"/>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row6_column1"
+                android:text="@string/vind_retning"
+                android:gravity="left"
+                android:background="@drawable/table_lines"
+                android:padding="10dip"/>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="2"
+                app:layout_rowSpan="1"
+                android:id="@+id/row6_column2"
+                android:text="Row 6 column 2"
+                android:gravity="center"
+                android:background="@drawable/table_lines"
+                android:padding="10dip" />
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row7_column1"
+                android:text="@string/sjekk_intervall"
+                android:gravity="left"
+                android:padding="10dip"
+                android:background="@drawable/table_lines"/>
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="2"
+                app:layout_rowSpan="1"
+                android:id="@+id/row7_column2"
+                android:text="Row 6 column 2"
+                android:gravity="center"
+                android:padding="10dip"
+                android:background="@drawable/table_lines"/>
+
+        </android.support.v7.widget.GridLayout>
     </LinearLayout>
 
 

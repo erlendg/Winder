@@ -10,15 +10,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:id="@+id/mainBase">
-    <TextView
+    <Space
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/settings_for_alert"
         android:gravity="center"
-        android:textSize="25sp"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
         android:layout_marginBottom="15dp" />
 
 

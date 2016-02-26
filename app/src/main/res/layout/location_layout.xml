@@ -5,14 +5,13 @@
     android:layout_height="match_parent"
     android:clickable="false">
 
-    <TextView
+    <Space
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/choose_location"
         android:id="@+id/textView2"
         android:layout_gravity="center_horizontal"
-        android:textSize="25sp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginBottom="20dp" />
 
     <ImageView

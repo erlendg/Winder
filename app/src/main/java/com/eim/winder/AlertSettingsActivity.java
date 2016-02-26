@@ -50,6 +50,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_layout);
+        getSupportActionBar().setTitle(R.string.choose_location);
 
         // instantiate database handler
         datasource = new LocationDSService(this);
@@ -102,6 +103,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
     public void onNextButtonClick(View v){
         if(locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())){
             setContentView(R.layout.alertsettings_layout);
+            getSupportActionBar().setTitle(R.string.settings_for_alert);
             initiateViewComponents();
         }else{
             Toast.makeText(this, "Fyll inn et korrekt stedsnavn!", Toast.LENGTH_LONG).show();
