@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="alertsettings" type="com.eim.winder.db.AlertSettingsDAO"/>
+        <variable name="location" type="com.eim.winder.db.LocationDAO"/>
+    </data>
 <android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -45,7 +49,7 @@
                 app:layout_columnSpan="3"
                 app:layout_rowSpan="1"
                 android:id="@+id/row1_title"
-                android:text="Row 1"
+                android:text="@{location.toString()}"
                 android:background="@drawable/table_lines"
                 android:padding="5dip"/>
 
@@ -104,7 +108,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row3_column2"
-                android:text="Row 3 column 2"
+                android:text='@{""+alertsettings.precipitationMin}'
                 android:background="@drawable/table_lines"
                 android:gravity="center"
                 android:padding="10dip"/>
@@ -116,7 +120,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row3_column3"
-                android:text="Row 3 column 3"
+                android:text='@{""+alertsettings.precipitationMax}'
                 android:background="@drawable/table_lines"
                 android:gravity="center"
                 android:padding="10dip"/>
@@ -141,7 +145,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row4_column2"
-                android:text="Row 4 column 2"
+                android:text='@{""+alertsettings.windSpeedMin}'
                 android:gravity="center"
                 android:padding="10dip"
                 android:background="@drawable/table_lines"
@@ -154,7 +158,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row4_column3"
-                android:text="Row 4 column 3"
+                android:text='@{""+alertsettings.windSpeedMax}'
                 android:gravity="center"
                 android:padding="10dip"
                 android:background="@drawable/table_lines"/>
@@ -178,7 +182,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row5_column2"
-                android:text="Row 5 column 2"
+                android:text='@{""+alertsettings.tempMin}'
                 android:gravity="center"
                 android:background="@drawable/table_lines"
                 android:padding="10dip"/>
@@ -190,7 +194,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row5_column3"
-                android:text="Row 5 column 3"
+                android:text='@{""+alertsettings.tempMax}'
                 android:gravity="center"
                 android:background="@drawable/table_lines"
                 android:padding="10dip"/>
@@ -214,7 +218,30 @@
                 app:layout_columnSpan="2"
                 app:layout_rowSpan="1"
                 android:id="@+id/row6_column2"
-                android:text="Row 6 column 2"
+                android:text="@{alertsettings.windDirection}"
+                android:gravity="center"
+                android:background="@drawable/table_lines"
+                android:padding="10dip" />
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="1"
+                app:layout_rowSpan="1"
+                android:id="@+id/row7_column1"
+                android:text="@string/sol_varsel"
+                android:gravity="left"
+                android:background="@drawable/table_lines"
+                android:padding="10dip"/>
+
+            <TextView
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="2"
+                app:layout_rowSpan="1"
+                android:id="@+id/row7_column2"
+                android:text='@{""+alertsettings.checkSun}'
                 android:gravity="center"
                 android:background="@drawable/table_lines"
                 android:padding="10dip" />
@@ -225,7 +252,7 @@
                 android:layout_height="wrap_content"
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
-                android:id="@+id/row7_column1"
+                android:id="@+id/row8_column1"
                 android:text="@string/sjekk_intervall"
                 android:gravity="left"
                 android:padding="10dip"
@@ -236,8 +263,8 @@
                 android:layout_height="wrap_content"
                 app:layout_columnSpan="2"
                 app:layout_rowSpan="1"
-                android:id="@+id/row7_column2"
-                android:text="Row 6 column 2"
+                android:id="@+id/row8_column2"
+                android:text='@{""+alertsettings.checkInterval}'
                 android:gravity="center"
                 android:padding="10dip"
                 android:background="@drawable/table_lines"/>
@@ -247,3 +274,5 @@
 
 
 </android.support.v4.widget.NestedScrollView>
+
+</layout>

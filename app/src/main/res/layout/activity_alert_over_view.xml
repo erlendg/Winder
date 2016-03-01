@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="alertsettings" type="com.eim.winder.db.AlertSettingsDAO"/>
+        <variable name="location" type="com.eim.winder.db.LocationDAO"/>
+    </data>
 
 <android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -34,7 +39,8 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_alert_over_view" />
+    <include layout="@layout/content_alert_over_view"
+        android:id="@+id/content_table"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_edit"
@@ -61,3 +67,5 @@
         />
 
 </android.support.design.widget.CoordinatorLayout>
+
+</layout>
