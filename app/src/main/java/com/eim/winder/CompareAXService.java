@@ -41,6 +41,7 @@ public class CompareAXService {
     public boolean getOnCreateSuccess(){
         return onCreateSuccess;
     }
+
     private String generateInfo(TabularInfo info){
         String returnString = "";
         returnString += "Fra: " + info.getFrom() + ", til: " + info.getTo() + "\n"+
@@ -56,6 +57,17 @@ public class CompareAXService {
     }
     public ArrayList<String> findAllOccurences(){
         //todo: implement a loop to compare all TabularInfo objects in HandleXML with the settings defined within AlertSettingsDAO, and populate the bool array.
+
+        //siden ukedag ikke er implementert, sett sjekk for alle dager:
+        alertSettingsObj.setMon(true);
+        alertSettingsObj.setTue(true);
+        alertSettingsObj.setWed(true);
+        alertSettingsObj.setThu(true);
+        alertSettingsObj.setFri(true);
+        alertSettingsObj.setSat(true);
+        alertSettingsObj.setSun(true);
+
+
 
         ArrayList<TabularInfo> list = xmlHandlerObj.getTabularList();
         ArrayList<String> returnList = new ArrayList<>();
@@ -78,17 +90,40 @@ public class CompareAXService {
     private boolean findOccurence(TabularInfo div){
         //todo: implement all comparison method calls and return either true if there is an occurence, or false if not.
 
-        boolean checkFlag = false;
-        /*
+        if(checkPrecipitation(div.getPrecipitationValue())==2) return false;
+        if(checkSymbolSun(div.getSymbolName())== 2) return false;
+        if (checkWindDirection(div.getWindDirectionName())==2) return false;
+        if (checkWindSpeed(div.getWindSpeed())==2) return false;
+        if(checkTemp(div.getTemperatureValue())== 2) return false;
 
-        if(checkPrecipitation(div.getPrecipitationValue())) checkFlag = true;
-        if(checkSymbolSun()) checkFlag = true;
-        if (checkWindDirection(div.getWindDirectionName())) checkFlag = true;
-        if (checkWindSpeed(div.getWindSpeed())) checkFlag = true;
-        */
-        if(checkTemp(div.getTemperatureValue())) checkFlag = true;
+        switch (checkWeekday(div.getFrom())){
+            case 1:
+                if (!alertSettingsObj.isMon()) return false;
+                break;
+            case 2:
+                if (!alertSettingsObj.isTue()) return false;
+                break;
+            case 3:
+                if (!alertSettingsObj.isWed()) return false;
+                break;
+            case 4:
+                if (!alertSettingsObj.isThu()) return false;
+                break;
+            case 5:
+                if (!alertSettingsObj.isFri()) return false;
+                break;
+            case 6:
+                if (!alertSettingsObj.isSat()) return false;
+                break;
+            case 7:
+                if (!alertSettingsObj.isSun()) return false;
+                break;
+            default:
+                break;
+        }
 
-        return checkFlag;
+
+        return true;
     }
     public int checkWeekday(String date){
         c = Calendar.getInstance();
@@ -106,32 +141,38 @@ public class CompareAXService {
     }
     //private int tempMin;
     //private int tempMax;
-    public boolean checkTemp(double value){
-        if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) return true;
-        else return false;
+    public int checkTemp(double value){
+
+        if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) return 0;
+        if(alertSettingsObj.getTempMin() == -274)return 1;
+        return 2;
     }
     //private double precipitationMin;
     //private double precipitationMax;
-    public boolean checkPrecipitation(double value){
-        if ((alertSettingsObj.getPrecipitationMin())<(value)&&(value<(alertSettingsObj.getPrecipitationMax()))) return true;
-        else return false;
+    public int checkPrecipitation(double value){
+        if ((alertSettingsObj.getPrecipitationMin())<(value)&&(value<(alertSettingsObj.getPrecipitationMax()))) return 0;
+        if(alertSettingsObj.getPrecipitationMax() == -1) return 1;
+        return 2;
     }
     //private double windSpeedMin;
     //private double windSpeedMax;
-    public boolean checkWindSpeed(double value){
-        if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) return true;
-        else return false;
+    public int checkWindSpeed(double value){
+        if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) return 0;
+        if(alertSettingsObj.getWindSpeedMin() == -1) return 1;
+        return 2;
     }
 
     //private String windDirection;
-    public boolean checkWindDirection(String a){
-        if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)) return true;
-        else return false;
+    public int checkWindDirection(String a){
+        if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)) return 0;
+        if(alertSettingsObj.getWindDirection() == null) return 1;
+        return 2;
     }
     //private boolean checkSun;
-    public boolean checkSymbolSun(){
-        if (alertSettingsObj.isCheckSun()) return true;
-        else return false;
+    public int checkSymbolSun(String a){
+        if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("klarvær")) return 0;
+        //if (!alertSettingsObj.isCheckSun())
+        return 2;
     }
     //private double checkInterval;
 
