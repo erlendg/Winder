@@ -42,7 +42,21 @@ public class AlertSettingsDAO implements Parcelable{
     }
 
     public AlertSettingsDAO(){
-
+        this.tempMin = -274;
+        this.tempMax = -274;
+        this.precipitationMin = -1;
+        this.precipitationMax =-1;
+        this.windSpeedMin = -1;
+        this.windSpeedMax = -1;
+        this.windDirection = null;
+        this.checkSun = false;
+        this.mon = false;
+        this.tue = false;
+        this.wed = false;
+        this.thu = false;
+        this.fri = false;
+        this.sat = false;
+        this.sun = false;
     }
 
     public int getId() {
