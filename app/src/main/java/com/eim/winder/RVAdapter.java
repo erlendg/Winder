@@ -57,7 +57,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
         holder.bind(alertsettings.get(position), listener);
         holder.locationName.setText(alertsettings.get(position).getLocation().getName());
-        holder.weatherInfo.setText("Check interval: " +alertsettings.get(position).getCheckInterval());
+        holder.checkInterval.setText(""+alertsettings.get(position).getCheckInterval());
         holder.weatherIcon.setImageResource(R.drawable.testicon);
     }
     @Override
@@ -70,7 +70,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
     public static class WeatherViewHolder extends RecyclerView.ViewHolder  {
         CardView card_view;
         TextView locationName;
-        TextView weatherInfo;
+        TextView checkInterval;
         ImageView weatherIcon;
 
 
@@ -78,7 +78,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
             super(itemView);
             card_view = (CardView)itemView.findViewById(R.id.card_view);
             locationName = (TextView)itemView.findViewById(R.id.location_name);
-            weatherInfo = (TextView)itemView.findViewById(R.id.weather_info);
+            checkInterval = (TextView)itemView.findViewById(R.id.check_interval_num);
             weatherIcon = (ImageView)itemView.findViewById(R.id.weather_photo);
         }
         //Binds a listener to each item

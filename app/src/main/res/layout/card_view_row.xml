@@ -35,14 +35,23 @@
                 android:id="@+id/location_name"
                 android:layout_toRightOf="@+id/weather_photo"
                 android:layout_alignParentTop="true"
+                android:text="Trondheim"
                 android:textSize="30sp"
                 android:textColor="@color/colorWhite"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/weather_info"
+                android:id="@+id/weather_check_interval"
                 android:layout_toRightOf="@+id/weather_photo"
+                android:layout_below="@+id/location_name"
+                android:textColor="@color/colorWhite"
+                android:text="@string/check_interval"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/check_interval_num"
+                android:layout_toRightOf="@+id/weather_check_interval"
                 android:layout_below="@+id/location_name"
                 android:textColor="@color/colorWhite"/>
 

@@ -18,4 +18,5 @@
     <string name="settings_for_alert">Velg innstillinger for varsel</string>
     <string name="title_activity_alert_over_view">AlertOverViewActivity</string>
     <string name="your_preferences">Dine innstillinger: </string>
+    <string name="check_interval">Check interval: </string>
 </resources>
