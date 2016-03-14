@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,8 +31,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    //private ListView alertList;
-    //private ArrayAdapter customListAdapter;
+    private static final int MAX_LOCATIONS = 10;
+    private int numOfLocations;
     private LocationDSService datasource;
     private AlertSettingsDSService alertdatasource;
     private FloatingActionButton fab;
@@ -79,16 +80,21 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startAlertSettingsActivity();
+                startAlertSettingsActivity(view);
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         //.setAction("Action", null).show();
             }
         });
 
     }
-    public void startAlertSettingsActivity(){
-        Intent intent = new Intent(this, AlertSettingsActivity.class);
-        startActivityForResult(intent, 1);
+    public void startAlertSettingsActivity(View v){
+        //Only allowed to register up to 10 locations for alert, to limit dataflow
+        if(numOfLocations != MAX_LOCATIONS){
+            Intent intent = new Intent(this, AlertSettingsActivity.class);
+            startActivityForResult(intent, 1);
+        }else{
+            Snackbar.make(v, "OBS! Varsellisten er full, slett en for å legge til ny", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        }
     }
     public void startAlertOverViewActivity(AlertSettingsDAO asd){
         Log.i(TAG, "---> startAlertOverViewActivity");
@@ -99,11 +105,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<AlertSettingsDAO> getAlertSettingsDataSet() {
         Log.i(TAG, "getAlertSettingsDataSet()");
         ArrayList<AlertSettingsDAO> results = alertdatasource.getAllAlertSettings();
-        if(results != null || results.size() == 0){
-            Log.i(TAG, "getAlertSettingsDataSet() IFIFIFIF "+ results.size());
+        if(results != null && results.size() > 0){
+            Log.i(TAG, "getAlertSettingsDataSet() Data size: "+ results.size());
+            numOfLocations= results.size();
             for(int i = 0; i < results.size(); i++){
                 int id = (int) results.get(i).getLocation().getId();
-                Log.i(TAG, "getAlertSettingsDataSet() IFIFIFIF "+ id);
                 LocationDAO loc =  datasource.getLocationFromID(id);
                 results.get(i).setLocation(loc);
             }
