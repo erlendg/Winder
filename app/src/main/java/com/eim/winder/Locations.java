@@ -11,18 +11,25 @@ import java.util.ArrayList;
 public class Locations {
     public static final String[] locations = {"Trondheim Sentrum", "Lade", "Ila", "Orkanger", "Stjørdal","Hatmountainvalley", "Åre", "UtiGokk"};
 
-    public static ArrayList<AlertSettingsDAO> getTestAlertList(){
-        ArrayList<AlertSettingsDAO> testAlerts = new ArrayList<>();
-        LocationDAO loc = new LocationDAO();
-        loc.setName("Trondheim");
-        LocationDAO loc2 = new LocationDAO();
-        loc2.setName("Ørlandet");
-        LocationDAO loc3 = new LocationDAO();
-        loc3.setName("Stjørdal");
-        testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 1, 1, 1, 1, 1, 1, 1, loc));
-        testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 6,1,1,1,1,1,1,loc2));
-        testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 0.5, 1,1,1,1,1,1,1,loc3));
-        return testAlerts;
+    public static ArrayList<AlertSettingsDAO> getTestAlertList() {
+            ArrayList<AlertSettingsDAO> testAlerts = new ArrayList<>();
+            LocationDAO loc = new LocationDAO();
+            loc.setName("Trondheim");
+            loc.setId(-1);
+            loc.setXmlURL("http://www.yr.no/place/Norway/Sør-Trøndelag/Trondheim/Trondheim/forecast.xml");
+            LocationDAO loc2 = new LocationDAO();
+            loc2.setName("Ørlandet");
+            loc2.setId(-2);
+            loc2.setXmlURL("http://www.yr.no/place/Norway/Sør-Trøndelag/Ørland/Ørland_lufthavn/forecast.xml");
+            LocationDAO loc3 = new LocationDAO();
+            loc3.setName("Stjørdal");
+            loc3.setId(-3);
+            loc3.setXmlURL("http://www.yr.no/place/Norway/Nord-Trøndelag/Stjørdal/Stjørdal/forecast.xml");
+
+            testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 1, 1, 1, 1, 1, 1, 1, loc));
+            testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 6, 1, 1, 1, 1, 1, 1, loc2));
+            testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 0.5, 1, 1, 1, 1, 1, 1, 1, loc3));
+            return testAlerts;
     }
     public static final String[][] locationsComplete = new String[][]{
             {"Asak kirke", "http://www.yr.no/sted/Norge/Østfold/Halden/Asak_kirke/varsel.xml"},
