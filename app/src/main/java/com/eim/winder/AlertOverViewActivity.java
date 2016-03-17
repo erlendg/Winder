@@ -104,4 +104,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
                 })
                 .setNegativeButton(android.R.string.no, null).show();
     }
+    public AlertSettingsDAO getAlertSettingsDAO(){
+        return alertSettingsDAO;
+    }
 }
