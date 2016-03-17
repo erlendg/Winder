@@ -3,6 +3,7 @@ package com.eim.winder;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.eim.winder.db.AlertSettingsDAO;
@@ -23,6 +24,8 @@ public class CompareAXService {
     private boolean sendNotification;
     private Calendar c;
     private Date d;
+    private final static String tag = "CompareAXService";
+    private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     public CompareAXService(AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
 
@@ -44,9 +47,24 @@ public class CompareAXService {
 
     private String generateInfo(TabularInfo info){
         String returnString = "";
-        returnString += "Fra: " + info.getFrom() + ", til: " + info.getTo() + "\n"+
-                        "Temperatur: " + info.getTemperatureValue() + "\u2103";
-        System.err.println(returnString);
+        returnString += "Fra: " + info.getFrom() + ", til: " + info.getTo() + "\n";
+                        // grader celcius utf8-kode: "\u2103";
+        if (tempCheck){
+            returnString += "Temperatur: " + info.getTemperatureValue() + "\u2103\n";
+        }
+        if(sunCheck){
+            returnString += "Det er meldt klarvær!\n";
+        }
+        if(precipitationCheck){
+            returnString += "Nedbør: " + info.getPrecipitationValue() + "mm" + "\n";
+        }
+        if(windDirectionCheck){
+            returnString += "Vindretning: " + info.getWindDirectionName() + "\n";
+        }
+        if (windSpeedCheck){
+            returnString += "Vindstyrke: " + info.getWindSpeed() + "m/s \n";
+        }
+        Log.i(tag, returnString);
         return returnString;
     }
     public boolean runHandleXML(){
@@ -91,11 +109,16 @@ public class CompareAXService {
         //todo: implement all comparison method calls and return either true if there is an occurence, or false if not.
 
         if(checkPrecipitation(div.getPrecipitationValue())==2) return false;
+
         if(checkSymbolSun(div.getSymbolName())== 2) return false;
-        if (checkWindDirection(div.getWindDirectionName())==2) return false;
+
+        //if (checkWindDirection(div.getWindDirectionName())==2) return false;
+
         if (checkWindSpeed(div.getWindSpeed())==2) return false;
+
         if(checkTemp(div.getTemperatureValue())== 2) return false;
 
+        /*
         switch (checkWeekday(div.getFrom())){
             case 1:
                 if (!alertSettingsObj.isMon()) return false;
@@ -121,6 +144,7 @@ public class CompareAXService {
             default:
                 break;
         }
+        */
 
 
         return true;
@@ -143,36 +167,81 @@ public class CompareAXService {
     //private int tempMax;
     public int checkTemp(double value){
 
-        if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) return 0;
-        if(alertSettingsObj.getTempMin() == -274)return 1;
+        if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) {
+            Log.d(tag, "Temp returverdi = 0, innverdi = " + value);
+            tempCheck = true;
+            return 0;
+        }
+        if(alertSettingsObj.getTempMin() == -274){
+            Log.d(tag, "Temp returverdi = 1, innverdi = " + value);
+            return 1;
+        }
+        Log.d(tag, "Temp returverdi = 2, innverdi = " + value);
         return 2;
     }
     //private double precipitationMin;
     //private double precipitationMax;
-    public int checkPrecipitation(double value){
-        if ((alertSettingsObj.getPrecipitationMin())<(value)&&(value<(alertSettingsObj.getPrecipitationMax()))) return 0;
-        if(alertSettingsObj.getPrecipitationMax() == -1) return 1;
+    public int checkPrecipitation(double value) {
+        if ((alertSettingsObj.getPrecipitationMin()) < (value) && (value < (alertSettingsObj.getPrecipitationMax()))){
+            Log.d(tag, "Nedbør returverdi = 0, innverdi = " + value);
+            precipitationCheck = true;
+            return 0;
+        }
+        if(alertSettingsObj.getPrecipitationMax() == -1){
+            Log.d(tag, "Nedbør returverdi = 1, innverdi = " + value);
+            return 1;
+        }
+        Log.d(tag, "Nedbør returverdi = 2, innverdi = " + value);
         return 2;
     }
     //private double windSpeedMin;
     //private double windSpeedMax;
     public int checkWindSpeed(double value){
-        if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) return 0;
-        if(alertSettingsObj.getWindSpeedMin() == -1) return 1;
+        if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) {
+            Log.d(tag, "Vindstyrke returverdi = 0, innverdi = " + value);
+            windSpeedCheck = true;
+            return 0;
+        }
+        if(alertSettingsObj.getWindSpeedMin() == -1) {
+            Log.d(tag, "Vindstyrke returverdi = 1, innverdi = " + value);
+            return 1;
+        }
+        Log.d(tag, "Vindstyrke returverdi = 2, innverdi = " + value);
         return 2;
     }
 
     //private String windDirection;
-    public int checkWindDirection(String a){
-        if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)) return 0;
-        if(alertSettingsObj.getWindDirection() == null) return 1;
+    public int checkWindDirection(String a) {
+        if (alertSettingsObj.getWindDirection() == null){
+            Log.d(tag, "Vindretning returverdi = 1, innverdi = " + a);
+            windDirectionCheck = true;
+            return 1;
+        }
+        if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)){
+            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+            return 0;
+        }
+
+        Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);
         return 2;
     }
     //private boolean checkSun;
-    public int checkSymbolSun(String a){
-        if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("klarvær")) return 0;
-        //if (!alertSettingsObj.isCheckSun())
-        return 2;
+    public int checkSymbolSun(String a) {
+        //Log.d(tag, "innhold i SunString: " + a);
+
+        if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("clear sky")){
+            Log.d(tag, "Sol returverdi = 0, innverdi = " + a);
+            sunCheck = true;
+            return 0;
+        }
+        if (!alertSettingsObj.isCheckSun()){
+            Log.d(tag, "sol returverdi 1, innverdi = " +a);
+            return 1;
+        }
+            Log.d(tag, "Sol returverdi = 2, innverdi = " + a);
+            return 2;
+
+        //return 0;
     }
     //private double checkInterval;
 
