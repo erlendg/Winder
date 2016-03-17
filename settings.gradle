@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':cwac-wakeful-1.0.5'

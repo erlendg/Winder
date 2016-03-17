@@ -168,61 +168,61 @@ public class CompareAXService {
     public int checkTemp(double value){
 
         if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) {
-            Log.d(tag, "Temp returverdi = 0, innverdi = " + value);
+            //Log.d(tag, "Temp returverdi = 0, innverdi = " + value);
             tempCheck = true;
             return 0;
         }
         if(alertSettingsObj.getTempMin() == -274){
-            Log.d(tag, "Temp returverdi = 1, innverdi = " + value);
+            //Log.d(tag, "Temp returverdi = 1, innverdi = " + value);
             return 1;
         }
-        Log.d(tag, "Temp returverdi = 2, innverdi = " + value);
+        //Log.d(tag, "Temp returverdi = 2, innverdi = " + value);
         return 2;
     }
     //private double precipitationMin;
     //private double precipitationMax;
     public int checkPrecipitation(double value) {
         if ((alertSettingsObj.getPrecipitationMin()) < (value) && (value < (alertSettingsObj.getPrecipitationMax()))){
-            Log.d(tag, "Nedbør returverdi = 0, innverdi = " + value);
+            //Log.d(tag, "Nedbør returverdi = 0, innverdi = " + value);
             precipitationCheck = true;
             return 0;
         }
         if(alertSettingsObj.getPrecipitationMax() == -1){
-            Log.d(tag, "Nedbør returverdi = 1, innverdi = " + value);
+            //Log.d(tag, "Nedbør returverdi = 1, innverdi = " + value);
             return 1;
         }
-        Log.d(tag, "Nedbør returverdi = 2, innverdi = " + value);
+        //Log.d(tag, "Nedbør returverdi = 2, innverdi = " + value);
         return 2;
     }
     //private double windSpeedMin;
     //private double windSpeedMax;
     public int checkWindSpeed(double value){
         if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) {
-            Log.d(tag, "Vindstyrke returverdi = 0, innverdi = " + value);
+            //Log.d(tag, "Vindstyrke returverdi = 0, innverdi = " + value);
             windSpeedCheck = true;
             return 0;
         }
         if(alertSettingsObj.getWindSpeedMin() == -1) {
-            Log.d(tag, "Vindstyrke returverdi = 1, innverdi = " + value);
+            //Log.d(tag, "Vindstyrke returverdi = 1, innverdi = " + value);
             return 1;
         }
-        Log.d(tag, "Vindstyrke returverdi = 2, innverdi = " + value);
+        //Log.d(tag, "Vindstyrke returverdi = 2, innverdi = " + value);
         return 2;
     }
 
     //private String windDirection;
     public int checkWindDirection(String a) {
         if (alertSettingsObj.getWindDirection() == null){
-            Log.d(tag, "Vindretning returverdi = 1, innverdi = " + a);
+            //Log.d(tag, "Vindretning returverdi = 1, innverdi = " + a);
             windDirectionCheck = true;
             return 1;
         }
         if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)){
-            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+           // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
             return 0;
         }
 
-        Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);
+        //Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);
         return 2;
     }
     //private boolean checkSun;
@@ -230,15 +230,15 @@ public class CompareAXService {
         //Log.d(tag, "innhold i SunString: " + a);
 
         if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("clear sky")){
-            Log.d(tag, "Sol returverdi = 0, innverdi = " + a);
+            //Log.d(tag, "Sol returverdi = 0, innverdi = " + a);
             sunCheck = true;
             return 0;
         }
         if (!alertSettingsObj.isCheckSun()){
-            Log.d(tag, "sol returverdi 1, innverdi = " +a);
+            //Log.d(tag, "sol returverdi 1, innverdi = " +a);
             return 1;
         }
-            Log.d(tag, "Sol returverdi = 2, innverdi = " + a);
+            //Log.d(tag, "Sol returverdi = 2, innverdi = " + a);
             return 2;
 
         //return 0;
