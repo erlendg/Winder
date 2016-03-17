@@ -52,7 +52,7 @@ public class DetaljoversiktStepsDef {
     @Test
     @Gitt("^at brukeren har åpnet appen$")
     public void at_brukeren_har_åpnet_appen() {
-        Log.d(TAG, "Gitt at appen er åpen");
+        Log.d(TAG, "Gitt at brukeren har åpnet appen");
         //String title = mainActivity.getActivity().getResources().getString(R.string.app_name);
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
