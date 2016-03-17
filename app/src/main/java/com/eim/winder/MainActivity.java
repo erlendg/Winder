@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private int numOfLocations;
     private LocationDSService datasource;
     private AlertSettingsDSService alertdatasource;
+    private ArrayList<AlertSettingsDAO> alertSettingsList;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private LinearLayoutManager llManager;
@@ -52,17 +53,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Initialiserer varsellisten og adapteren som "lytter" på listen:
-        //bruker hardkodet liste som midlertidige listeelementer.
+        //Initiates the datasource:
         datasource = new LocationDSService(this);
         alertdatasource = new AlertSettingsDSService(this);
-        String[] tempListItems = datasource.getArray();
-        //Cardview:
+
+        //Cardview:Initiates the list with locationalerts and the adapter that "listens" on the list:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         llManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llManager);
-        rvAdapter = new RVAdapter(getAlertSettingsDataSet(), new RVAdapter.OnItemClickListener(){
+        alertSettingsList = getAlertSettingsDataSet();
+        rvAdapter = new RVAdapter(alertSettingsList, new RVAdapter.OnItemClickListener(){
             @Override public void onItemClick(AlertSettingsDAO item) {
                 Log.i(TAG, " " +item.getLocation().getName());
                 startAlertOverViewActivity(item);
@@ -70,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(rvAdapter);
-        //customListAdapter = new CustomArrayAdapter(this, tempListItems);
-        //alertList = (ListView) findViewById(R.id.alert_listview);
-        //alertList.setAdapter(customListAdapter);
 
         //div for xmlhandling and comparison:
 
@@ -81,28 +79,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startAlertSettingsActivity(view);
-                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        //.setAction("Action", null).show();
             }
         });
 
     }
+
     public void startAlertSettingsActivity(View v){
         //Only allowed to register up to 10 locations for alert, to limit dataflow
         if(numOfLocations != MAX_LOCATIONS){
             Intent intent = new Intent(this, AlertSettingsActivity.class);
+            Log.i(TAG, "---> startAlertSettingsActivity");
             startActivityForResult(intent, 1);
         }else{
             Snackbar.make(v, "OBS! Varsellisten er full, slett en for å legge til ny", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
+
     public void startAlertOverViewActivity(AlertSettingsDAO asd){
         Log.i(TAG, "---> startAlertOverViewActivity");
         Intent intent = new Intent(this, AlertOverViewActivity.class);
         intent.putExtra("AlertSettingsDAO", asd);
         startActivity(intent);
     }
-    private ArrayList<AlertSettingsDAO> getAlertSettingsDataSet() {
+
+    public ArrayList<AlertSettingsDAO> getAlertSettingsDataSet() {
         Log.i(TAG, "getAlertSettingsDataSet()");
         ArrayList<AlertSettingsDAO> results = alertdatasource.getAllAlertSettings();
         if(results != null && results.size() > 0){
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             // action with ID action_refresh was selected
             case R.id.action_refresh:
                 Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
-                for (AlertSettingsDAO temp : getAlertSettingsDataSet()){
+                for (AlertSettingsDAO temp : alertSettingsList) {
                     //create an instance of CompareAXService:
                     compare = new CompareAXService(temp);
                     //run the xml-parser:
