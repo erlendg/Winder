@@ -1,6 +1,5 @@
 package com.eim.winder;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -18,14 +17,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.db.LocationDSService;
+import com.eim.winder.xml.CompareAXService;
+import com.eim.winder.xml.HandleXML;
 
 import java.util.ArrayList;
 

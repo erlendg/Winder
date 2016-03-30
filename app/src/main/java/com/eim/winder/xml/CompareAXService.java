@@ -1,16 +1,11 @@
-package com.eim.winder;
+package com.eim.winder.xml;
 
-import android.app.TaskStackBuilder;
-import android.content.Intent;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.eim.winder.db.AlertSettingsDAO;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,18 +15,22 @@ import java.util.Date;
 public class CompareAXService {
     private HandleXML xmlHandlerObj;
     private AlertSettingsDAO alertSettingsObj;
+    private ForecastInfo forecast;
     private boolean onCreateSuccess = false;
     private boolean sendNotification;
     private Calendar c;
     private Date d;
     private final static String tag = "CompareAXService";
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
+    String url;
     public CompareAXService(AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
+        this.forecast = new ForecastInfo();
+        this.url = alertSettingsObj.getLocation().getXmlURL();
 
         try {
-            System.err.println("url: " + alertSettingsObj.getLocation().getXmlURL());
-            xmlHandlerObj = new HandleXML(alertSettingsObj.getLocation().getXmlURL());
+            System.err.println("url: " +  url);
+            xmlHandlerObj = new HandleXML(url, forecast);
             onCreateSuccess =true;
         }
         catch (Exception e){
@@ -87,9 +86,9 @@ public class CompareAXService {
 
 
 
-        ArrayList<TabularInfo> list = xmlHandlerObj.getTabularList();
+        ArrayList<TabularInfo> list = forecast.getTabularList();
         ArrayList<String> returnList = new ArrayList<>();
-        for (int i = 0; i<xmlHandlerObj.getTabularList().size(); i++){
+        for (int i = 0; i<forecast.getTabularList().size(); i++){
             sendNotification = findOccurence(list.get(i));
 
             if (sendNotification){
