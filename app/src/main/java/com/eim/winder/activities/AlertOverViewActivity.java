@@ -1,4 +1,4 @@
-package com.eim.winder;
+package com.eim.winder.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.eim.winder.R;
 import com.eim.winder.databinding.ActivityAlertOverViewBinding;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;

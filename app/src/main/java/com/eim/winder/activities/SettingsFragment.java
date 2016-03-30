@@ -1,16 +1,16 @@
-package com.eim.winder;
+package com.eim.winder.activities;
 
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eim.winder.R;
+import com.eim.winder.activities.AlertOverViewActivity;
 import com.eim.winder.databinding.ContentAlertOverViewBinding;
-import com.eim.winder.db.AlertSettingsDAO;
 
 
 /**

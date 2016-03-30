@@ -1,4 +1,4 @@
-package com.eim.winder;
+package com.eim.winder.div;
 
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.LocationDAO;

@@ -1,4 +1,4 @@
-package com.eim.winder;
+package com.eim.winder.activities;
 
 
 import android.support.v4.app.Fragment;

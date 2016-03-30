@@ -1,16 +1,13 @@
-package com.eim.winder;
+package com.eim.winder.div;
 
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import com.eim.winder.activities.AlertSettingsActivity;
 import com.eim.winder.db.LocationDAO;
-
-import java.lang.reflect.Constructor;
 
 /**
  * Created by Mari on 09.02.2016.

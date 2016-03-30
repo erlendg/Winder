@@ -8,11 +8,12 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.eim.winder.activities.MainActivity;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
 import cucumber.api.java.no.Og;

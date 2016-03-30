@@ -1,4 +1,4 @@
-package com.eim.winder;
+package com.eim.winder.activities;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -19,6 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.eim.winder.CompareAXService;
+import com.eim.winder.HandleXML;
+import com.eim.winder.div.Locations;
+import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;

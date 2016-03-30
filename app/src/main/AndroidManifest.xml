@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -23,17 +23,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AlertSettingsActivity"
+            android:name=".activities.AlertSettingsActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".AlertOverViewActivity"
+            android:name=".activities.AlertOverViewActivity"
             android:label="@string/title_activity_alert_over_view"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="com.eim.winder.MainActivity" >
+            android:parentActivityName=".activities.MainActivity" >
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.eim.winder.MainActivity"/>
+                android:value=".activities.MainActivity"/>
         </activity>
         <receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
             <intent-filter>
