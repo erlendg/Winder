@@ -1,5 +1,7 @@
 package com.eim.winder.xml;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -27,6 +29,10 @@ public class HandleXML {
         this.forecast = a;
     }
 
+    /**
+     *
+     * @param myParser
+     */
     public void parseXMLAndStoreIt(XmlPullParser myParser) {
         int event;
         String text=null;
@@ -206,6 +212,7 @@ public class HandleXML {
             e.printStackTrace();
         }
     }
+
     public ForecastInfo getForecastInfo(){
         return forecast;
     }

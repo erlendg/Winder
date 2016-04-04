@@ -19,16 +19,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.eim.winder.CompareAXService;
-import com.eim.winder.HandleXML;
+import com.eim.winder.xml.CompareAXService;
+import com.eim.winder.xml.HandleXML;
 import com.eim.winder.div.Locations;
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.db.LocationDSService;
-import com.eim.winder.xml.CompareAXService;
-import com.eim.winder.xml.HandleXML;
 
 import java.util.ArrayList;
 
@@ -173,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
                     //if the parsing is done, run findAllOccurences:
                     if(div) {
                         ArrayList<String> listeTing = compare.findAllOccurences();
-                        generateNotification(listeTing, temp.getId());
+                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
                     }
                     Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
                 }
@@ -207,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
 
 // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
-
 // The stack builder object will contain an artificial back stack for the
 // started Activity.
 // This ensures that navigating backward from the Activity leads out of
