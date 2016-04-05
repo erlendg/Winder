@@ -96,7 +96,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
         windspeedSpinner.setAdapter(windspeedAdapter);
 
         checkintervalSpinner = (Spinner) findViewById(R.id.sjekkintervall_spinner);
-        checkintervalAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.checkinterval_array));
+        checkintervalAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.checkInterval_array));
         checkintervalSpinner.setAdapter(checkintervalAdapter);
 
         checkSun = (CheckBox) findViewById(R.id.solvarsel_checkBox);

@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
 import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
 import com.eim.winder.div.Locations;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     public void startAlertSettingsActivity(View v){
         //Only allowed to register up to 10 locations for alert, to limit dataflow
         if(numOfLocations != MAX_LOCATIONS){
-            Intent intent = new Intent(this, AlertSettingsActivity.class);
+            Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
             Log.i(TAG, "---> startAlertSettingsActivity");
             startActivityForResult(intent, 1);
         }else{

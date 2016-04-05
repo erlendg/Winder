@@ -22,6 +22,21 @@
     <string name="settings">Innstillinger</string>
     <string name="eventlist">Hendelser</string>
 
+    <!-- AlertSettings Preference strings: -->
+    <string name ="name_of_prefs_saved">prefValuesSaved</string>
+    <string name="save_prefs_button">Save</string>
+    <string name="cancel_prefs_button">Cancel</string>
+    <string name="temp_pref_key">tempPref</string>
+    <string name="temp_range_key">tempRange</string>
+    <string name="precip_pref_key">precipPref</string>
+    <string name="precip_range_key">precipRange</string>
+    <string name="windspeed_pref_key">windSpeedPref</string>
+    <string name="windspeed_range_key">windSpeedRange</string>
+    <string name="winddir_pref_key">windDirPref</string>
+    <string name="winddir_select_key">windDir</string>
+    <string name="sunny_pref_key">sunnyPref</string>
+    <string name="weekdays_pref_key">weekdays</string>
+    <string name="checkintr_pref_key">checkIntrPref</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
