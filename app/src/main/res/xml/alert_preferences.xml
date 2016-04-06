@@ -56,11 +56,10 @@
     <MultiSelectListPreference
         android:key="weekdays"
         android:title="Weekdays for check"
-        android:summary="Choose witch days you prefer the weather event to occure"
+        android:summary="Choose which days you prefer the weather event to occure"
         android:entries="@array/weekdays_array"
         android:icon="@android:drawable/ic_menu_my_calendar"
-        android:entryValues="@array/weekdays_values"
-        android:defaultValue="@array/weekdays_array" />
+        android:entryValues="@array/weekdays_values"/>
     <ListPreference
         android:key="checkIntrPref"
         android:title="Check interval"

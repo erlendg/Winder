@@ -7,9 +7,11 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.util.Log;
 
 import com.eim.winder.R;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -51,7 +53,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         windSpeedRange = findPreference("windSpeedRange");
         windDir = (MultiSelectListPreference) findPreference("windDir");
         weekdays = (MultiSelectListPreference) findPreference("weekdays");
-        weekdays.setValues(new HashSet<String>(Arrays.asList(getResources().getStringArray(R.array.weekdays_values))));
+        //weekdays.setValues(new HashSet<String>(Arrays.asList(getResources().getStringArray(R.array.weekdays_values))));
 
         setPrefsChangedListener();
 
@@ -61,6 +63,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         checkIntrPref.setOnPreferenceChangeListener(changeListener);
         windDirPref.setOnPreferenceChangeListener(changeListener);
         windDir.setOnPreferenceChangeListener(changeListener);
+        weekdays.setOnPreferenceChangeListener(changeListener);
 
         getPreferenceScreen().removePreference(tempRange);
         getPreferenceScreen().removePreference(precipRange);
@@ -78,6 +81,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         };
     }
     public boolean prefsChanged(Preference pref, Object newValue){
+        prefs = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.name_of_prefs_saved), getActivity().getApplicationContext().MODE_PRIVATE);
         if(newValue instanceof Boolean) {
             boolean checked = (Boolean) newValue;
             return showOrHidePref(checked, pref);
@@ -86,37 +90,49 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             CharSequence[] entries = checkIntrPref.getEntries();
             int id = Integer.parseInt((String)newValue);
             checkIntrPref.setSummary(entries[(int) id-1]);
-            prefs = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.name_of_prefs_saved), getActivity().getApplicationContext().MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("checkIntrPref",(entries[(int) id-1]).toString());
             editor.commit();
             return true;
         }if(pref == windDir){
-            String res = "";
-            CharSequence[] entries = windDir.getEntries();
-            Set<String> selections = (Set<String>) newValue;
-            String[] selected = selections.toArray(new String[]{});
-            prefs = getActivity().getApplicationContext().getSharedPreferences(getString(R.string.name_of_prefs_saved), getActivity().getApplicationContext().MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            if(selected.length == 0 ){
-                windDir.setSummary("Choose wind direction");
-                editor.putString("windDir", "NOT VALID");
-            }else {
-                for (int i = 0; i < selected.length; i++) {
-                    int id = Integer.parseInt(selected[i].toString());
-                    if (i == selected.length - 1) {
-                        res += entries[id - 1];
-                    } else {
-                        res += entries[id - 1] + ", ";
-                    }
-                }
-                editor.putString("windDir", res);
-                windDir.setSummary(res);
-            }
-            editor.commit();
+            setMultiSelectPreferenceSummary(windDir, newValue, "windDir", "Choose wind direction");
             return true;
+
+        }if(pref == weekdays){
+            setMultiSelectPreferenceSummary(weekdays, newValue, "weekdays", "Choose which days you prefer the weather to occure");
+
         }
         return false;
+    }
+    private void setMultiSelectPreferenceSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue){
+        String res = "";
+        CharSequence[] entries = multipref.getEntries();
+        Set<String> selections = (Set<String>) newValue;
+        String[] selected = selections.toArray(new String[selections.size()]);
+        int[] help = new int[selected.length];
+        SharedPreferences.Editor editor = prefs.edit();
+        if(selected.length == 0 ){
+            multipref.setSummary(defValue);
+            editor.putString(saveName, "NOT VALID");
+            Log.i("HEIEHI","lenght = 0" );
+        }else {
+            for(int i = 0; i < selected.length; i++){
+                help[i] = Integer.parseInt(selected[i]);
+            }
+            Arrays.sort(help);
+            for (int i = 0; i < help.length; i++) {
+                int id = help[i];
+                if (i == help.length - 1) {
+                    res += entries[id - 1];
+                } else {
+                    res += entries[id - 1] + ", ";
+                }
+            }
+            Log.i("HEIEHI",""+selections.toString() + " "+ res );
+            editor.putString(saveName, res);
+            multipref.setSummary(res);
+        }
+        editor.commit();
     }
     public boolean showOrHidePref(boolean checked, Preference pref){
         if (checked) {
