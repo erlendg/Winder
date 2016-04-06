@@ -38,6 +38,12 @@ public class AlertOverViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert_over_view);
+        //Gets the object that was sent from MainActivity
+        Bundle bundle = getIntent().getExtras();
+        alertSettingsDAO = bundle.getParcelable("AlertSettingsDAO");
+        location = alertSettingsDAO.getLocation();
+        //Opens datasource usage:
+        datasource = new AlertSettingsDSService(this);
         //Enables databinding to the xml-layout:
         ActivityAlertOverViewBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_alert_over_view);
         //Enables toolbar:
@@ -49,20 +55,11 @@ public class AlertOverViewActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragment(new EventListFragment(), getString(R.string.eventlist).toString());
-        viewPagerAdapter.addFragment(new SettingsFragment(), getString(R.string.settings).toString());
+        viewPagerAdapter.addFragment(new EventListFragment(), getString(R.string.eventlist));
+        viewPagerAdapter.addFragment(new SettingsFragment(), getString(R.string.settings));
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        //Gets the object that was sent from MainActivity
-        Bundle bundle = getIntent().getExtras();
-        alertSettingsDAO = bundle.getParcelable("AlertSettingsDAO");
-        location = alertSettingsDAO.getLocation();
-        //Opens datasource usage:
-        datasource = new AlertSettingsDSService(this);
-        //Binds the object-data to the xml-file atributes to minimize code writing.
-        //binding.contentTable.setLocation(location);
-        //binding.contentTable.setAlertsettings(alertSettingsDAO);
 
         //Sets the toolbar name to the location name (doesn't work in xml)
         collapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
@@ -79,6 +76,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
         //Sets the onclick-listener to the preference-title field:
         preferencesTitle = (TextView) findViewById(R.id.preferences_title);
         preferencesTable = (GridLayout) findViewById(R.id.preferences_table);
+
         /*preferencesTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -36,7 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:layout_marginLeft="@dimen/text_margin"
             app:columnCount="3"
             app:rowCount="7"
             app:orientation="horizontal"
@@ -109,7 +110,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row3_column2"
-                android:text='@{""+alertsettings.precipitationMin}'
+                android:text='@{""+alertsettings.precipitationMin+" mm"}'
                 android:background="@drawable/table_lines"
                 android:gravity="center"
                 android:padding="10dip"/>
@@ -121,7 +122,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row3_column3"
-                android:text='@{""+alertsettings.precipitationMax}'
+                android:text='@{""+alertsettings.precipitationMax+" mm"}'
                 android:background="@drawable/table_lines"
                 android:gravity="center"
                 android:padding="10dip"/>
@@ -146,7 +147,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row4_column2"
-                android:text='@{""+alertsettings.windSpeedMin}'
+                android:text='@{""+alertsettings.windSpeedMin+ " m/s"}'
                 android:gravity="center"
                 android:padding="10dip"
                 android:background="@drawable/table_lines"
@@ -159,7 +160,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row4_column3"
-                android:text='@{""+alertsettings.windSpeedMax}'
+                android:text='@{""+alertsettings.windSpeedMax+ " m/s"}'
                 android:gravity="center"
                 android:padding="10dip"
                 android:background="@drawable/table_lines"/>
@@ -183,7 +184,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row5_column2"
-                android:text='@{""+alertsettings.tempMin}'
+                android:text='@{""+alertsettings.tempMin+ " C"}'
                 android:gravity="center"
                 android:background="@drawable/table_lines"
                 android:padding="10dip"/>
@@ -195,7 +196,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row5_column3"
-                android:text='@{""+alertsettings.tempMax}'
+                android:text="@{Integer.toString(alertsettings.tempMax)}"
                 android:gravity="center"
                 android:background="@drawable/table_lines"
                 android:padding="10dip"/>
@@ -246,6 +247,30 @@
                 android:gravity="center"
                 android:background="@drawable/table_lines"
                 android:padding="10dip" />
+            <LinearLayout
+                app:layout_columnWeight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_columnSpan="3"
+                app:layout_rowSpan="1"
+                android:orientation="horizontal"
+                android:background="@drawable/table_lines">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/weekdays"
+                    android:gravity="left|center_vertical"
+                    android:padding="10dip"
+                    />
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/row8_column2"
+                    android:text=""
+                    android:gravity="center"
+                    android:padding="10dip"/>
+            </LinearLayout>
 
             <TextView
                 app:layout_columnWeight="1"
@@ -253,7 +278,7 @@
                 android:layout_height="wrap_content"
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
-                android:id="@+id/row8_column1"
+                android:id="@+id/row9_column1"
                 android:text="@string/sjekk_intervall"
                 android:gravity="left"
                 android:padding="10dip"
@@ -264,7 +289,7 @@
                 android:layout_height="wrap_content"
                 app:layout_columnSpan="2"
                 app:layout_rowSpan="1"
-                android:id="@+id/row8_column2"
+                android:id="@+id/row9_column2"
                 android:text='@{""+alertsettings.checkInterval}'
                 android:gravity="center"
                 android:padding="10dip"

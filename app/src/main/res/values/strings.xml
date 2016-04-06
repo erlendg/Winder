@@ -16,11 +16,21 @@
     <string name="next">Neste</string>
     <string name="cancel">Avbryt</string>
     <string name="settings_for_alert">Velg innstillinger for varsel</string>
+    <!-- AlertOverViewActivity-->
     <string name="title_activity_alert_over_view">AlertOverViewActivity</string>
     <string name="your_preferences">Dine innstillinger: </string>
     <string name="check_interval">Check interval: </string>
     <string name="settings">Innstillinger</string>
     <string name="eventlist">Hendelser</string>
+    <string name="weekdays">Ukedager: </string>
+    <string name="monday">Mandag</string>
+    <string name="tuesday">Tirsdag</string>
+    <string name="wednesday">Onsdag</string>
+    <string name="thursday">Torsdag</string>
+    <string name="friday">Fredag</string>
+    <string name="saturday">Lørdag</string>
+    <string name="sunday">Søndag</string>
+
 
     <!-- AlertSettings Preference strings: -->
     <string name ="name_of_prefs_saved">prefValuesSaved</string>
