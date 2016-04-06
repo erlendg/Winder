@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,9 @@ import com.eim.winder.db.LocationDAO;
 import com.eim.winder.db.LocationDSService;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by Mari on 05.04.2016.
@@ -160,6 +164,22 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             String windDirections = sharedPrefs.getString("windDir", "NOT VALID");
             asd.setWindDirection(windDirections);
             Log.i(TAG, "WindDir: " + windDirections);
+        }
+        //Weekdays:
+        Set<String> weekdaysSet = sharedPrefs.getStringSet("weekdays", null);
+        if(weekdaysSet == null || weekdaysSet.size() == 0){
+            asd.setMon(true); asd.setTue(true); asd.setWed(true); asd.setThu(true); asd.setFri(true); asd.setSat(true); asd.setSun(true);
+        }else {
+            for(String weekday : weekdaysSet){
+                if(weekday.equals("1")) asd.setMon(true);
+                if(weekday.equals("2")) asd.setTue(true);
+                if(weekday.equals("3")) asd.setWed(true);
+                if(weekday.equals("4")) asd.setThu(true);
+                if(weekday.equals("5")) asd.setFri(true);
+                if(weekday.equals("6")) asd.setSat(true);
+                if(weekday.equals("7")) asd.setSun(true);
+                Log.i(TAG, "Weekdays: " + weekdaysSet.toString());
+            }
         }
         //Check interval:
         String interval = sharedPrefs.getString("checkIntrPref", "Every 6 hour");

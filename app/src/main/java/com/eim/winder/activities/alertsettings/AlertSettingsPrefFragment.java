@@ -95,16 +95,16 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             editor.commit();
             return true;
         }if(pref == windDir){
-            setMultiSelectPreferenceSummary(windDir, newValue, "windDir", "Choose wind direction");
+            setMultiSelectPreferenceSummary(windDir, newValue, "windDir", "Choose wind direction", false);
             return true;
 
         }if(pref == weekdays){
-            setMultiSelectPreferenceSummary(weekdays, newValue, "weekdays", "Choose which days you prefer the weather to occure");
-
+            setMultiSelectPreferenceSummary(weekdays, newValue, "weekdays", "Choose which days you prefer the weather to occure", true);
+            return true;
         }
         return false;
     }
-    private void setMultiSelectPreferenceSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue){
+    private void setMultiSelectPreferenceSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue, boolean saveIntSet){
         String res = "";
         CharSequence[] entries = multipref.getEntries();
         Set<String> selections = (Set<String>) newValue;
@@ -128,8 +128,13 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
                     res += entries[id - 1] + ", ";
                 }
             }
-            Log.i("HEIEHI",""+selections.toString() + " "+ res );
-            editor.putString(saveName, res);
+            Log.i("HEIEHI", "" + selections.toString() + " " + res);
+            if(saveIntSet){
+                editor.putStringSet(saveName, selections);
+            }
+            else {
+                editor.putString(saveName, res);
+            }
             multipref.setSummary(res);
         }
         editor.commit();
