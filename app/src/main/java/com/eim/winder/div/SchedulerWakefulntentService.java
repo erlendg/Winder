@@ -1,4 +1,4 @@
-package com.eim.winder.scheduler;
+package com.eim.winder.div;
 
 import android.app.AlarmManager;
 import android.content.Intent;

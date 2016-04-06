@@ -1,7 +1,11 @@
 package com.eim.winder.activities;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,6 +15,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v7.widget.GridLayout;
 import android.widget.TextView;
@@ -22,8 +27,10 @@ import com.eim.winder.databinding.ActivityAlertOverViewBinding;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;
+import com.eim.winder.scheduler.AlarmReceiver;
 
 public class AlertOverViewActivity extends AppCompatActivity {
+    private final String TAG = "AlertOverWievActivity";
     private AlertSettingsDAO alertSettingsDAO;
     private LocationDAO location;
     private CollapsingToolbarLayout collapsingToolbar;
@@ -89,6 +96,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
     }
     //Sets the onclick-listener to the preference-title field:
     public void onDeleteButtonClick(View v){
+        final int alertId = alertSettingsDAO.getId();
         new AlertDialog.Builder(this)
                 .setMessage("Do you want to delete the alert?")
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -97,6 +105,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (datasource.deleteAlertSettings(alertSettingsDAO.getId())) {
                             finish();
+                            cancelAlarm(alertId);
                             Toast.makeText(AlertOverViewActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(AlertOverViewActivity.this, "Something went wrong..", Toast.LENGTH_SHORT).show();
@@ -107,5 +116,18 @@ public class AlertOverViewActivity extends AppCompatActivity {
     }
     public AlertSettingsDAO getAlertSettingsDAO(){
         return alertSettingsDAO;
+    }
+
+    /**
+     * Method to cancel a currently scheduler AlarmManager alarm based on the original Intent's id.
+     * @param id id of the desired AlertSetting, and subsequently Intent.
+     */
+    public void cancelAlarm(int id){
+        Log.e(TAG,"cancelAlarm: "+ id );
+        Intent intentAlarm = new Intent(this, AlarmReceiver.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent toDo = PendingIntent.getBroadcast(this, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(toDo);
+
     }
 }

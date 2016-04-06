@@ -31,10 +31,26 @@ public class CompareAXService {
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     String url;
     private NotificationCompat.Builder notification;
+
     public CompareAXService(AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = alertSettingsObj.getLocation().getXmlURL();
+
+        try {
+            System.err.println("url: " +  url);
+            xmlHandlerObj = new HandleXML(url, forecast);
+            onCreateSuccess =true;
+        }
+        catch (Exception e){
+            System.out.println("Error most likely due to empty LocationDAO for AlertSettingsDAO");
+            onCreateSuccess = false;
+        }
+    }
+    public CompareAXService(AlertSettingsDAO alertSettingsObj, String url){
+        this.alertSettingsObj = alertSettingsObj;
+        this.forecast = new ForecastInfo();
+        this.url = url;
 
         try {
             System.err.println("url: " +  url);

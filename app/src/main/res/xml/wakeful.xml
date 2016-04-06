@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WakefulIntentService
-    listener="com.eim.winder.scheduler.SchedulerAlarmListener"
+    listener="com.eim.winder.div.SchedulerAlarmListener"
     />
