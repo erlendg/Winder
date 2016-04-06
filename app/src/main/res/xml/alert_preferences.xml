@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- opens a subscreen of settings -->
+
+    <CheckBoxPreference
+        android:key="@string/temp_pref_key"
+        android:id="@+id/tempPref"
+        android:title="Temperature "
+        android:summary="°C"
+        android:icon="@drawable/temp"
+        android:defaultValue="false"/>
+
+    <com.eim.winder.activities.alertsettings.CustomTempRangePreference
+        android:key = "@string/temp_range_key" />
+
+    <CheckBoxPreference
+        android:id="@+id/precipPref"
+        android:key="precipPref"
+        android:title="Precipitation "
+        android:summary="mm"
+        android:icon="@drawable/nedboer"
+        android:defaultValue="false"/>
+
+    <com.eim.winder.activities.alertsettings.CustomPrecipRangePreference
+        android:key="precipRange" />
+
+    <CheckBoxPreference
+        android:key="windSpeedPref"
+        android:title="Vindstyrke "
+        android:summary="m/s"
+        android:icon="@drawable/vindstyrke"
+        android:defaultValue="false"/>
+
+    <com.eim.winder.activities.alertsettings.CustomWindSpRangePreference
+        android:key="windSpeedRange" />
+
+    <CheckBoxPreference
+        android:key="windDirPref"
+        android:title="Wind direction "
+        android:icon="@drawable/vindretning"
+        android:defaultValue="false"/>
+
+    <MultiSelectListPreference
+        android:key="windDir"
+        android:summary="Choose wind direction"
+        android:entries="@array/windDirection_array"
+        android:entryValues="@array/windDirection_values"/>
+    <CheckBoxPreference
+        android:key="sunnyPref"
+        android:title="Solvarsel "
+        android:icon="@drawable/sol"
+        android:defaultValue="false"/>
+
+    <MultiSelectListPreference
+        android:key="weekdays"
+        android:title="Weekdays for check"
+        android:summary="Choose which days you prefer the weather event to occure"
+        android:entries="@array/weekdays_array"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:entryValues="@array/weekdays_values"/>
+    <ListPreference
+        android:key="checkIntrPref"
+        android:title="Check interval"
+        android:summary="Choose prefered interval for checking weather forecast"
+        android:entries="@array/checkinterval_array"
+        android:entryValues="@array/checkinterval_values"
+        android:icon="@android:drawable/ic_lock_idle_alarm"/>
+
+</PreferenceScreen>

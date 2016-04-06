@@ -1,5 +1,6 @@
 package com.eim.winder.scheduler;
 
+import android.app.AlarmManager;
 import android.content.Intent;
 import android.util.Log;
 
@@ -16,6 +17,6 @@ public class SchedulerWakefulntentService extends WakefulIntentService {
     }
     @Override
     protected void doWakefulWork(Intent intent) {
-        Log.i("Scheduler", "doing work");
+        Log.i("SchedulerWIS", "doing work");
     }
 }

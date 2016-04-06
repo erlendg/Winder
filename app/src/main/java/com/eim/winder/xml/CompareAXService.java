@@ -1,7 +1,14 @@
 package com.eim.winder.xml;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
+import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +30,7 @@ public class CompareAXService {
     private final static String tag = "CompareAXService";
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     String url;
+    private NotificationCompat.Builder notification;
     public CompareAXService(AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
@@ -44,6 +52,58 @@ public class CompareAXService {
         return onCreateSuccess;
     }
 
+    /**
+     *Generates and displays one notification if there has been an occurence for the specific alertsetting.
+     *
+     * @param a list of values
+     * @param i alertsettingID
+     * @param cont context of activity that called the method.
+     * @param cl class of activity
+     * @param nm notificationmanager injected from previously mentioned activity
+     */
+    public void generateNotification(ArrayList<String> a, int i, Context cont, Class cl, NotificationManager nm){
+        notification = new NotificationCompat.Builder(cont);
+        notification.setSmallIcon(R.drawable.testicon);
+        if(!a.isEmpty()) {
+            notification.setContentTitle("Vi har en match.");
+            notification.setContentText("for område " + i + "!");
+        }
+        else{
+            notification.setContentTitle("Ingen hendelser");
+            notification.setContentText("for område " +i+ "!");
+        }
+
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(cont, cl);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(cont);
+
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(cl);
+
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notification.setContentIntent(resultPendingIntent);
+
+        /* MÅ OPPRETTES I KONTEKSTEN DER MAN BENYTTER KODEN:
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(cont.NOTIFICATION_SERVICE);
+        */
+        // mId allows you to update the notification later on.
+        nm.notify(i, notification.build());
+
+    }
+
+    /**
+     *
+     * @param info
+     * @return
+     */
     private String generateInfo(TabularInfo info){
         String returnString = "";
         returnString += "Fra: " + info.getFrom() + ", til: " + info.getTo() + "\n";
