@@ -2,8 +2,8 @@
   Egenskap: Sjekk detaljoversikt for sted
 
     Bakgrunn: Som bruker
-    Vil jeg sjekke detaljoversikten
-    Slik at jeg kan se aktuelle vær-hendelser jeg har blitt varslet om
+              Vil jeg sjekke detaljoversikten
+              Slik at jeg kan se aktuelle vær-hendelser jeg har blitt varslet om
 
     Scenario: Bruker sjekker detaljoversikten
 

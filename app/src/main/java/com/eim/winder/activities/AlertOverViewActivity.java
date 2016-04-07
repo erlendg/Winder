@@ -106,4 +106,8 @@ public class AlertOverViewActivity extends AppCompatActivity {
     public AlertSettingsDAO getAlertSettingsDAO(){
         return alertSettingsDAO;
     }
+
+    public void onEditSettingsButtonClick(View v){
+
+    }
 }

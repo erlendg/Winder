@@ -28,7 +28,7 @@ public class CustomTempRangePreference extends Preference{
     }
     @Override
     protected View onCreateView(ViewGroup parent) {
-        Log.e("onCreateView", "ff");
+        //Log.e("onCreateView", "ff");
         View v = super.onCreateView(parent);
         rsb = (RangeSeekBar) v.findViewById(R.id.tempBarLayout);
         prefs = getContext().getSharedPreferences(PREF_NAME, getContext().MODE_PRIVATE);
@@ -47,7 +47,7 @@ public class CustomTempRangePreference extends Preference{
         rsb.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener() {
             @Override
             public void onRangeSeekBarValuesChanged(RangeSeekBar bar, Object minValue, Object maxValue) {
-                Log.e("ONCLICK", "" + rsb.getSelectedMinValue().intValue());
+               // Log.e("ONCLICK", "" + rsb.getSelectedMinValue().intValue());
                 int max = rsb.getSelectedMaxValue().intValue();
                 int min = rsb.getSelectedMinValue().intValue();
                 SharedPreferences prefs = getContext().getSharedPreferences(PREF_NAME, getContext().MODE_PRIVATE);
@@ -55,8 +55,8 @@ public class CustomTempRangePreference extends Preference{
                 editor.putInt("maxTemp", max);
                 editor.putInt("minTemp", min);
                 editor.commit();
-                Log.d("SAVE", min + ", " + prefs.getInt("minTemp", -50) + ", " + prefs.getInt("maxTemp", 50));
-                //}
+                //Log.d("SAVE", min + ", " + prefs.getInt("minTemp", -50) + ", " + prefs.getInt("maxTemp", 50));
+
 
             }
         });

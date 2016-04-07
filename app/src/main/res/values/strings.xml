@@ -33,6 +33,9 @@
 
 
     <!-- AlertSettings Preference strings: -->
+    <string name="on_next_button_click_warning">Fyll inn et korrekt stedsnavn!</string>
+    <string name="wind_dir_not_chosen">"Please select preferred wind directions"</string>
+    <string name="no_settings_selected">No settings selected..</string>
     <string name ="name_of_prefs_saved">prefValuesSaved</string>
     <string name="save_prefs_button">Save</string>
     <string name="cancel_prefs_button">Cancel</string>

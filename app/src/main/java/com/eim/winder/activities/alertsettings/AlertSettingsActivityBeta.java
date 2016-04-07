@@ -43,6 +43,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
     private LocationDAO locationSelected;
+    boolean haveSelectedSomething = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,6 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
 
     }
 
-    //Initiates all view components in alertsettings_layout when the user has chosen an location for alert
-    public void initiateViewComponents() {
-    }
-
     public void onNextButtonClick(View v) {
         if (locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())) {
             setContentView(R.layout.alertprefsettings_layout);
@@ -80,9 +77,8 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             getFragmentManager().beginTransaction().replace(R.id.prefFragment, new AlertSettingsPrefFragment()).commit();
             PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
             clearPreferencesSaved();
-            initiateViewComponents();
         } else {
-            Toast.makeText(this, "Fyll inn et korrekt stedsnavn!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.on_next_button_click_warning), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -109,7 +105,16 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         sharedPrefs = getSharedPreferences(getResources().getString(R.string.name_of_prefs_saved), getApplicationContext().MODE_PRIVATE);
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         AlertSettingsDAO asd = makeObjFromSettings();
-        if(asd.getWindDirection()== null || !asd.getWindDirection().equals("NOT VALID")) {
+        if(!haveSelectedSomething){
+            Toast.makeText(this, getString(R.string.no_settings_selected), Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(asd.getWindDirection().equals("NOT VALID")){
+            Toast.makeText(this, getString(R.string.wind_dir_not_chosen), Toast.LENGTH_LONG).show();
+            return;
+        }
+        //if(asd.getWindDirection()== null  || haveSelectedSomething) {
+            Log.d("HMMM", ""+haveSelectedSomething);
             boolean ok = saveAlertSettings(asd);
             if (!ok) {
                 Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
@@ -123,9 +128,6 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
                 //Finishes the Activity and return to MainActivity
                 finish();
             }
-        }else {
-            Toast.makeText(this, "Wind direction not chosen", Toast.LENGTH_LONG).show();
-        }
     }
 
     public boolean saveAlertSettings(AlertSettingsDAO asd) {
@@ -142,6 +144,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             int tempMax = sharedPrefs.getInt("maxTemp", 50);
             asd.setTempMin(tempMin);
             asd.setTempMax(tempMax);
+            haveSelectedSomething = true;
             Log.i(TAG, "Temp: Min: " + tempMin + " Max: " + tempMax);
         }
         //Rain:
@@ -150,6 +153,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             double precipMax = CustomPrecipRangePreference.getDouble(sharedPrefs, "maxPrecip", 30.0);
             asd.setPrecipitationMin(precipMin);
             asd.setPrecipitationMax(precipMax);
+            haveSelectedSomething = true;
             Log.i(TAG, "Rain: Min: " + precipMin + " Max: " + precipMax);
         }
         //Wind:
@@ -158,11 +162,13 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             int windSpeedMax = sharedPrefs.getInt("maxWindSpeed", 40);
             asd.setWindSpeedMin(windSpeedMin);
             asd.setWindSpeedMax(windSpeedMax);
+            haveSelectedSomething = true;
             Log.i(TAG, "Wind: Min: " + windSpeedMin + " Max: " + windSpeedMax);
         }
         if (defaultSharedPrefs.getBoolean("windDirPref", false)) {
             String windDirections = sharedPrefs.getString("windDir", "NOT VALID");
             asd.setWindDirection(windDirections);
+            haveSelectedSomething = true;
             Log.i(TAG, "WindDir: " + windDirections);
         }
         //Weekdays:
@@ -187,9 +193,11 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         Log.i(TAG, "CheckInterval: " + interval);
         asd.setCheckInterval(Double.parseDouble(split[1]));
         //Sun:
-        asd.setCheckSun(defaultSharedPrefs.getBoolean("sunnyPref", false));
+        if(defaultSharedPrefs.getBoolean("sunnyPref", false)){
+            asd.setCheckSun(true);
+            haveSelectedSomething = true;
+        }
         return asd;
-
     }
 
     @Override

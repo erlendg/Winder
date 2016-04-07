@@ -35,7 +35,7 @@ public class CustomWindSpRangePreference extends Preference {
         prefs = getContext().getSharedPreferences(PREF_NAME, getContext().MODE_PRIVATE);
         int min = prefs.getInt(MIN_WS, DEFAULT_MIN_VALUE);
         int max = prefs.getInt(MAX_WS, DEFAULT_MAX_VALUE);
-        Log.i("WindSpeedSaved", min + ", " + max);
+       // Log.i("WindSpeedSaved", min + ", " + max);
         if(rsb != null ) {
             rsb.setSelectedMinValue(min);
             rsb.setSelectedMaxValue(max);
@@ -57,7 +57,7 @@ public class CustomWindSpRangePreference extends Preference {
                 editor.putInt(MIN_WS, min);
                 editor.putInt(MAX_WS, max);
                 editor.commit();
-                Log.d("SAVE", min + ", " + max);
+               // Log.d("SAVE", min + ", " + max);
             }
         });
     }

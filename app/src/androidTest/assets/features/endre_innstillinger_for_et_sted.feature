@@ -2,7 +2,9 @@
 
   Egenskap:Endre innstillinger for et sted
 
-    Bakgrunn: Som en bruker vil jeg endre innstillingene for et allerede registrert sted slik at kriteriene for varsel for dette stedet endres
+    Bakgrunn: Som en bruker
+              Vil jeg endre innstillingene for et allerede registrert sted
+              Slik at kriteriene for varsel for dette stedet endres
 
     Scenario: Bruker endrer varselinnstillinger for sted
       Gitt at brukeren har funnet stedet i listen over registrerte steder
