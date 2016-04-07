@@ -187,7 +187,7 @@ public class CompareAXService {
 
         if(checkSymbolSun(div.getSymbolName())== 2) return false;
 
-        //if (checkWindDirection(div.getWindDirectionName())==2) return false;
+        if (checkWindDirection(div.getWindDirectionName())==2) return false;
 
         if (checkWindSpeed(div.getWindSpeed())==2) return false;
 
@@ -287,6 +287,8 @@ public class CompareAXService {
 
     //private String windDirection;
     public int checkWindDirection(String a) {
+
+
         if (alertSettingsObj.getWindDirection() == null){
             //Log.d(tag, "Vindretning returverdi = 1, innverdi = " + a);
             windDirectionCheck = true;
@@ -294,6 +296,12 @@ public class CompareAXService {
         }
         if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)){
            // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+            String[] div = a.split(",");
+            for (int i = 0; i < div.length; i++){
+                if (){
+
+                }
+            }
             return 0;
         }
 
