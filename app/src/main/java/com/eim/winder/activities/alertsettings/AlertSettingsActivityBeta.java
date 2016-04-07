@@ -1,6 +1,9 @@
 package com.eim.winder.activities.alertsettings;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,9 +25,11 @@ import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.db.LocationDSService;
+import com.eim.winder.scheduler.AlarmReceiver;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -43,7 +48,8 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
     private LocationDAO locationSelected;
-    boolean haveSelectedSomething = false;
+    private boolean haveSelectedSomething = false;
+    private double interval;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,26 +120,36 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             return;
         }
         //if(asd.getWindDirection()== null  || haveSelectedSomething) {
-            Log.d("HMMM", ""+haveSelectedSomething);
-            boolean ok = saveAlertSettings(asd);
-            if (!ok) {
-                Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
-                ArrayList<AlertSettingsDAO> test;
-                test = alertdatasource.getAllAlertSettings();
-                for (int i = 0; i < test.size(); i++) {
-                    Log.i("TEST", "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
-                }
-                //Finishes the Activity and return to MainActivity
-                finish();
+        Log.d("HMMM", ""+haveSelectedSomething);
+        interval = asd.getCheckInterval();
+        boolean ok = saveAlertSettings(asd);
+        if (!ok) {
+            Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
+            ArrayList<AlertSettingsDAO> test;
+            test = alertdatasource.getAllAlertSettings();
+            for (int i = 0; i < test.size(); i++) {
+                Log.i("TEST", "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
             }
+            //Finishes the Activity and return to MainActivity
+            finish();
+        }
     }
 
     public boolean saveAlertSettings(AlertSettingsDAO asd) {
         Log.i(TAG, "saveAlertSettings()");
         asd.setLocation(locationSelected);
-        return alertdatasource.insertAlertSettings(asd);
+        long isOk = alertdatasource.insertAlertSettings(asd);
+        int id = (int) isOk;
+        scheduleAlarm(id, interval);
+
+        if(isOk == -1){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     public AlertSettingsDAO makeObjFromSettings() {
@@ -205,6 +221,23 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
         super.finish();
+    }
+
+    public void scheduleAlarm(int id, double interval){
+        long intervalLong = (long)interval*3600000; //  3600000 = millisekund i timen
+        long startTime = 5000;
+        long nowTime = new GregorianCalendar().getTimeInMillis() + startTime;
+        Log.e(TAG, "scheduleAlarm: " + id);
+        Intent intentAlarm = new Intent(this, AlarmReceiver.class);
+        intentAlarm.putExtra("id", id);
+        intentAlarm.putExtra("url", locationSelected.getXmlURL() );
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent toDo = PendingIntent.getBroadcast(this, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, toDo);
+
+        Toast.makeText(this, "Alarm scheduled for Id: " + id + "!", Toast.LENGTH_LONG).show();
     }
 }
 

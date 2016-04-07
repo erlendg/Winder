@@ -192,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
+/**
+ * This method is moved to another place in the code:
     private void generateNotification(ArrayList<String> a, int i){
         notification = new NotificationCompat.Builder(this);
         notification.setSmallIcon(R.drawable.testicon);
@@ -228,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         mNotificationManager.notify(i, notification.build());
 
     }
-
+    */
     /*@Override
     protected void onResume() {
         //datasource.open();

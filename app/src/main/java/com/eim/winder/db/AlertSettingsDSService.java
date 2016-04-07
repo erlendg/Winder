@@ -70,9 +70,9 @@ public class AlertSettingsDSService {
         return ok;
     }
     //Lagre varselinstillinger i database:
-    public boolean insertAlertSettings(AlertSettingsDAO alert){
+    public long insertAlertSettings(AlertSettingsDAO alert){
         Log.i(TAG, "insertAlertSettings()");
-        boolean ok = false;
+        long res = -1;
         try{
             open();
             ContentValues values = new ContentValues();
@@ -93,14 +93,16 @@ public class AlertSettingsDSService {
             values.put(SQLiteDBHelper.C_SAT, alert.isSat());
             values.put(SQLiteDBHelper.C_SUN, alert.isSun());
             values.put(SQLiteDBHelper.C_LOC_ID, alert.getLocation().getId());
-            long res = database.insert(table, null, values);
+            res = database.insert(table, null, values);
+            /*
             if(res==-1)ok = false;
             ok = true;
+            */
         }catch (SQLException e){
             e.printStackTrace();
         }
         close();
-        return ok;
+        return res;
     }
     public ArrayList<AlertSettingsDAO> getAllAlertSettings(){
         Log.i(TAG, "getAllAlertSettings()");
@@ -129,5 +131,24 @@ public class AlertSettingsDSService {
         location.setId(cursor.getInt(17));
         alert.setLocation(location);
         return alert;
+    }
+    public AlertSettingsDAO getAlertSettingById(int id){
+        Log.i(TAG, "getAlertSettingById: "+ id);
+        AlertSettingsDAO result = null;
+        Cursor cursor;
+        boolean ok = false;
+        try{
+            open();
+            cursor = database.rawQuery("SELECT * FROM " + table + " WHERE _id = " + id,null);
+            cursor.moveToFirst();
+            result = cursorToAlertSettings(cursor);
+            Log.i(TAG, "getAlertSettingById: "+ ok);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        close();
+
+
+        return result;
     }
 }

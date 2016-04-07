@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Erlend on 19.02.2016.
@@ -31,10 +32,26 @@ public class CompareAXService {
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     String url;
     private NotificationCompat.Builder notification;
+
     public CompareAXService(AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = alertSettingsObj.getLocation().getXmlURL();
+
+        try {
+            System.err.println("url: " +  url);
+            xmlHandlerObj = new HandleXML(url, forecast);
+            onCreateSuccess =true;
+        }
+        catch (Exception e){
+            System.out.println("Error most likely due to empty LocationDAO for AlertSettingsDAO");
+            onCreateSuccess = false;
+        }
+    }
+    public CompareAXService(AlertSettingsDAO alertSettingsObj, String url){
+        this.alertSettingsObj = alertSettingsObj;
+        this.forecast = new ForecastInfo();
+        this.url = url;
 
         try {
             System.err.println("url: " +  url);
@@ -171,7 +188,7 @@ public class CompareAXService {
 
         if(checkSymbolSun(div.getSymbolName())== 2) return false;
 
-        //if (checkWindDirection(div.getWindDirectionName())==2) return false;
+        if (checkWindDirection(div.getWindDirectionName())==2) return false;
 
         if (checkWindSpeed(div.getWindSpeed())==2) return false;
 
@@ -212,7 +229,7 @@ public class CompareAXService {
         c = Calendar.getInstance();
 
         try {
-            d = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss").parse(date);
+            d = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss", Locale.getDefault()).parse(date);
         }
         catch (Exception e){
             System.out.println("div datofeil");
@@ -271,14 +288,19 @@ public class CompareAXService {
 
     //private String windDirection;
     public int checkWindDirection(String a) {
+
+
         if (alertSettingsObj.getWindDirection() == null){
             //Log.d(tag, "Vindretning returverdi = 1, innverdi = " + a);
             windDirectionCheck = true;
             return 1;
         }
-        if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)){
-           // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
-            return 0;
+        String[] div = alertSettingsObj.getWindDirection().split(", ");
+        for (int i = 0; i<div.length; i++){
+            if (div[i].equalsIgnoreCase(a)) {
+                // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                return 0;
+            }
         }
 
         //Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);

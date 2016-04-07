@@ -1,6 +1,9 @@
 package com.eim.winder.activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.eim.winder.R;
@@ -20,8 +22,10 @@ import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.db.LocationDSService;
+import com.eim.winder.scheduler.AlarmReceiver;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Mari on 31.01.2016.
@@ -46,6 +50,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
     private Spinner checkintervalSpinner;
     private ArrayAdapter<String> checkintervalAdapter;
     private LocationDAO locationSelected;
+    private double interval;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +120,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
     }
     public void onSaveButtonClick(View v) {
         AlertSettingsDAO asd = makeObjFromSettings();
+        interval = asd.getCheckInterval();
         boolean ok = saveAlertSettings(asd);
         if(!ok){
             Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
@@ -132,9 +138,21 @@ public class AlertSettingsActivity extends AppCompatActivity {
     }
 
     public boolean saveAlertSettings(AlertSettingsDAO asd){
-        Log.i(TAG,"saveAlertSettings()" );
+        Log.i(TAG, "saveAlertSettings()");
         asd.setLocation(locationSelected);
-        return alertdatasource.insertAlertSettings(asd);
+
+        //AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        long isOk = alertdatasource.insertAlertSettings(asd);
+        int id = (int) isOk;
+        scheduleAlarm(id, interval);
+
+        if(isOk == -1){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
     public AlertSettingsDAO makeObjFromSettings(){
         AlertSettingsDAO asd = new AlertSettingsDAO();
@@ -196,7 +214,22 @@ public class AlertSettingsActivity extends AppCompatActivity {
         return res;
     }*/
 
+    public void scheduleAlarm(int id, double interval){
+        long intervalLong = (long)interval*360000;
+        long startTime = 5000;
+        long nowTime = new GregorianCalendar().getTimeInMillis() + startTime;
+        Log.e(TAG, "scheduleAlarm: " + id);
+        Intent intentAlarm = new Intent(this, AlarmReceiver.class);
+        intentAlarm.putExtra("id", id);
+        intentAlarm.putExtra("url", locationSelected.getXmlURL() );
 
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent toDo = PendingIntent.getBroadcast(this, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, toDo);
+
+        Toast.makeText(this, "Alarm scheduled for Id: " + id + "!", Toast.LENGTH_LONG).show();
+    }
 
 
 }
