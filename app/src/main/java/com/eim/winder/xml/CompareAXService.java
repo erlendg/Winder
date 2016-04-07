@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Erlend on 19.02.2016.
@@ -228,7 +229,7 @@ public class CompareAXService {
         c = Calendar.getInstance();
 
         try {
-            d = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss").parse(date);
+            d = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss", Locale.getDefault()).parse(date);
         }
         catch (Exception e){
             System.out.println("div datofeil");
@@ -294,15 +295,12 @@ public class CompareAXService {
             windDirectionCheck = true;
             return 1;
         }
-        if (alertSettingsObj.getWindDirection().equalsIgnoreCase(a)){
-           // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
-            String[] div = a.split(",");
-            for (int i = 0; i < div.length; i++){
-                if (){
-
-                }
+        String[] div = alertSettingsObj.getWindDirection().split(", ");
+        for (int i = 0; i<div.length; i++){
+            if (div[i].equalsIgnoreCase(a)) {
+                // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                return 0;
             }
-            return 0;
         }
 
         //Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);

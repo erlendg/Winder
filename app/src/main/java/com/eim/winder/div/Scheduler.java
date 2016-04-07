@@ -1,4 +1,4 @@
-package com.eim.winder.scheduler;
+package com.eim.winder.div;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.eim.winder.R;
+import com.eim.winder.scheduler.AlarmReceiver;
 
 /**
  * Created by Erlend on 04.04.2016.

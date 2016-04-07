@@ -15,7 +15,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.eim.winder.R;
@@ -24,7 +23,6 @@ import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.db.LocationDSService;
 import com.eim.winder.scheduler.AlarmReceiver;
-import com.eim.winder.scheduler.Scheduler;
 
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
