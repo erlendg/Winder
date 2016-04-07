@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="windDirection_array">
-        <item>N</item><item>NE</item><item>E</item><item>SE</item><item>S</item><item>SW</item><item>W</item><item>NW</item>
-    </string-array>
+
     <string-array name="temp_array">
         <item>30</item><item>25</item><item>20</item><item>15</item><item>10</item><item>5</item><item>3</item><item>0</item>
         <item>-3</item><item>-5</item><item>-10</item><item>-15</item><item>-20</item><item>-25</item><item>-30</item>
@@ -16,8 +14,49 @@
         <item>meter/sekund</item><item>1 - 3</item><item>3 - 5</item>
         <item>3 - 5</item><item>5 - 9</item><item>9 - 12</item><item>Mer enn 12</item>
     </string-array>
-    <string-array name="checkinterval_array">
+    <string-array name="checkInterval_array">
         <item>0.5</item><item>1</item><item>2</item>
         <item>3</item><item>4</item><item>5</item><item>6</item>
     </string-array>
+
+    <string-array name="checkinterval_array">
+        <item>Every 1 hour</item><item>Every 2 hour</item><item>Every 4 hour</item>
+        <item>Every 6 hour</item><item>Every 12 hour</item><item>Every 24 hour</item><item>Every 48 hour</item>
+    </string-array>
+    <string-array name="checkinterval_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    <string-array name="windDirection_array">
+        <item>N</item><item>NE</item><item>E</item><item>SE</item><item>S</item><item>SW</item><item>W</item><item>NW</item>
+    </string-array>
+    <string-array name="windDirection_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="weekdays_array">
+        <item>Monday</item><item>Tuesday</item><item>Wednesday</item>
+        <item>Thursday</item><item>Friday</item><item>Saturday</item><item>Sunday</item>
+    </string-array>
+    <string-array name="weekdays_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
 </resources>

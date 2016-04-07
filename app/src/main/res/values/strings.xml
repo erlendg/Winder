@@ -16,12 +16,37 @@
     <string name="next">Neste</string>
     <string name="cancel">Avbryt</string>
     <string name="settings_for_alert">Velg innstillinger for varsel</string>
+    <!-- AlertOverViewActivity-->
     <string name="title_activity_alert_over_view">AlertOverViewActivity</string>
     <string name="your_preferences">Dine innstillinger: </string>
     <string name="check_interval">Check interval: </string>
     <string name="settings">Innstillinger</string>
     <string name="eventlist">Hendelser</string>
+    <string name="weekdays">Ukedager: </string>
+    <string name="monday">Mandag</string>
+    <string name="tuesday">Tirsdag</string>
+    <string name="wednesday">Onsdag</string>
+    <string name="thursday">Torsdag</string>
+    <string name="friday">Fredag</string>
+    <string name="saturday">Lørdag</string>
+    <string name="sunday">Søndag</string>
 
+
+    <!-- AlertSettings Preference strings: -->
+    <string name ="name_of_prefs_saved">prefValuesSaved</string>
+    <string name="save_prefs_button">Save</string>
+    <string name="cancel_prefs_button">Cancel</string>
+    <string name="temp_pref_key">tempPref</string>
+    <string name="temp_range_key">tempRange</string>
+    <string name="precip_pref_key">precipPref</string>
+    <string name="precip_range_key">precipRange</string>
+    <string name="windspeed_pref_key">windSpeedPref</string>
+    <string name="windspeed_range_key">windSpeedRange</string>
+    <string name="winddir_pref_key">windDirPref</string>
+    <string name="winddir_select_key">windDir</string>
+    <string name="sunny_pref_key">sunnyPref</string>
+    <string name="weekdays_pref_key">weekdays</string>
+    <string name="checkintr_pref_key">checkIntrPref</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

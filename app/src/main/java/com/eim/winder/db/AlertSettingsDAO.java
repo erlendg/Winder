@@ -1,7 +1,10 @@
 package com.eim.winder.db;
 
+import android.content.res.Resources;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.eim.winder.R;
 
 /**
  * Created by Mari on 03.02.2016.
@@ -203,6 +206,18 @@ public class AlertSettingsDAO implements Parcelable{
         this.sat = sat;
     }
 
+
+    public String getWeekDaysSelected(Resources resources){
+        String res = "";
+        if(mon)res+= resources.getString(R.string.monday)+ " ";
+        if(tue)res+= resources.getString(R.string.tuesday)+ " ";
+        if(wed)res+= resources.getString(R.string.wednesday)+ " ";
+        if(thu)res+= resources.getString(R.string.thursday)+ " ";
+        if(fri)res+= resources.getString(R.string.friday)+ " ";
+        if(sat)res+= resources.getString(R.string.saturday)+ " ";
+        if(sun)res+= resources.getString(R.string.sunday);
+        return res;
+    }
     //Parcel-methodes and constructor:
     
     AlertSettingsDAO(Parcel in){

@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
 import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
 import com.eim.winder.div.Locations;
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
     public void startAlertSettingsActivity(View v){
         //Only allowed to register up to 10 locations for alert, to limit dataflow
         if(numOfLocations != MAX_LOCATIONS){
-            Intent intent = new Intent(this, AlertSettingsActivity.class);
+            Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
             Log.i(TAG, "---> startAlertSettingsActivity");
             startActivityForResult(intent, 1);
         }else{
@@ -205,16 +206,16 @@ public class MainActivity extends AppCompatActivity {
             notification.setContentText("for område " +i+ "!");
         }
 
-// Creates an explicit intent for an Activity in your app
+        // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
-// The stack builder object will contain an artificial back stack for the
-// started Activity.
-// This ensures that navigating backward from the Activity leads out of
-// your application to the Home screen.
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-// Adds the back stack for the Intent (but not the Intent itself)
+        // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(MainActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
+        // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
@@ -224,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         notification.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
+        // mId allows you to update the notification later on.
         mNotificationManager.notify(i, notification.build());
 
     }
