@@ -8,6 +8,7 @@
 
     Scenario: Bruker sletter et registrert sted
       Gitt at brukeren har åpnet appen
+      Og har registrerte steder i listen
       Og har trykket på stedet for detaljoversikt
       Når brukeren trykker på slett-knappen
       Så skal stedet slettes

@@ -2,39 +2,69 @@ package com.eim.winder;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 
 import com.eim.winder.activities.MainActivity;
+import com.eim.winder.activities.RVAdapter;
+import com.eim.winder.db.AlertSettingsDAO;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
+
+import cucumber.api.PendingException;
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
 import cucumber.api.java.no.Og;
 import cucumber.api.java.no.Så;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.core.deps.guava.base.Preconditions.checkArgument;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.EasyMock2Matchers.equalTo;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * Created by Mari on 17.03.2016.
  */
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class SettVarselStepsDef {
     private static final String TAG = "SlettVarselStepsDef";
+    private String deletedLocation = "";
+    private int size = 0;
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
+    @Test
     @Gitt("^at brukeren har åpnet appen")
     public void at_brukeren_har_åpnet_appen(){
         Log.d(TAG, "Gitt at brukeren har åpnet appen");
@@ -57,18 +87,95 @@ public class SettVarselStepsDef {
 
         };
     }
+    @Test
+    @Og("^har registrerte steder i listen$")
+    public void har_registrerte_steder_i_listen() {
+        at_brukeren_har_åpnet_appen();
+         ArrayList<AlertSettingsDAO> asd = mainActivity.getActivity().getAlertSettingsDataSet();
+        size = asd.size();
+        deletedLocation = asd.get(0).getLocation().getName();
+        assertTrue(size != 0);
+        onView(withId(R.id.recycler_view)).check(ViewAssertions.matches(withListSize(size)));
+    }
+
+    /**
+     * Custom Matcher for list size
+     * @param size
+     * @return matcher
+     */
+    public static Matcher<View> withListSize (final int size) {
+        return new TypeSafeMatcher<View> () {
+            @Override public boolean matchesSafely (final View view) {
+                return ((RecyclerView) view).getChildCount () == size;
+            }
+
+            @Override public void describeTo (final Description description) {
+                description.appendText ("RecycleView should have " + size + " items");
+            }
+        };
+    }
+    @Test
     @Og("^har trykket på stedet for detaljoversikt$")
     public void har_trykket_på_stedet_for_detaljoversikt(){
+        har_registrerte_steder_i_listen();
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
+    @Test
     @Når("^brukeren trykker på slett-knappen$")
     public void brukeren_trykker_på_slett_knappen(){
+        har_trykket_på_stedet_for_detaljoversikt();
+        onView(withId(R.id.fab_deleteItem)).perform(click());
+        onView(withId(R.id.recycler_view)).check(matches(not(withAdaptedData(is(withLocationItemName(deletedLocation))))));
+    }
+
+    private static Matcher<View> withAdaptedData(final Matcher<Object> dataMatcher) {
+        return new TypeSafeMatcher<View>() {
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with class name: ");
+                dataMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view instanceof AdapterView)) {
+                    return false;
+                }
+
+                @SuppressWarnings("rawtypes")
+                Adapter adapter = ((AdapterView) view).getAdapter();
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    if (dataMatcher.matches(adapter.getItem(i))) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        };
+    }
+    public static Matcher<Object> withLocationItemName(String itemName) {
+        checkArgument(!(itemName.equals(null)));
+        return withLocationItemName(equalTo(itemName));
+    }
+
+
+    @Så("^skal stedet slettes$")
+    public void skal_stedet_slettes() {
+        // Express the Regexp above with the code you wish you had
+        throw new PendingException();
+    }
+
+    @Og("^brukeren returneres til hovedoversikten$")
+    public void brukeren_returneres_til_hovedoversikten() {
+        // Express the Regexp above with the code you wish you had
 
     }
 
-    @Så("^skal stedet slettes fra listen med registrerte steder$")
-    public void skal_stedet_slettes_fra_listen_med_registrerte_steder() {
+    @Og("^stedet er slettet fra listen med registrerte steder$")
+    public void stedet_er_slettet_fra_listen_med_registrerte_steder()  {
+        // Express the Regexp above with the code you wish you had
 
     }
 }
