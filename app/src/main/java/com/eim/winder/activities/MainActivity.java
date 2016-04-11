@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
 import com.eim.winder.activities.alertsettings.SelectLocationActivity;
+import com.eim.winder.db.ForecastDAO;
 import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
 import com.eim.winder.div.Locations;
@@ -167,13 +168,15 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
                 for (AlertSettingsDAO temp : alertSettingsList) {
                     //create an instance of CompareAXService:
-                    compare = new CompareAXService(temp);
+                    compare = new CompareAXService(this, temp);
                     //run the xml-parser:
                     div = compare.runHandleXML();
                     //if the parsing is done, run findAllOccurences:
                     if(div) {
-                        ArrayList<String> listeTing = compare.findAllOccurences();
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                        ArrayList<ForecastDAO> listeTing = compare.findAllOccurences();
+
                         compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
                     }
                     Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();

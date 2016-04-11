@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.ForecastDAO;
+import com.eim.winder.db.ForecastDSService;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,11 +36,13 @@ public class CompareAXService {
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     String url;
     private NotificationCompat.Builder notification;
+    private ForecastDSService forecastDSService;
 
-    public CompareAXService(AlertSettingsDAO alertSettingsObj){
+    public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj){
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = alertSettingsObj.getLocation().getXmlURL();
+        this.forecastDSService = new ForecastDSService(context);
 
         try {
             System.err.println("url: " +  url);
@@ -50,10 +54,12 @@ public class CompareAXService {
             onCreateSuccess = false;
         }
     }
-    public CompareAXService(AlertSettingsDAO alertSettingsObj, String url){
+    public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj, String url){
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = url;
+        this.forecastDSService = new ForecastDSService(context);
+
 
         try {
             System.err.println("url: " +  url);
@@ -80,9 +86,10 @@ public class CompareAXService {
      * @param cl class of activity
      * @param nm notificationmanager injected from previously mentioned activity
      */
-    public void generateNotification(ArrayList<String> a, int i, Context cont, Class cl, NotificationManager nm){
-        notification = new NotificationCompat.Builder(cont);
-        notification.setSmallIcon(R.drawable.testicon);
+    public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm){
+        notification = new NotificationCompat.Builder(context);
+        notification.setSmallIcon(R.mipmap.ic_launcher);
+        notification.setColor(1);
         if(!a.isEmpty()) {
             notification.setContentTitle("Vi har en match.");
             notification.setContentText("for område " + i + "!");
@@ -93,13 +100,13 @@ public class CompareAXService {
         }
 
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(cont, cl);
+        Intent resultIntent = new Intent(context, cl);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
         // This ensures that navigating backward from the Activity leads out of
         // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(cont);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(cl);
@@ -151,20 +158,33 @@ public class CompareAXService {
         return true;
 
     }
-    public ArrayList<String> findAllOccurences(){
+    public boolean addShitToDB(ArrayList<ForecastDAO> list){
+        boolean ok = false;
+        forecastDSService.insertForecastList(list, alertSettingsObj.getId());
+        return ok;
+    }
+
+    public ArrayList<ForecastDAO> findAllOccurences(){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
-        ArrayList<String> returnList = new ArrayList<>();
-        for (int i = 0; i<forecast.getTabularList().size(); i++){
+        ArrayList<ForecastDAO> returnList = new ArrayList<>();
+        ForecastDAO temp;
+        for (int i = 0; i<list.size(); i++){
             sendNotification = findOccurence(list.get(i));
 
             if (sendNotification){
-                returnList.add(generateInfo(list.get(i)));
+                temp = new ForecastDAO();
+                temp.setAlertSettingId(alertSettingsObj.getId());
+                temp.setFormatedInfo(generateInfo(list.get(i)));
+                temp.setIcon(list.get(i).getSymbolNumber());
+                returnList.add(temp);
             }
 
         }
 
         //// TODO: 08.04.2016 This is where logic for database storage of Forecast is implemented
+        addShitToDB(returnList);
+
 
         return returnList;
     }

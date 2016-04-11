@@ -95,7 +95,7 @@ public class ForecastDSService {
         try{
             open();
             ContentValues values = new ContentValues();
-            values.put(SQLiteDBHelper.F_FORECAST_ID, forecast.getId());
+            //values.put(SQLiteDBHelper.F_FORECAST_ID, forecast.getId());
             values.put(SQLiteDBHelper.F_FORMATEDINFO, forecast.getFormatedInfo());
             values.put(SQLiteDBHelper.F_ICON, forecast.getIcon());
             values.put(SQLiteDBHelper.F_ALERTSETTINGS_ID, forecast.getAlertSettingId());
@@ -108,7 +108,8 @@ public class ForecastDSService {
         return res;
     }
 
-    public boolean insertForecastList(ArrayList<ForecastDAO> forecastList){
+    public boolean insertForecastList(ArrayList<ForecastDAO> forecastList, int id){
+        deleteForecastByAlertSettingsID(id);
         long res = -1;
         boolean ok = true;
         for (ForecastDAO temp:forecastList){
@@ -118,6 +119,7 @@ public class ForecastDSService {
                 break;
             }
         }
+        Log.i(TAG, "insertforecastList: " + ok);
         return ok;
     }
 

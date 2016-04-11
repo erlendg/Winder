@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.eim.winder.activities.MainActivity;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.ForecastDAO;
 import com.eim.winder.xml.CompareAXService;
 
 import java.util.ArrayList;
@@ -34,19 +35,19 @@ public class AlarmReceiver extends BroadcastReceiver{
         AlertSettingsDSService alertdatasource = new AlertSettingsDSService(context);
         AlertSettingsDAO settings= alertdatasource.getAlertSettingById(id);
 
-        CompareAXService compare = new CompareAXService(settings, url);
+        CompareAXService compare = new CompareAXService(context, settings, url);
 
         //run the xml-parser:
         boolean div = compare.runHandleXML();
 
         //if the parsing is done, run findAllOccurences:
         if(div) {
-            ArrayList<String> listeTing = compare.findAllOccurences();
-            Log.e(TAG, " hei 1");
+            //creating the NotificationManager needed to display notifications:
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            Log.e(TAG, "hei 2");
+            //run the comparison logic:
+            ArrayList<ForecastDAO> listeTing = compare.findAllOccurences();
+            //send notificaton to the user based on the results received:
             compare.generateNotification(listeTing, settings.getId(), context, MainActivity.class, mNotificationManager);
-            Log.e(TAG, "hei 3");
         }
         Toast.makeText(context, "Alertsetting " + url, Toast.LENGTH_SHORT).show();
 
