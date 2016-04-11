@@ -37,8 +37,8 @@ import static org.hamcrest.Matchers.is;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainActivityStepsTest {
-    private String TAG = "MainActivityStepsTest";
+public class SjekkStedslisteStepsDef {
+    private String TAG = "SjekkStedslisteStepsDef";
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);

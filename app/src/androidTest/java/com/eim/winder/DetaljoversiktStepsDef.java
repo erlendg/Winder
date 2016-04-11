@@ -42,7 +42,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class DetaljoversiktStepsDef {
-    private String TAG = "MainActivityStepsTest";
+    private String TAG = "DetaljoversiktStepsDef";
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);

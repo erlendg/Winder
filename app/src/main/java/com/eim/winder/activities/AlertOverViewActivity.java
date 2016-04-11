@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 
 import com.eim.winder.R;
+import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
 import com.eim.winder.databinding.ActivityAlertOverViewBinding;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsDSService;
@@ -128,5 +129,14 @@ public class AlertOverViewActivity extends AppCompatActivity {
         PendingIntent toDo = PendingIntent.getBroadcast(this, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(toDo);
 
+    }
+    public void onEditAlertButtonClick(View v){
+        Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
+        intent.putExtra("LocationDAO", alertSettingsDAO.getLocation());
+        intent.putExtra("edit", true);
+        intent.putExtra("alertID", alertSettingsDAO.getId());
+        Log.i(TAG, "---> startAlertSettingsActivity");
+        startActivity(intent);
+        finish();
     }
 }
