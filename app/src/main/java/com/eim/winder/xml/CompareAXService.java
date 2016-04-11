@@ -21,6 +21,8 @@ import java.util.Locale;
  * Created by Erlend on 19.02.2016.
  */
 public class CompareAXService {
+    private final String TAG = "CompareAXService";
+
     private HandleXML xmlHandlerObj;
     private AlertSettingsDAO alertSettingsObj;
     private ForecastInfo forecast;
@@ -150,18 +152,6 @@ public class CompareAXService {
 
     }
     public ArrayList<String> findAllOccurences(){
-        //todo: implement a loop to compare all TabularInfo objects in HandleXML with the settings defined within AlertSettingsDAO, and populate the bool array.
-
-        //siden ukedag ikke er implementert, sett sjekk for alle dager:
-        alertSettingsObj.setMon(true);
-        alertSettingsObj.setTue(true);
-        alertSettingsObj.setWed(true);
-        alertSettingsObj.setThu(true);
-        alertSettingsObj.setFri(true);
-        alertSettingsObj.setSat(true);
-        alertSettingsObj.setSun(true);
-
-
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
         ArrayList<String> returnList = new ArrayList<>();
@@ -171,18 +161,15 @@ public class CompareAXService {
             if (sendNotification){
                 returnList.add(generateInfo(list.get(i)));
             }
-            /*
-            else if(!sendNotification){
 
-            }
-            */
         }
+
+        //// TODO: 08.04.2016 This is where logic for database storage of Forecast is implemented
 
         return returnList;
     }
 
     private boolean findOccurence(TabularInfo div){
-        //todo: implement all comparison method calls and return either true if there is an occurence, or false if not.
 
         if(checkPrecipitation(div.getPrecipitationValue())==2) return false;
 
@@ -194,34 +181,35 @@ public class CompareAXService {
 
         if(checkTemp(div.getTemperatureValue())== 2) return false;
 
-        /*
+
+        //weekday 1 is sunday:
         switch (checkWeekday(div.getFrom())){
             case 1:
-                if (!alertSettingsObj.isMon()) return false;
+                if (!alertSettingsObj.isSun()) return false;
                 break;
             case 2:
-                if (!alertSettingsObj.isTue()) return false;
+                if (!alertSettingsObj.isMon()) return false;
                 break;
             case 3:
-                if (!alertSettingsObj.isWed()) return false;
+                if (!alertSettingsObj.isTue()) return false;
                 break;
             case 4:
-                if (!alertSettingsObj.isThu()) return false;
+                if (!alertSettingsObj.isWed()) return false;
                 break;
             case 5:
-                if (!alertSettingsObj.isFri()) return false;
+                if (!alertSettingsObj.isThu()) return false;
                 break;
             case 6:
-                if (!alertSettingsObj.isSat()) return false;
+                if (!alertSettingsObj.isFri()) return false;
                 break;
             case 7:
-                if (!alertSettingsObj.isSun()) return false;
+                if (!alertSettingsObj.isSat()) return false;
                 break;
             default:
                 break;
         }
-        */
 
+        Log.e(TAG, "resultat fra checkWeekday: " + checkWeekday(div.getFrom()) );
 
         return true;
     }
@@ -229,9 +217,10 @@ public class CompareAXService {
         c = Calendar.getInstance();
 
         try {
-            d = new SimpleDateFormat("yyyy-MM-ddThh:mm:ss", Locale.getDefault()).parse(date);
+            d = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(date);
         }
         catch (Exception e){
+            e.printStackTrace();
             System.out.println("div datofeil");
         }
 

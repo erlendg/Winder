@@ -40,6 +40,13 @@ public class SQLiteDBHelper extends SQLiteAssetHelper {
     public static final String C_SUN = "sun";
     public static final String C_LOC_ID = "loc_id";
 
+    //Variables for table forecast:
+    public static final String TABLE_FORECAST = "forecast";
+    public static final String F_FORECAST_ID = "_id";
+    public static final String F_FORMATEDINFO = "formatedInfo";
+    public static final String F_ICON = "icon";
+    public static final String F_ALERTSETTINGS_ID = "alertsettings_id";
+
 
     private static final String createLocationsQuery = "CREATE TABLE " + TABLE_LOCATIONS + "{" +
             C_LOCATION_ID + "INTEGER PRIMARY KEY AUTOINCREMENT" +
