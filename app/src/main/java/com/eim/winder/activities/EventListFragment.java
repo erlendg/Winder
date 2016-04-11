@@ -40,11 +40,11 @@ public class EventListFragment extends Fragment {
         // Inflate the layout for this fragment
         datasource = new ForecastDSService(getContext());
         View v = inflater.inflate(R.layout.fragment_event_list, container, false);
-        alertSettingsDAO = ((AlertOverViewActivity) getActivity()).getAlertSettingsDAO();
+       /* alertSettingsDAO = ((AlertOverViewActivity) getActivity()).getAlertSettingsDAO();
         forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettingsDAO.getId());
         eventList = (ListView) getActivity().findViewById(R.id.event_listview);
         listAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_expandable_list_item_1, forecastList);
-        eventList.setAdapter(listAdapter);
+        eventList.setAdapter(listAdapter);*/
         return v;
     }
 
