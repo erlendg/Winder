@@ -12,10 +12,11 @@ public class ForecastDAO implements Parcelable {
     private int icon;
     private int alertSettingId;
 
-    public ForecastDAO(){
+    public ForecastDAO() {
 
     }
-    public ForecastDAO(int id, String formatedInfo, int icon, int alertSettingId){
+
+    public ForecastDAO(int id, String formatedInfo, int icon, int alertSettingId) {
         this.id = id;
         this.formatedInfo = formatedInfo;
         this.icon = icon;
@@ -67,16 +68,17 @@ public class ForecastDAO implements Parcelable {
         dest.writeInt(alertSettingId);
     }
 
-    ForecastDAO(Parcel in){
+    ForecastDAO(Parcel in) {
         readFromParcel(in);
     }
 
-    public void readFromParcel(Parcel in){
+    public void readFromParcel(Parcel in) {
         id = in.readInt();
         formatedInfo = in.readString();
         icon = in.readInt();
-        alertSettingId  = in.readInt();
+        alertSettingId = in.readInt();
     }
+
     /*
     * This is needed for Android to be able to
     * create new objects, (or array of objects).
@@ -91,4 +93,9 @@ public class ForecastDAO implements Parcelable {
                     return new ForecastDAO[size];
                 }
             };
+
+    @Override
+    public String toString() {
+        return ""+formatedInfo;
+    }
 }
