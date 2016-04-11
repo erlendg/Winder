@@ -15,9 +15,11 @@ import com.eim.winder.activities.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
@@ -40,7 +42,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class DetaljoversiktStepsDef {
-    private String TAG = "MainActivityStepsTest";
+    private String TAG = "DetaljoversiktStepsDef";
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
@@ -48,7 +50,7 @@ public class DetaljoversiktStepsDef {
     @Test
     @Gitt("^at brukeren har åpnet appen$")
     public void at_brukeren_har_åpnet_appen() {
-        Log.d(TAG, "Gitt at brukeren har åpnet appen");
+        Log.e(TAG, "Gitt at brukeren har åpnet appen");
         //String title = mainActivity.getActivity().getResources().getString(R.string.app_name);
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
@@ -73,14 +75,17 @@ public class DetaljoversiktStepsDef {
     @Når("^brukeren trykker på stedet for detaljoversikt$")
     public void brukeren_trykker_på_stedet_for_detaljoversikt(){
         // clicks on first element in the list:
+        at_brukeren_har_åpnet_appen();
+        Log.e(TAG, "Når brukeren trykker på stedet for detaljoversikt");
        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
     @Test
     @Så("^skal detaljoversikten vises$")
     public void skal_detaljoversikten_vises(){
-        String name = mainActivity.getActivity().getAlertSettingsDataSet().get(0).getLocation().getName();
         brukeren_trykker_på_stedet_for_detaljoversikt();
+        Log.e(TAG, "Så skal detaljoversikten vises");
+        String name = mainActivity.getActivity().getAlertSettingsDataSet().get(0).getLocation().getName();
         onView(withId(R.id.activity_alert_over_view));
         onView(withId(R.id.toolbar_layout));
         matchCollapsingToolbarTitle(name);
@@ -104,8 +109,9 @@ public class DetaljoversiktStepsDef {
     @Test
     @Og("^brukeren ser alle hendelser for stedet i oversikten$")
     public void brukeren_ser_alle_hendelser_for_stedet_i_oversikten() {
+        skal_detaljoversikten_vises();
+        Log.e(TAG, " Og brukeren ser alle hendelser for stedet i oversikten");
         String name = mainActivity.getActivity().getAlertSettingsDataSet().get(0).getLocation().toString();
-        brukeren_trykker_på_stedet_for_detaljoversikt();
         onView(withId(R.id.preferences_table));
         onView(withId(R.id.row1_title)).check(matches(withText(name)));
 

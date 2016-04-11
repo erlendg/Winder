@@ -2,7 +2,9 @@
 
 Egenskap: Legg til nytt sted
 
-  Bakgrunn: Som en bruker vil jeg legge til et nytt sted slik at jeg mottar varsel for dette stedet
+  Bakgrunn: Som en bruker
+            Vil jeg legge til et nytt sted
+            Slik at jeg mottar varsel for dette stedet
 
     Scenario: Bruker har maks antall steder registrert
       Gitt at bruker har ti steder registrert

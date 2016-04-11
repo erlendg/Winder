@@ -39,65 +39,39 @@ import java.util.Set;
 public class AlertSettingsActivityBeta extends AppCompatActivity {
     private static final String TAG = "ASActivityBeta";
 
-    public LocationDSService datasource;
     public AlertSettingsDSService alertdatasource;
-    public AutoCompleteTextView searchView;
-    public ArrayAdapter<LocationDAO> searchAdapter;
-    public ArrayList<LocationDAO> searchLocations;
-    public NumberPicker tempMaxPicker;
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
     private LocationDAO locationSelected;
+    private boolean haveSelectedSomething = false;
     private double interval;
+    private boolean updateMode;
+    Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.location_layout);
-        getSupportActionBar().setTitle(R.string.choose_location);
-
+        setContentView(R.layout.alertprefsettings_layout);
+        getSupportActionBar().setTitle(R.string.settings_for_alert);
+        getFragmentManager().beginTransaction().replace(R.id.prefFragment, new AlertSettingsPrefFragment()).commit();
+        PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
+        bundle = getIntent().getExtras();
+        locationSelected = bundle.getParcelable("LocationDAO");
+        updateMode = bundle.getBoolean("edit");
         // instantiate database handler
-        datasource = new LocationDSService(this);
         alertdatasource = new AlertSettingsDSService(this);
-        searchLocations = datasource.getAllLocations();
+        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
 
-        // autocompletetextview is in location_layout.xml
-        searchView = (AutoCompleteTextView) findViewById(R.id.search_view);
-        searchAdapter = new ArrayAdapter<LocationDAO>(this, android.R.layout.simple_dropdown_item_1line, searchLocations);
-        searchView.setAdapter(searchAdapter);
-        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                locationSelected = (LocationDAO) arg0.getItemAtPosition(position);
-                Log.d("############", locationSelected.getId() + " " + locationSelected.toString());
-            }
-        });
-
-    }
-
-    //Initiates all view components in alertsettings_layout when the user has chosen an location for alert
-    public void initiateViewComponents() {
-    }
-
-    public void onNextButtonClick(View v) {
-        if (locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())) {
-            setContentView(R.layout.alertprefsettings_layout);
-            getSupportActionBar().setTitle(R.string.settings_for_alert);
-            getFragmentManager().beginTransaction().replace(R.id.prefFragment, new AlertSettingsPrefFragment()).commit();
-            PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
-            clearPreferencesSaved();
-            initiateViewComponents();
-        } else {
-            Toast.makeText(this, "Fyll inn et korrekt stedsnavn!", Toast.LENGTH_LONG).show();
-        }
     }
 
     /**
-     * Deletes or clears all saved preferences:
+     * Deletes or clears all saved preferences from context based on preference name.
+     * @param context
+     * @param sharedPrefsName
      */
-    public void clearPreferencesSaved() {
-        defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPrefs = getSharedPreferences(getResources().getString(R.string.name_of_prefs_saved), getApplicationContext().MODE_PRIVATE);
+    public void clearPreferencesSaved(Context context,String sharedPrefsName ) {
+        defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        sharedPrefs = getSharedPreferences(sharedPrefsName, context.MODE_PRIVATE);
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
         SharedPreferences.Editor editor2 = sharedPrefs.edit();
         editor.clear();
@@ -110,47 +84,57 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     public void onCancelButtonClick(View v) {
         finish();
     }
-
-    public void onSaveButtonClick(View v) {
+    private void updatePreferences(){
         sharedPrefs = getSharedPreferences(getResources().getString(R.string.name_of_prefs_saved), getApplicationContext().MODE_PRIVATE);
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        AlertSettingsDAO asd = makeObjFromSettings();
-        interval = asd.getCheckInterval();
-        if(asd.getWindDirection()== null || !asd.getWindDirection().equals("NOT VALID")) {
-            boolean ok = saveAlertSettings(asd);
-            if (!ok) {
-                Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
-                ArrayList<AlertSettingsDAO> test;
-                test = alertdatasource.getAllAlertSettings();
-                for (int i = 0; i < test.size(); i++) {
-                    Log.i("TEST", "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
-                }
-                //Finishes the Activity and return to MainActivity
-                finish();
+    }
+    public void onSaveButtonClick(View v) {
+        updatePreferences();
+        AlertSettingsDAO asd = makeObjFromSettings(defaultSharedPrefs, sharedPrefs);
+        if(!haveSelectedSomething){
+            Toast.makeText(this, getString(R.string.no_settings_selected), Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(asd.getWindDirection() != null) {
+            if (asd.getWindDirection().equals("NOT VALID")) {
+                Toast.makeText(this, getString(R.string.wind_dir_not_chosen), Toast.LENGTH_LONG).show();
+                return;
             }
-        }else {
-            Toast.makeText(this, "Wind direction not chosen", Toast.LENGTH_LONG).show();
+        }
+        interval = asd.getCheckInterval();
+        boolean ok = saveAlertSettings(asd);
+        if (!ok) {
+            Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
+            /*ArrayList<AlertSettingsDAO> test;
+            test = alertdatasource.getAllAlertSettings();
+            for (int i = 0; i < test.size(); i++) {
+                Log.i("TEST", "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
+            }*/
+            //Finishes the Activity and return to MainActivity
+            finish();
         }
     }
 
     public boolean saveAlertSettings(AlertSettingsDAO asd) {
         Log.i(TAG, "saveAlertSettings()");
-        asd.setLocation(locationSelected);
-        long isOk = alertdatasource.insertAlertSettings(asd);
-        int id = (int) isOk;
-        scheduleAlarm(id, interval);
-
-        if(isOk == -1){
-            return false;
+        long isOk = -1;
+        if(updateMode){
+            asd.setId(bundle.getInt("alertID"));
+            isOk = alertdatasource.updateAlertSettings(asd);
+        }else {
+            asd.setLocation(locationSelected);
+            isOk = alertdatasource.insertAlertSettings(asd);
         }
-        else{
+        if((int)isOk != -1 && (int) isOk != 0) {
+            scheduleAlarm((int) isOk, interval);
             return true;
         }
+        return false;
     }
 
-    public AlertSettingsDAO makeObjFromSettings() {
+    public AlertSettingsDAO makeObjFromSettings(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
         AlertSettingsDAO asd = new AlertSettingsDAO();
         //Temperature:
         if (defaultSharedPrefs.getBoolean("tempPref", false)) {
@@ -158,6 +142,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             int tempMax = sharedPrefs.getInt("maxTemp", 50);
             asd.setTempMin(tempMin);
             asd.setTempMax(tempMax);
+            haveSelectedSomething = true;
             Log.i(TAG, "Temp: Min: " + tempMin + " Max: " + tempMax);
         }
         //Rain:
@@ -166,6 +151,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             double precipMax = CustomPrecipRangePreference.getDouble(sharedPrefs, "maxPrecip", 30.0);
             asd.setPrecipitationMin(precipMin);
             asd.setPrecipitationMax(precipMax);
+            haveSelectedSomething = true;
             Log.i(TAG, "Rain: Min: " + precipMin + " Max: " + precipMax);
         }
         //Wind:
@@ -174,11 +160,13 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             int windSpeedMax = sharedPrefs.getInt("maxWindSpeed", 40);
             asd.setWindSpeedMin(windSpeedMin);
             asd.setWindSpeedMax(windSpeedMax);
+            haveSelectedSomething = true;
             Log.i(TAG, "Wind: Min: " + windSpeedMin + " Max: " + windSpeedMax);
         }
         if (defaultSharedPrefs.getBoolean("windDirPref", false)) {
             String windDirections = sharedPrefs.getString("windDir", "NOT VALID");
             asd.setWindDirection(windDirections);
+            haveSelectedSomething = true;
             Log.i(TAG, "WindDir: " + windDirections);
         }
         //Weekdays:
@@ -203,9 +191,11 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         Log.i(TAG, "CheckInterval: " + interval);
         asd.setCheckInterval(Double.parseDouble(split[1]));
         //Sun:
-        asd.setCheckSun(defaultSharedPrefs.getBoolean("sunnyPref", false));
+        if(defaultSharedPrefs.getBoolean("sunnyPref", false)){
+            asd.setCheckSun(true);
+            haveSelectedSomething = true;
+        }
         return asd;
-
     }
 
     @Override
@@ -215,6 +205,11 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         super.finish();
     }
 
+    /**
+     *
+     * @param id
+     * @param interval
+     */
     public void scheduleAlarm(int id, double interval){
         long intervalLong = (long)interval*3600000; //  3600000 = millisekund i timen
         long startTime = 5000;

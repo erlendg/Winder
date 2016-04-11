@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.AlertSettingsActivity"
+            android:name=".activities.alertsettings.SelectLocationActivity"
             android:label="@string/app_name" />
         <activity
             android:name=".activities.alertsettings.AlertSettingsActivityBeta"

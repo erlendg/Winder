@@ -36,7 +36,7 @@ public class CustomPrecipRangePreference extends Preference{
         View v = super.onCreateView(parent);
         rsb = (RangeSeekBar) v.findViewById(R.id.precipRangeBar);
         prefs = getContext().getSharedPreferences(PREF_NAME, getContext().MODE_PRIVATE);
-        Log.i("PrecipSaved", getDouble(prefs, MIN_PRECIP, DEFAULT_MIN_VALUE) + ", " + getDouble(prefs, MAX_PRECIP, DEFAULT_MAX_VALUE));
+        //Log.i("PrecipSaved", getDouble(prefs, MIN_PRECIP, DEFAULT_MIN_VALUE) + ", " + getDouble(prefs, MAX_PRECIP, DEFAULT_MAX_VALUE));
         if(rsb != null ) {
             rsb.setSelectedMinValue(getDouble(prefs, MIN_PRECIP, DEFAULT_MIN_VALUE));
             rsb.setSelectedMaxValue(getDouble(prefs, MAX_PRECIP, DEFAULT_MAX_VALUE));
@@ -60,7 +60,7 @@ public class CustomPrecipRangePreference extends Preference{
                 editor.commit();
                 rsb.setSelectedMinValue(getDouble(prefs, MIN_PRECIP, DEFAULT_MIN_VALUE));
                 rsb.setSelectedMaxValue(getDouble(prefs, MAX_PRECIP, DEFAULT_MAX_VALUE));
-                Log.d("SAVE", min + ", " + getDouble(prefs, MIN_PRECIP, DEFAULT_MIN_VALUE) + ", " + getDouble(prefs, MAX_PRECIP, DEFAULT_MAX_VALUE));
+               // Log.d("SAVE", min + ", " + getDouble(prefs, MIN_PRECIP, DEFAULT_MIN_VALUE) + ", " + getDouble(prefs, MAX_PRECIP, DEFAULT_MAX_VALUE));
             }
         });
     }

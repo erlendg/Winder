@@ -6,6 +6,7 @@ import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v7.widget.Toolbar;
+import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
@@ -13,10 +14,12 @@ import com.eim.winder.activities.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import cucumber.api.CucumberOptions;
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
 import cucumber.api.java.no.Så;
@@ -34,13 +37,13 @@ import static org.hamcrest.Matchers.is;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MainActivityStepsTest {
-    private String TAG = "MainActivityStepsTest";
+public class SjekkStedslisteStepsDef {
+    private String TAG = "SjekkStedslisteStepsDef";
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
-    @Test
+    @Before
     @Gitt("^at appen er åpnet$")
     public void at_appen_er_åpnet() {
         Log.d(TAG, "Gitt at appen er åpen");

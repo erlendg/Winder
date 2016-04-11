@@ -196,7 +196,7 @@
                 app:layout_columnSpan="1"
                 app:layout_rowSpan="1"
                 android:id="@+id/row5_column3"
-                android:text="@{Integer.toString(alertsettings.tempMax)}"
+                android:text='@{""+alertsettings.tempMax+ " C"}'
                 android:gravity="center"
                 android:background="@drawable/table_lines"
                 android:padding="10dip"/>

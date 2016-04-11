@@ -94,10 +94,35 @@ public class AlertSettingsDSService {
             values.put(SQLiteDBHelper.C_SUN, alert.isSun());
             values.put(SQLiteDBHelper.C_LOC_ID, alert.getLocation().getId());
             res = database.insert(table, null, values);
-            /*
-            if(res==-1)ok = false;
-            ok = true;
-            */
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        close();
+        return res;
+    }
+    public long updateAlertSettings(AlertSettingsDAO alert){
+        Log.i(TAG, "insertAlertSettings()");
+        long res = -1;
+        try{
+            open();
+            ContentValues values = new ContentValues();
+            values.put(SQLiteDBHelper.C_TEMPMIN, alert.getTempMin());
+            values.put(SQLiteDBHelper.C_TEMPMAX, alert.getTempMax());
+            values.put(SQLiteDBHelper.C_PRECIPITATIONMIN, alert.getPrecipitationMin());
+            values.put(SQLiteDBHelper.C_PRECIPITATIONMAX, alert.getPrecipitationMax());
+            values.put(SQLiteDBHelper.C_WINDSPEEDMIN, alert.getWindSpeedMin());
+            values.put(SQLiteDBHelper.C_WINDSPEEDMAX, alert.getWindSpeedMax());
+            values.put(SQLiteDBHelper.C_WINDIRECTION, alert.getWindDirection());
+            values.put(SQLiteDBHelper.C_CHECKSUN, alert.isCheckSun());
+            values.put(SQLiteDBHelper.C_CHECKINTERVAL, alert.getCheckInterval());
+            values.put(SQLiteDBHelper.C_MON, alert.isMon());
+            values.put(SQLiteDBHelper.C_TUE, alert.isTue());
+            values.put(SQLiteDBHelper.C_WED, alert.isWed());
+            values.put(SQLiteDBHelper.C_THU, alert.isThu());
+            values.put(SQLiteDBHelper.C_FRI, alert.isFri());
+            values.put(SQLiteDBHelper.C_SAT, alert.isSat());
+            values.put(SQLiteDBHelper.C_SUN, alert.isSun());
+            res = database.update(table, values, "_id="+alert.getId(), null);
         }catch (SQLException e){
             e.printStackTrace();
         }

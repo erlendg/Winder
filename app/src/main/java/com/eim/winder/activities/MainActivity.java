@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
+import com.eim.winder.activities.alertsettings.SelectLocationActivity;
 import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
 import com.eim.winder.div.Locations;
@@ -80,20 +81,20 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startAlertSettingsActivity(view);
+                startSelectLocationActivity(view);
             }
         });
 
     }
 
-    public void startAlertSettingsActivity(View v){
+    public void startSelectLocationActivity(View v){
         //Only allowed to register up to 10 locations for alert, to limit dataflow
-        if(numOfLocations != MAX_LOCATIONS){
-            Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
-            Log.i(TAG, "---> startAlertSettingsActivity");
+        if(getNumOfLocations() != MAX_LOCATIONS){
+            Intent intent = new Intent(this, SelectLocationActivity.class);
+            Log.i(TAG, "---> startSelectLocationActivity");
             startActivityForResult(intent, 1);
         }else{
-            Snackbar.make(v, "OBS! Varsellisten er full, slett en for å legge til ny", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Snackbar.make(v, getString(R.string.toast_more_then_ten_alerts), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
@@ -191,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
         return true;
 
 
+    }
+    public int getNumOfLocations(){
+        return numOfLocations;
     }
 /**
  * This method is moved to another place in the code:
