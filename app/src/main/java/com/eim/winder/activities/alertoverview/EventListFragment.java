@@ -47,9 +47,9 @@ public class EventListFragment extends Fragment {
             listAdapter = new EventListRVAdapter(forecastList);
             llmanager = new LinearLayoutManager(getContext());
             eventList.setLayoutManager(llmanager);
-            RecyclerView.ItemDecoration itemDecoration = new
+            /*RecyclerView.ItemDecoration itemDecoration = new
                     DividerItemDecoration(getContext(), R.drawable.table_lines);
-            eventList.addItemDecoration(itemDecoration);
+            eventList.addItemDecoration(itemDecoration);*/
             eventList.setAdapter(listAdapter);
         }
         return v;

@@ -132,7 +132,7 @@ public class CompareAXService {
      */
     private String generateInfo(TabularInfo info){
         String returnString = "";
-        returnString += fixDate(info.getFrom(), info.getTo()) + "\n";
+        returnString += fixDate(info.getFrom(), info.getTo());
         if (tempCheck){
             returnString += "Temperatur: " + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
 
@@ -150,7 +150,7 @@ public class CompareAXService {
             returnString += "Vindstyrke: " + info.getWindSpeed() + "m/s \n";
         }
         Log.i(tag, returnString);
-        return returnString;
+        return returnString.trim();
     }
 
     private String fixDate(String fromDate, String toDate){
@@ -201,8 +201,8 @@ public class CompareAXService {
                 dateandinfo = generateInfo(list.get(i));
                 temp = new ForecastDAO();
                 temp.setAlertSettingId(alertSettingsObj.getId());
-                temp.setFormatedDate(dateandinfo.substring(0,24));
-                temp.setFormatedInfo(dateandinfo.substring(24));
+                temp.setFormatedDate(dateandinfo.substring(0,25));
+                temp.setFormatedInfo(dateandinfo.substring(25));
                 temp.setIcon(list.get(i).getSymbolNumber());
                 returnList.add(temp);
             }
