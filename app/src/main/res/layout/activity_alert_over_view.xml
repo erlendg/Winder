@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.AlertOverViewActivity"
+    tools:context=".activities.alertoverview.AlertOverViewActivity"
     android:id="@+id/activity_alert_over_view">
 
     <android.support.design.widget.AppBarLayout
@@ -58,8 +58,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    <!--<include layout="@layout/content_alert_over_view"
-        android:id="@+id/content_table"/>-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_edit"

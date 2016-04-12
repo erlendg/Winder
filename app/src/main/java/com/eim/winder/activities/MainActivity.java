@@ -1,8 +1,6 @@
 package com.eim.winder.activities;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
+import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
 import com.eim.winder.activities.alertsettings.SelectLocationActivity;
 import com.eim.winder.db.ForecastDAO;
 import com.eim.winder.xml.CompareAXService;
@@ -130,7 +128,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         //Updates the view in case of changes in the alertlist
         super.onResume();
-        rvAdapter = new RVAdapter(getAlertSettingsDataSet(), new RVAdapter.OnItemClickListener(){
+        alertSettingsList = getAlertSettingsDataSet();
+        rvAdapter = new RVAdapter(alertSettingsList, new RVAdapter.OnItemClickListener(){
             @Override public void onItemClick(AlertSettingsDAO item) {
                 Log.i(TAG, " " +item.getLocation().getName());
                 startAlertOverViewActivity(item);
