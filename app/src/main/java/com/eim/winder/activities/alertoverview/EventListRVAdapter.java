@@ -48,7 +48,6 @@ public class EventListRVAdapter extends RecyclerView.Adapter<EventListRVAdapter.
     @Override
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
         holder.eventDate.setText(forecastList.get(position).getFormatedDate());
-        Log.d(TAG, ""+ forecastList.get(position).getFormatedDate()+ "!!");
         holder.eventDescription.setText(forecastList.get(position).getFormatedInfo());
     }
     @Override

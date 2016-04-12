@@ -10,6 +10,8 @@ import com.eim.winder.R;
  * Created by Mari on 03.02.2016.
  */
 public class AlertSettingsDAO implements Parcelable{
+    public static int DEFAULT_TEMP = -274;
+    public static int DEFAULT_WIND_AND_PRECIP = -1;
     private LocationDAO location;
     private int id;
     private int tempMin;
@@ -45,12 +47,12 @@ public class AlertSettingsDAO implements Parcelable{
     }
 
     public AlertSettingsDAO(){
-        this.tempMin = -274;
-        this.tempMax = -274;
-        this.precipitationMin = -1;
-        this.precipitationMax =-1;
-        this.windSpeedMin = -1;
-        this.windSpeedMax = -1;
+        this.tempMin = DEFAULT_TEMP;
+        this.tempMax = DEFAULT_TEMP;
+        this.precipitationMin = DEFAULT_WIND_AND_PRECIP;
+        this.precipitationMax = DEFAULT_WIND_AND_PRECIP;
+        this.windSpeedMin = DEFAULT_WIND_AND_PRECIP;
+        this.windSpeedMax = DEFAULT_WIND_AND_PRECIP;
         this.windDirection = null;
         this.checkSun = false;
         this.mon = false;
