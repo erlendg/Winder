@@ -1,4 +1,4 @@
-package com.eim.winder.activities;
+package com.eim.winder.activities.alertoverview;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;

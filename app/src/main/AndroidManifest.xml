@@ -30,7 +30,7 @@
             android:name=".activities.alertsettings.AlertSettingsActivityBeta"
             android:label="@string/app_name" />
         <activity
-            android:name=".activities.AlertOverViewActivity"
+            android:name=".activities.alertoverview.AlertOverViewActivity"
             android:label="@string/title_activity_alert_over_view"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.MainActivity" >

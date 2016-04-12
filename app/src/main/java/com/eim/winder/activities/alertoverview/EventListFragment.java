@@ -1,15 +1,14 @@
-package com.eim.winder.activities;
+package com.eim.winder.activities.alertoverview;
 
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
@@ -23,12 +22,12 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class EventListFragment extends Fragment {
-    private ListView eventList;
+    private RecyclerView eventList;
     private ArrayList<ForecastDAO> forecastList;
-    private ArrayAdapter listAdapter;
+    private EventListRVAdapter listAdapter;
     private ForecastDSService datasource;
     private AlertSettingsDAO alertSettingsDAO;
-
+    private LinearLayoutManager llmanager;
 
     public EventListFragment() {
         // Required empty public constructor
@@ -42,9 +41,15 @@ public class EventListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_event_list, container, false);
         alertSettingsDAO = ((AlertOverViewActivity) getActivity()).getAlertSettingsDAO();
         forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettingsDAO.getId());
-        eventList = (ListView) v.findViewById(R.id.event_listview);
+        eventList = (RecyclerView) v.findViewById(R.id.event_listview);
         if(forecastList != null || forecastList.size() == 0) {
-            listAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_expandable_list_item_1, forecastList);
+            Log.d("§§§§§§", "ikke null");
+            listAdapter = new EventListRVAdapter(forecastList);
+            llmanager = new LinearLayoutManager(getContext());
+            eventList.setLayoutManager(llmanager);
+            RecyclerView.ItemDecoration itemDecoration = new
+                    DividerItemDecoration(getContext(), R.drawable.table_lines);
+            eventList.addItemDecoration(itemDecoration);
             eventList.setAdapter(listAdapter);
         }
         return v;
