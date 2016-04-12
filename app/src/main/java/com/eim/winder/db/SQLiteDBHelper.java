@@ -43,6 +43,7 @@ public class SQLiteDBHelper extends SQLiteAssetHelper {
     //Variables for table forecast:
     public static final String TABLE_FORECAST = "forecast";
     public static final String F_FORECAST_ID = "_id";
+    public static final String F_FORMATEDDATE = "formatedDate";
     public static final String F_FORMATEDINFO = "formatedInfo";
     public static final String F_ICON = "icon";
     public static final String F_ALERTSETTINGS_ID = "alertsettings_id";

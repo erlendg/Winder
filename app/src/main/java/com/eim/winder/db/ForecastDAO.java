@@ -8,6 +8,7 @@ import android.os.Parcelable;
  */
 public class ForecastDAO implements Parcelable {
     private int id;
+    private String formatedDate;
     private String formatedInfo;
     private int icon;
     private int alertSettingId;
@@ -16,8 +17,9 @@ public class ForecastDAO implements Parcelable {
 
     }
 
-    public ForecastDAO(int id, String formatedInfo, int icon, int alertSettingId) {
+    public ForecastDAO(int id, String formatedDate, String formatedInfo, int icon, int alertSettingId){
         this.id = id;
+        this.formatedDate = formatedDate;
         this.formatedInfo = formatedInfo;
         this.icon = icon;
         this.alertSettingId = alertSettingId;
@@ -55,6 +57,14 @@ public class ForecastDAO implements Parcelable {
         this.alertSettingId = alertSettingId;
     }
 
+    public String getFormatedDate() {
+        return formatedDate;
+    }
+
+    public void setFormatedDate(String formatedDate) {
+        this.formatedDate = formatedDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -63,6 +73,7 @@ public class ForecastDAO implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
+        dest.writeString(formatedDate);
         dest.writeString(formatedInfo);
         dest.writeInt(icon);
         dest.writeInt(alertSettingId);
@@ -74,6 +85,7 @@ public class ForecastDAO implements Parcelable {
 
     public void readFromParcel(Parcel in) {
         id = in.readInt();
+        formatedDate = in.readString();
         formatedInfo = in.readString();
         icon = in.readInt();
         alertSettingId = in.readInt();
@@ -96,6 +108,6 @@ public class ForecastDAO implements Parcelable {
 
     @Override
     public String toString() {
-        return ""+formatedInfo;
+        return formatedDate+ " " +formatedInfo;
     }
 }

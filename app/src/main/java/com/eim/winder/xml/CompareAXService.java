@@ -31,7 +31,7 @@ public class CompareAXService {
     private boolean onCreateSuccess = false;
     private boolean sendNotification;
     private Calendar c;
-    private Date d;
+    private Date d,d2;
     private final static String tag = "CompareAXService";
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     String url;
@@ -82,7 +82,7 @@ public class CompareAXService {
      *
      * @param a list of values
      * @param i alertsettingID
-     * @param cont context of activity that called the method.
+     * @param context context of activity that called the method.
      * @param cl class of activity
      * @param nm notificationmanager injected from previously mentioned activity
      */
@@ -94,18 +94,18 @@ public class CompareAXService {
             notification.setContentTitle("Vi har en match.");
             notification.setContentText("for område " + i + "!");
         }
-        else{
+        /*else{
             notification.setContentTitle("Ingen hendelser");
             notification.setContentText("for område " +i+ "!");
-        }
+        }*/
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, cl);
 
         // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
+        // started Activity.ivity leads out of
         // your application to the Home screen.
+        // This ensures that navigating backward from the Act
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
         // Adds the back stack for the Intent (but not the Intent itself)
@@ -132,10 +132,10 @@ public class CompareAXService {
      */
     private String generateInfo(TabularInfo info){
         String returnString = "";
-        returnString += "Fra: " + info.getFrom() + ", til: " + info.getTo() + "\n";
-                        // grader celcius utf8-kode: "\u2103";
+        returnString += fixDate(info.getFrom(), info.getTo()) + "\n";
         if (tempCheck){
-            returnString += "Temperatur: " + info.getTemperatureValue() + "\u2103\n";
+            returnString += "Temperatur: " + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
+
         }
         if(sunCheck){
             returnString += "Det er meldt klarvær!\n";
@@ -151,6 +151,30 @@ public class CompareAXService {
         }
         Log.i(tag, returnString);
         return returnString;
+    }
+
+    private String fixDate(String fromDate, String toDate){
+        String result = "";
+       /*
+       //Variant 1:
+       c = Calendar.getInstance();
+
+        try {
+            d = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.FRANCE).parse(fromDate);
+            d2 = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.FRENCH).parse(toDate);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("div datofeil");
+        }
+        c.setTime(d);
+        result += c.get(Calendar.DAY_OF_MONTH)+ "/" + c.get(Calendar.MONTH) + "/" +c.get(Calendar.YEAR) + ": " + c.get(Calendar.HOUR_OF_DAY) + "." + c.get(Calendar.MINUTE) + " - ";
+        c.setTime(d2);
+        result += c.get(Calendar.HOUR_OF_DAY) + "." + c.get(Calendar.MINUTE);*/
+
+        result += fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + "/" + fromDate.substring(0,4) + ": "+ fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
+
+        return result;
     }
     public boolean runHandleXML(){
         xmlHandlerObj.fetchXML();
@@ -169,13 +193,16 @@ public class CompareAXService {
         ArrayList<TabularInfo> list = forecast.getTabularList();
         ArrayList<ForecastDAO> returnList = new ArrayList<>();
         ForecastDAO temp;
+        String dateandinfo;
         for (int i = 0; i<list.size(); i++){
             sendNotification = findOccurence(list.get(i));
 
             if (sendNotification){
+                dateandinfo = generateInfo(list.get(i));
                 temp = new ForecastDAO();
                 temp.setAlertSettingId(alertSettingsObj.getId());
-                temp.setFormatedInfo(generateInfo(list.get(i)));
+                temp.setFormatedDate(dateandinfo.substring(0,24));
+                temp.setFormatedInfo(dateandinfo.substring(24));
                 temp.setIcon(list.get(i).getSymbolNumber());
                 returnList.add(temp);
             }
@@ -301,13 +328,14 @@ public class CompareAXService {
 
         if (alertSettingsObj.getWindDirection() == null){
             //Log.d(tag, "Vindretning returverdi = 1, innverdi = " + a);
-            windDirectionCheck = true;
+
             return 1;
         }
         String[] div = alertSettingsObj.getWindDirection().split(", ");
         for (int i = 0; i<div.length; i++){
             if (div[i].equalsIgnoreCase(a)) {
                 // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                windDirectionCheck = true;
                 return 0;
             }
         }
