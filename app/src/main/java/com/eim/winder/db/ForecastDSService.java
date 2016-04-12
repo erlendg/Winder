@@ -17,7 +17,7 @@ public class ForecastDSService {
     private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
     private String table = SQLiteDBHelper.TABLE_FORECAST;
-    private String[] allColumns = {SQLiteDBHelper.F_FORECAST_ID, SQLiteDBHelper.F_FORMATEDINFO, SQLiteDBHelper.F_ICON, SQLiteDBHelper.F_ALERTSETTINGS_ID};
+    private String[] allColumns = {SQLiteDBHelper.F_FORECAST_ID, SQLiteDBHelper.F_FORMATEDDATE, SQLiteDBHelper.F_FORMATEDINFO, SQLiteDBHelper.F_ICON, SQLiteDBHelper.F_ALERTSETTINGS_ID};
 
     public ForecastDSService(Context context){
         this.dbHelper = new SQLiteDBHelper(context);
@@ -33,7 +33,7 @@ public class ForecastDSService {
         Log.i(TAG, "close()");
     }
     private ForecastDAO cursorToForecast(Cursor cursor){
-        ForecastDAO forecast = new ForecastDAO(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3));
+        ForecastDAO forecast = new ForecastDAO(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4));
         return forecast;
     }
     public ForecastDAO getForecastByAlertSettingsID(int id){
@@ -48,24 +48,27 @@ public class ForecastDSService {
         } catch (SQLException e){
             e.printStackTrace();
         }
+        close();
         return result;
     }
 
     public ArrayList<ForecastDAO> getAllForecastsByAlertSettingsID(int id){
         ArrayList<ForecastDAO> list = new ArrayList<>();
         Cursor cursor = null;
+        ForecastDAO temp;
         try{
             open();
             cursor = database.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id =" + id, null);
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){
-                ForecastDAO temp = cursorToForecast(cursor);
+                temp = cursorToForecast(cursor);
                 list.add(temp);
                 cursor.moveToNext();
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
+        close();
         return list;
     }
 
@@ -89,7 +92,7 @@ public class ForecastDSService {
         return ok;
     }
 
-    public long insertForecast(ForecastDAO forecast){
+    /*public long insertForecast(ForecastDAO forecast){
 
         long res = -1;
         try{
@@ -106,19 +109,31 @@ public class ForecastDSService {
         }
         close();
         return res;
-    }
+    }*/
 
     public boolean insertForecastList(ArrayList<ForecastDAO> forecastList, int id){
         deleteForecastByAlertSettingsID(id);
         long res = -1;
         boolean ok = true;
-        for (ForecastDAO temp:forecastList){
-            res = insertForecast(temp);
-            if (res==-1){
-                ok=false;
-                break;
+        try{
+
+            open();
+            for (ForecastDAO temp:forecastList) {
+                ContentValues values = new ContentValues();
+                values.put(SQLiteDBHelper.F_FORMATEDDATE, temp.getFormatedDate());
+                values.put(SQLiteDBHelper.F_FORMATEDINFO, temp.getFormatedInfo());
+                values.put(SQLiteDBHelper.F_ICON, temp.getIcon());
+                values.put(SQLiteDBHelper.F_ALERTSETTINGS_ID, temp.getAlertSettingId());
+                res = database.insert(table, null, values);
+                if (res == -1) {
+                    ok = false;
+                    break;
+                }
             }
+        }catch (SQLException e){
+            e.printStackTrace();
         }
+        close();
         Log.i(TAG, "insertforecastList: " + ok);
         return ok;
     }
