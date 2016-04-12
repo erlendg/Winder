@@ -182,10 +182,18 @@ public class CompareAXService {
         return true;
 
     }
-    public boolean addShitToDB(ArrayList<ForecastDAO> list){
+    public void addShitToDB(final ArrayList<ForecastDAO> list){
+        Thread thread = new Thread(new Runnable(){
+            @Override
+            public void run() {
+                forecastDSService.insertForecastList(list, alertSettingsObj.getId());
+            }
+        });
+        thread.start();
+
         boolean ok = false;
-        forecastDSService.insertForecastList(list, alertSettingsObj.getId());
-        return ok;
+        //ok = forecastDSService.insertForecastList(list, alertSettingsObj.getId());
+        //return ok;
     }
 
     public ArrayList<ForecastDAO> findAllOccurences(){
