@@ -43,7 +43,6 @@ public class EventListFragment extends Fragment {
         forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettingsDAO.getId());
         eventList = (RecyclerView) v.findViewById(R.id.event_listview);
         if(forecastList != null || forecastList.size() == 0) {
-            Log.d("§§§§§§", "ikke null");
             listAdapter = new EventListRVAdapter(forecastList);
             llmanager = new LinearLayoutManager(getContext());
             eventList.setLayoutManager(llmanager);

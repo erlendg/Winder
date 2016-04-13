@@ -38,6 +38,57 @@
         android:hint="@string/soek_hint">
     </AutoCompleteTextView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/template_sun"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/sun_template_button"
+            android:src="@drawable/ic_sun"
+            android:onClick="onTemplateButtonClick"
+            android:elevation="2dp"
+            />
+
+        <ImageButton
+            android:id="@+id/template_ski"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/sun_template_button"
+            android:src="@drawable/ic_skiing_48"
+            android:onClick="onTemplateButtonClick"
+            android:elevation="2dp"
+            />
+
+        <ImageButton
+            android:id="@+id/template_snow"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/sun_template_button"
+            android:src="@drawable/ic_sun"
+            android:elevation="2dp"
+            android:onClick="onTemplateButtonClick"
+            />
+        <ImageButton
+            android:id="@+id/template_hiking"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/sun_template_button"
+            android:src="@drawable/ic_sun"
+            android:elevation="2dp"
+            android:onClick="onTemplateButtonClick"
+            />
+
+    </LinearLayout>
+
+
     <Space
         android:layout_width="0dp"
         android:layout_height="wrap_content"

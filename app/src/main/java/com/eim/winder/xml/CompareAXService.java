@@ -90,18 +90,6 @@ public class CompareAXService {
      * @param nm notificationmanager injected from previously mentioned activity
      */
     public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm){
-        /*notification = new NotificationCompat.Builder(context);
-        notification.setSmallIcon(R.mipmap.ic_launcher);
-        notification.setColor(1);
-        if(!a.isEmpty()) {
-            notification.setContentTitle("Vi har en match.");
-            notification.setContentText("for område " + i + "!");
-        }
-        else{
-            notification.setContentTitle("Ingen hendelser");
-            notification.setContentText("for område " +i+ "!");
-        }*/
-
                 notification = new NotificationCompat.Builder(context);
                 notification.setSmallIcon(R.mipmap.ic_launcher);
                 notification.setColor(context.getResources().getColor(R.color.colorPrimary));
