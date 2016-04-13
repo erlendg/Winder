@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!-- gammel shit -->
     <string-array name="temp_array">
         <item>30</item><item>25</item><item>20</item><item>15</item><item>10</item><item>5</item><item>3</item><item>0</item>
         <item>-3</item><item>-5</item><item>-10</item><item>-15</item><item>-20</item><item>-25</item><item>-30</item>
@@ -18,10 +18,16 @@
         <item>0.5</item><item>1</item><item>2</item>
         <item>3</item><item>4</item><item>5</item><item>6</item>
     </string-array>
+    <!-- gammel shit-->
 
     <string-array name="checkinterval_array">
-        <item>Every 1 hour</item><item>Every 2 hour</item><item>Every 4 hour</item>
-        <item>Every 6 hour</item><item>Every 12 hour</item><item>Every 24 hour</item><item>Every 48 hour</item>
+        <item>@string/checkinterval_one</item>
+        <item>@string/checkinterval_two</item>
+        <item>@string/checkinterval_four</item>
+        <item>@string/checkinterval_six</item>
+        <item>@string/checkinterval_twelve</item>
+        <item>@string/checkinterval_day</item>
+        <item>@string/checkinterval_twodays</item>
     </string-array>
     <string-array name="checkinterval_values">
         <item>1</item>
@@ -46,8 +52,13 @@
         <item>8</item>
     </string-array>
     <string-array name="weekdays_array">
-        <item>Monday</item><item>Tuesday</item><item>Wednesday</item>
-        <item>Thursday</item><item>Friday</item><item>Saturday</item><item>Sunday</item>
+        <item>@string/weekdays_monday</item>
+        <item>@string/weekdays_tuesday</item>
+        <item>@string/weekdays_wednesday</item>
+        <item>@string/weekdays_thursday</item>
+        <item>@string/weekdays_friday</item>
+        <item>@string/weekdays_saturday</item>
+        <item>@string/weekdays_sunday</item>
     </string-array>
     <string-array name="weekdays_values">
         <item>1</item>

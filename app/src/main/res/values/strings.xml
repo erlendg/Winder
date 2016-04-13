@@ -56,6 +56,29 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- CompareAXService-strings: -->
+    <string name="notification_message_title">Vi har en match!</string>
+    <string name="notification_message_text">Område: </string>
+    <string name="generate_temperature">Temperatur: </string>
+    <string name="generate_precipitatiion">Nedbør: </string>
+    <string name="generate_clear">Det er meldt klarvær! </string>
+    <string name="generate_winddirection">Vindretning: </string>
+    <string name="generate_windspeed">Vindstyrke: </string>
 
+    <!-- Arrays.xml-strings: -->
+    <string name="weekdays_monday">Mandag</string>
+    <string name="weekdays_tuesday">Tirsdag</string>
+    <string name="weekdays_wednesday">Onsdag</string>
+    <string name="weekdays_thursday">Torsdag</string>
+    <string name="weekdays_friday">Fredag</string>
+    <string name="weekdays_saturday">Lørdag</string>
+    <string name="weekdays_sunday">Søndag</string>
+
+    <string name="checkinterval_one">Hver 1. time</string>
+    <string name="checkinterval_two">Hver 2. time</string>
+    <string name="checkinterval_four">Hver 4. time</string>
+    <string name="checkinterval_six">Hver 6. time</string>
+    <string name="checkinterval_twelve">Hver 12. time</string>
+    <string name="checkinterval_day">Hver 24. time</string>
+    <string name="checkinterval_twodays">Hver 48. time</string>
 
 </resources>

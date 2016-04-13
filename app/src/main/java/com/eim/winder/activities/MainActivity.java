@@ -175,8 +175,9 @@ public class MainActivity extends AppCompatActivity {
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                         ArrayList<ForecastDAO> listeTing = compare.findAllOccurences();
-
-                        compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
+                        if (!listeTing.isEmpty()) {
+                            compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
+                        }
                     }
                     Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
                 }

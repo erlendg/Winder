@@ -37,8 +37,10 @@ public class CompareAXService {
     String url;
     private NotificationCompat.Builder notification;
     private ForecastDSService forecastDSService;
+    Context context;
 
     public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj){
+        this.context = context;
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = alertSettingsObj.getLocation().getXmlURL();
@@ -55,6 +57,7 @@ public class CompareAXService {
         }
     }
     public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj, String url){
+        this.context = context;
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = url;
@@ -87,41 +90,50 @@ public class CompareAXService {
      * @param nm notificationmanager injected from previously mentioned activity
      */
     public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm){
-        notification = new NotificationCompat.Builder(context);
+        /*notification = new NotificationCompat.Builder(context);
         notification.setSmallIcon(R.mipmap.ic_launcher);
         notification.setColor(1);
         if(!a.isEmpty()) {
             notification.setContentTitle("Vi har en match.");
             notification.setContentText("for område " + i + "!");
         }
-        /*else{
+        else{
             notification.setContentTitle("Ingen hendelser");
             notification.setContentText("for område " +i+ "!");
         }*/
 
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(context, cl);
+                notification = new NotificationCompat.Builder(context);
+                notification.setSmallIcon(R.mipmap.ic_launcher);
+                notification.setColor(context.getResources().getColor(R.color.colorPrimary));
 
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.ivity leads out of
-        // your application to the Home screen.
-        // This ensures that navigating backward from the Act
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                notification.setContentTitle(context.getResources().getString(R.string.notification_message_title));
+                notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!");
 
-        // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(cl);
 
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                // Creates an explicit intent for an Activity in your app
+                Intent resultIntent = new Intent(context, cl);
 
-        notification.setContentIntent(resultPendingIntent);
+                // The stack builder object will contain an artificial back stack for the
+                // started Activity.ivity leads out of
+                // your application to the Home screen.
+                // This ensures that navigating backward from the Act
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
 
-        /* MÅ OPPRETTES I KONTEKSTEN DER MAN BENYTTER KODEN:
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(cont.NOTIFICATION_SERVICE);
-        */
-        // mId allows you to update the notification later on.
-        nm.notify(i, notification.build());
+                // Adds the back stack for the Intent (but not the Intent itself)
+                stackBuilder.addParentStack(cl);
+
+                // Adds the Intent that starts the Activity to the top of the stack
+                stackBuilder.addNextIntent(resultIntent);
+                PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                notification.setContentIntent(resultPendingIntent);
+
+                /* MÅ OPPRETTES I KONTEKSTEN DER MAN BENYTTER KODEN:
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(cont.NOTIFICATION_SERVICE);
+                */
+                // mId allows you to update the notification later on.
+                nm.notify(i, notification.build());
+
 
     }
 
@@ -134,20 +146,20 @@ public class CompareAXService {
         String returnString = "";
         returnString += fixDate(info.getFrom(), info.getTo());
         if (tempCheck){
-            returnString += "Temperatur: " + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
+            returnString += context.getResources().getString(R.string.generate_temperature) + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
 
         }
         if(sunCheck){
-            returnString += "Det er meldt klarvær!\n";
+            returnString += context.getResources().getString(R.string.generate_clear)+"\n";
         }
         if(precipitationCheck){
-            returnString += "Nedbør: " + info.getPrecipitationValue() + "mm" + "\n";
+            returnString += context.getResources().getString(R.string.generate_precipitatiion) + info.getPrecipitationValue() + "mm" + "\n";
         }
         if(windDirectionCheck){
-            returnString += "Vindretning: " + info.getWindDirectionName() + "\n";
+            returnString += context.getResources().getString(R.string.generate_winddirection) + info.getWindDirectionName() + "\n";
         }
         if (windSpeedCheck){
-            returnString += "Vindstyrke: " + info.getWindSpeed() + "m/s \n";
+            returnString += context.getResources().getString(R.string.generate_windspeed) + info.getWindSpeed() + "m/s \n";
         }
         Log.i(tag, returnString);
         return returnString.trim();
@@ -230,7 +242,7 @@ public class CompareAXService {
 
         if(checkSymbolSun(div.getSymbolName())== 2) return false;
 
-        if (checkWindDirection(div.getWindDirectionName())==2) return false;
+        if (checkWindDirection(div.getWindDirectionCode())==2) return false;
 
         if (checkWindSpeed(div.getWindSpeed())==2) return false;
 
@@ -333,22 +345,76 @@ public class CompareAXService {
     //private String windDirection;
     public int checkWindDirection(String a) {
 
-
+            
         if (alertSettingsObj.getWindDirection() == null){
-            //Log.d(tag, "Vindretning returverdi = 1, innverdi = " + a);
+            Log.d(TAG, "Vindretning returverdi = 1, innverdi = " + a);
 
             return 1;
         }
+        Log.d(tag, alertSettingsObj.getWindDirection());
         String[] div = alertSettingsObj.getWindDirection().split(", ");
         for (int i = 0; i<div.length; i++){
             if (div[i].equalsIgnoreCase(a)) {
-                // Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
                 windDirectionCheck = true;
                 return 0;
             }
+            if (a.equalsIgnoreCase("NNW") || a.equalsIgnoreCase("WNW") || a.equalsIgnoreCase("WSW") || a.equalsIgnoreCase("SSW") || a.equalsIgnoreCase("SSE") || a.equalsIgnoreCase("ESE") || a.equalsIgnoreCase("NNE") || a.equalsIgnoreCase("ENE")){
+                switch (a){
+                    case "NNW":
+                        if (div[i].equalsIgnoreCase("NW") || div[i].equalsIgnoreCase("N")){
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                        }
+                        break;
+                    case  "WNW":
+                        if (div[i].equalsIgnoreCase("W") || div[i].equalsIgnoreCase("NW")) {
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                    }
+                        break;
+                    case "WSW":
+                        if (div[i].equalsIgnoreCase("W") || div[i].equalsIgnoreCase("SW")){
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                        }
+                        break;
+                    case "SSW":
+                        if (div[i].equalsIgnoreCase("S") || div[i].equalsIgnoreCase("SW")){
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                        }
+                        break;
+                    case "SSE":
+                        if (div[i].equalsIgnoreCase("S") || div[i].equalsIgnoreCase("SE")){
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                        }
+                        break;
+                    case "ESE":
+                        if (div[i].equalsIgnoreCase("E") || div[i].equalsIgnoreCase("SE")){
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                        }
+                        break;
+                    case "NNE":
+                        if (div[i].equalsIgnoreCase("N") || div[i].equalsIgnoreCase("NE")){
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                        }
+                        break;
+                    case "ENE":
+                        if (div[i].equalsIgnoreCase("E") || div[i].equalsIgnoreCase("NE")){
+                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            return 0;
+                        }
+                        break;
+            }
+            }
+
         }
 
-        //Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);
+        Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);
         return 2;
     }
     //private boolean checkSun;

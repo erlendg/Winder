@@ -47,7 +47,9 @@ public class AlarmReceiver extends BroadcastReceiver{
             //run the comparison logic:
             ArrayList<ForecastDAO> listeTing = compare.findAllOccurences();
             //send notificaton to the user based on the results received:
-            compare.generateNotification(listeTing, settings.getId(), context, MainActivity.class, mNotificationManager);
+            if (!listeTing.isEmpty()) {
+                compare.generateNotification(listeTing, settings.getId(), context, MainActivity.class, mNotificationManager);
+            }
         }
         Toast.makeText(context, "Alertsetting " + url, Toast.LENGTH_SHORT).show();
 
