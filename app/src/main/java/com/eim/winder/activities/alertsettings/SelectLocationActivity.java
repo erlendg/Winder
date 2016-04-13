@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.eim.winder.R;
@@ -30,6 +31,10 @@ public class SelectLocationActivity extends AppCompatActivity {
     private AutoCompleteTextView searchView;
     private ArrayAdapter<LocationDAO> searchAdapter;
     private LocationDAO locationSelected;
+    private ImageButton sunButton;
+    private ImageButton skiButton;
+    private ImageButton snowButton;
+    private ImageButton hikingButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,26 @@ public class SelectLocationActivity extends AppCompatActivity {
                 Log.d("############", locationSelected.getId() + " " + locationSelected.toString());
             }
         });
+
+        sunButton = (ImageButton) findViewById(R.id.template_sun);
+        skiButton = (ImageButton) findViewById(R.id.template_ski);
+        snowButton = (ImageButton) findViewById(R.id.template_snow);
+    }
+    public void onTemplateButtonClick(View view)
+    {
+        switch(view.getId()) {
+            case R.id.template_sun:
+                sunButton.setSelected(!sunButton.isSelected());
+                break;
+
+            case R.id.template_ski:
+                // Code for button 2 click
+                break;
+                
+            case R.id.template_hiking:
+                // Code for button 3 click
+                break;
+        }
     }
     public void onNextButtonClick(View v) {
         if (locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())) {
