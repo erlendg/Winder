@@ -19,7 +19,7 @@
         android:id="@+id/precipPref"
         android:key="precipPref"
         android:title="Precipitation "
-        android:summary="mm"
+        android:summary="mm (6 hour period)"
         android:icon="@drawable/nedboer"
         android:defaultValue="false"/>
 
