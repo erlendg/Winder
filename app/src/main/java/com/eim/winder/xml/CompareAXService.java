@@ -88,7 +88,7 @@ public class CompareAXService {
      */
     public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm){
         notification = new NotificationCompat.Builder(context);
-        notification.setSmallIcon(R.mipmap.ic_launcher);
+        notification.setSmallIcon(R.drawable.ic_stat_name);
         notification.setColor(1);
         if(!a.isEmpty()) {
             notification.setContentTitle("Vi har en match.");
