@@ -72,7 +72,7 @@ public class SelectLocationActivity extends AppCompatActivity {
             case R.id.template_ski:
                 // Code for button 2 click
                 break;
-                
+
             case R.id.template_hiking:
                 // Code for button 3 click
                 break;
