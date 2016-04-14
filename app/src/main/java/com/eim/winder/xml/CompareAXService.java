@@ -134,20 +134,20 @@ public class CompareAXService {
         String returnString = "";
         returnString += fixDate(info.getFrom(), info.getTo());
         if (tempCheck){
-            returnString += context.getResources().getString(R.string.generate_temperature) + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
+            returnString += context.getResources().getString(R.string.generate_temperature)+ " " + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
 
         }
         if(sunCheck){
             returnString += context.getResources().getString(R.string.generate_clear)+"\n";
         }
         if(precipitationCheck){
-            returnString += context.getResources().getString(R.string.generate_precipitatiion) + info.getPrecipitationValue() + "mm" + "\n";
+            returnString += context.getResources().getString(R.string.generate_precipitatiion)+ " " + info.getPrecipitationValue() + "mm" + "\n";
         }
         if(windDirectionCheck){
-            returnString += context.getResources().getString(R.string.generate_winddirection) + info.getWindDirectionName() + "\n";
+            returnString += context.getResources().getString(R.string.generate_winddirection) + " " + info.getWindDirectionName() + "\n";
         }
         if (windSpeedCheck){
-            returnString += context.getResources().getString(R.string.generate_windspeed) + info.getWindSpeed() + "m/s \n";
+            returnString += context.getResources().getString(R.string.generate_windspeed)+ " " + info.getWindSpeed() + "m/s \n";
         }
         Log.i(tag, returnString);
         return returnString.trim();
