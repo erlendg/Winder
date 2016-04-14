@@ -2,6 +2,7 @@ package com.eim.winder.activities.alertsettings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -66,7 +67,7 @@ public class CustomPrecipRangePreference extends Preference{
     }
 
     //Help-methods to store double-values in SharedPreferences (no default method)
-    public SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
+    public static SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
         return edit.putLong(key, Double.doubleToRawLongBits(value));
     }
     public static double getDouble(final SharedPreferences prefs, final String key, final double defaultValue) {
