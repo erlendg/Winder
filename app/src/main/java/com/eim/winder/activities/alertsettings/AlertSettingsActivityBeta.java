@@ -196,6 +196,9 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             asd.setCheckSun(true);
             haveSelectedSomething = true;
         }
+        // Icon:
+        String icon = sharedPrefs.getString(getString(R.string.prefered_icon_key),getString(R.string.prefered_icon_key_default));
+        asd.setIconName(icon);
         return asd;
     }
 

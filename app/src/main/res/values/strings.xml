@@ -67,6 +67,9 @@
     <string name="weekdays_pref_key">weekdays</string>
 
     <string name="checkintr_pref_key">checkIntrPref</string>
+
+    <string name="prefered_icon_key">iconPref</string>
+    <string name="prefered_icon_key_default">ic_custom</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

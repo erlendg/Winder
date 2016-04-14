@@ -21,7 +21,7 @@ public class AlertSettingsDSService {
             SQLiteDBHelper.C_PRECIPITATIONMIN, SQLiteDBHelper.C_PRECIPITATIONMAX, SQLiteDBHelper.C_WINDSPEEDMIN,
             SQLiteDBHelper.C_WINDSPEEDMAX, SQLiteDBHelper.C_WINDIRECTION, SQLiteDBHelper.C_CHECKSUN, SQLiteDBHelper.C_CHECKINTERVAL,
             SQLiteDBHelper.C_MON, SQLiteDBHelper.C_TUE, SQLiteDBHelper.C_WED, SQLiteDBHelper.C_THU,
-            SQLiteDBHelper.C_FRI, SQLiteDBHelper.C_SAT, SQLiteDBHelper.C_SUN};
+            SQLiteDBHelper.C_FRI, SQLiteDBHelper.C_SAT, SQLiteDBHelper.C_SUN, SQLiteDBHelper.C_ICON_NAME};
 
     public AlertSettingsDSService( Context context) {
         this.dbHelper = new SQLiteDBHelper(context);
@@ -92,6 +92,7 @@ public class AlertSettingsDSService {
             values.put(SQLiteDBHelper.C_FRI, alert.isFri());
             values.put(SQLiteDBHelper.C_SAT, alert.isSat());
             values.put(SQLiteDBHelper.C_SUN, alert.isSun());
+            values.put(SQLiteDBHelper.C_ICON_NAME, alert.getIconName());
             values.put(SQLiteDBHelper.C_LOC_ID, alert.getLocation().getId());
             res = database.insert(table, null, values);
         }catch (SQLException e){
@@ -122,6 +123,7 @@ public class AlertSettingsDSService {
             values.put(SQLiteDBHelper.C_FRI, alert.isFri());
             values.put(SQLiteDBHelper.C_SAT, alert.isSat());
             values.put(SQLiteDBHelper.C_SUN, alert.isSun());
+            values.put(SQLiteDBHelper.C_ICON_NAME, alert.getIconName());
             res = database.update(table, values, "_id="+alert.getId(), null);
         }catch (SQLException e){
             e.printStackTrace();
@@ -151,9 +153,9 @@ public class AlertSettingsDSService {
     }
     private AlertSettingsDAO cursorToAlertSettings(Cursor cursor) {
         AlertSettingsDAO alert = new AlertSettingsDAO(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6),
-                cursor.getString(7),cursor.getInt(8),cursor.getDouble(9),cursor.getInt(10),cursor.getInt(11),cursor.getInt(12),cursor.getInt(13),cursor.getInt(14),cursor.getInt(15), cursor.getInt(16), null);
+                cursor.getString(7),cursor.getInt(8),cursor.getDouble(9),cursor.getInt(10),cursor.getInt(11),cursor.getInt(12),cursor.getInt(13),cursor.getInt(14),cursor.getInt(15), cursor.getInt(16), cursor.getString(17), null);
         LocationDAO location = new LocationDAO();
-        location.setId(cursor.getInt(17));
+        location.setId(cursor.getInt(18));
         alert.setLocation(location);
         return alert;
     }
