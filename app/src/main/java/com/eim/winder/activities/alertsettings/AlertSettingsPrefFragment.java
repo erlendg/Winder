@@ -34,6 +34,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
     MultiSelectListPreference windDir;
     MultiSelectListPreference weekdays;
     SharedPreferences prefs;
+    SharedPreferences defaultPrefs;
 
 
     @Override
@@ -69,6 +70,8 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         getPreferenceScreen().removePreference(precipRange);
         getPreferenceScreen().removePreference(windSpeedRange);
         getPreferenceScreen().removePreference(windDir);
+
+        initializeTemplatePrefs();
 
     }
 
@@ -176,5 +179,14 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             }
         }
         return false;
+    }
+    public void initializeTemplatePrefs(){
+        if(tempPref.isChecked()) {
+            getPreferenceScreen().addPreference(tempRange);
+        }if(precipPref.isChecked()) {
+            getPreferenceScreen().addPreference(precipRange);
+        }if(windSpeedPref.isChecked()){
+            getPreferenceScreen().addPreference(windSpeedRange);
+        }
     }
 }

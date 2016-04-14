@@ -2,6 +2,7 @@ package com.eim.winder.activities.alertsettings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.util.Log;
