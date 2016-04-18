@@ -70,4 +70,5 @@
     <string name="windspeed_range_key">vindHastInterv</string>
     <string name="yes">Ja</string>
     <string name="your_preferences">Dine innstillinger:</string>
+    <string name="about">Winder er en applikasjon som er levert av EIM Development. Appen er et hjelpemiddel for deg som er opptatt- eller  avhengig av værforhold i aktiviteter du foretar deg eller planlegger å gjennomføre. Ved å legge inn ønsket varsel selv,  eller ved predefinerte forhåndsinstillinger tilpasset din  aktivitet, vil du motta en notification når dine varselønsker intreffer. Vi har benyttet værvarsel fra Yr levert av Meteorologisk institutt og NRK</string>
 </resources>
