@@ -70,5 +70,5 @@
     <string name="windspeed_range_key">windSpeedRange</string>
     <string name="yes">Yes</string>
     <string name="your_preferences">Your preferences:</string>
-    <string name="about">Winder is an Application provided by EIM Development. Thiss app is supposed to be a tool for users who are occupied by-  or depending on weather conditions in the activities you are planning to conduct. By defining your prefrences for weather  forecasting or by predefined custom options based on  different activities, you will receive a notification when your conditions is satisfied.  Weather data is sourced from yr.no.</string>
+    <string name="about">Winder is an Application provided by EIM Development. Thiss app is supposed to be a tool for users who are occupied by-  or depending on weather conditions in the activities you are planning to conduct. By defining your prefrences for weather  forecasting or by predefined custom options based on  different activities, you will receive a notification when your conditions is satisfied. To make this happen we have used weather forecast from Yr, delivered by the Norwegian Meteorological Institute and NRK</string>
 </resources>
