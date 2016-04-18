@@ -96,4 +96,8 @@
     <string name="checkinterval_day">Hver 24. time</string>
     <string name="checkinterval_twodays">Hver 48. time</string>
 
+
+    <!--ALertSettingsPrefFragment-->
+    <string name="choose_winddirection_string">Choose wind direction</string>
+    <string name="choose_weekdays_string">Choose which days you prefer the weather to occur</string>
 </resources>
