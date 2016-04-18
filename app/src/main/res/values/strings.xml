@@ -74,6 +74,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- CompareAXService-strings: -->
+    <!-- AlertOverViewAbout-->
+    <string name="about">Info</string>
     <string name="notification_message_title">Vi har en match!</string>
     <string name="notification_message_text">Område: </string>
     <string name="generate_temperature">Temperatur: </string>
