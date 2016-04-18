@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify template_selected_shape parent activity in AndroidManifest.xml.
         /*
         //Gammel Kode:
         int id = item.getItemId();
@@ -201,10 +201,10 @@ public class MainActivity extends AppCompatActivity {
     }
 /**
  * This method is moved to another place in the code:
-    private void generateNotification(ArrayList<String> a, int i){
+    private void generateNotification(ArrayList<String> template_selected_shape, int i){
         notification = new NotificationCompat.Builder(this);
         notification.setSmallIcon(R.drawable.testicon);
-        if(!a.isEmpty()) {
+        if(!template_selected_shape.isEmpty()) {
             notification.setContentTitle("Vi har en match.");
             notification.setContentText("for område " + i + "!");
         }
