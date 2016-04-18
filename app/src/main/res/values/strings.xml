@@ -101,7 +101,17 @@
 
 
     <!--AlertPreferences-->
-    <string name="choose_winddirection_string">Choose wind direction</string>
+    <string name="preferences_temperature">Temperature</string>
+    <string name="preferences_temperature_scale">\u2103</string>
+    <string name="preferences_precipitation">Precipitation</string>
+    <string name="preferences_precipitation_amount_period">mm, per 6 hour period</string>
+    <string name="preferences_windspeed">Windspeed</string>
+    <string name="preferences_windspeed_description">m/s</string>
+    <string name="preferences_winddir">Winddirection</string>
+    <string name="preferences_weekdays_check">Weekdays for check</string>
+    <string name="preferences_interval">Check-interval</string>
+    <string name="preferences_interval_description">Choose frequency for the automatic weather-check</string>
+    <string name="choose_winddirection_string">Choose winddirection</string>
     <string name="choose_weekdays_string">Choose which days you prefer the weather to occur</string>
     <string name="preferences_suncheck">Suncheck</string>
 
