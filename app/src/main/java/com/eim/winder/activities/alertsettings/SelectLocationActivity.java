@@ -117,7 +117,9 @@ public class SelectLocationActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
         if(sunButton.isSelected()){
             editor.putBoolean(getString(R.string.sunny_pref_key), true);
+            editor2.putString(getString(R.string.prefered_icon_key), "ic_sun");
             editor.apply();
+            editor2.apply();
             return true;
         }
         if(snowButton.isSelected()){
@@ -128,6 +130,7 @@ public class SelectLocationActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.precip_pref_key), true);
             CustomPrecipRangePreference.putDouble(editor2, getString(R.string.precip_pref_key_min), 2.0);
             CustomPrecipRangePreference.putDouble(editor2, getString(R.string.precip_pref_key_max), 30.0);
+            editor2.putString(getString(R.string.prefered_icon_key), "ic_skiing_48");
             editor.apply();
             editor2.apply();
             return true;
@@ -136,6 +139,7 @@ public class SelectLocationActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.windspeed_pref_key), true);
             editor2.putInt(getString(R.string.windspeed_pref_key_min), 6);
             editor2.putInt(getString(R.string.windspeed_pref_key_max), 40);
+            editor2.putString(getString(R.string.prefered_icon_key), "ic_in_sea_filled");
             editor.apply();
             editor2.apply();
             return true;
@@ -148,6 +152,7 @@ public class SelectLocationActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.windspeed_pref_key), true);
             editor2.putInt(getString(R.string.windspeed_pref_key_min), 0);
             editor2.putInt(getString(R.string.windspeed_pref_key_max), 2);
+            editor2.putString(getString(R.string.prefered_icon_key), "ic_trekking");
 
             editor.apply();
             editor2.apply();
@@ -161,6 +166,7 @@ public class SelectLocationActivity extends AppCompatActivity {
             editor.putBoolean(getString(R.string.precip_pref_key), true);
             CustomPrecipRangePreference.putDouble(editor2, getString(R.string.precip_pref_key_min), 0.5);
             CustomPrecipRangePreference.putDouble(editor2, getString(R.string.precip_pref_key_max), 30.0);
+            editor2.putString(getString(R.string.prefered_icon_key), "ic_rainy_weather");
             editor.apply();
             editor2.apply();
             return true;
@@ -172,9 +178,7 @@ public class SelectLocationActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
             intent.putExtra("LocationDAO", locationSelected);
             intent.putExtra("edit", false);
-            if(initializeTemplatePreferences()){
-                intent.putExtra("template", true);
-            }
+            boolean t = initializeTemplatePreferences();
             Log.i(TAG, "---> startAlertSettingsActivity");
             startActivity(intent);
             finish();

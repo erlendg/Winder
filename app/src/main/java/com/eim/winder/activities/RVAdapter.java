@@ -1,5 +1,6 @@
 package com.eim.winder.activities;
 
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,11 +21,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
     private static String TAG = "RVAdapter";
     private ArrayList<AlertSettingsDAO> alertsettings;
     private static OnItemClickListener listener;
+    private Context context;
 
     //Constructor receives an object that implements the listener interface, along with items
-    RVAdapter(ArrayList<AlertSettingsDAO> alertsettings, OnItemClickListener listener){
+    RVAdapter(Context context, ArrayList<AlertSettingsDAO> alertsettings, OnItemClickListener listener){
         this.alertsettings = alertsettings;
         this.listener = listener;
+        this.context = context;
     }
 
     // Interface that specifies listener’s behaviour
@@ -55,8 +58,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
         holder.bind(alertsettings.get(position), listener);
         holder.locationName.setText(alertsettings.get(position).getLocation().getName());
-        holder.checkInterval.setText(""+alertsettings.get(position).getCheckInterval());
-        holder.weatherIcon.setImageResource(R.drawable.testicon);
+        holder.checkInterval.setText("" + alertsettings.get(position).getCheckInterval());
+        int resID = context.getResources().getIdentifier(alertsettings.get(position).getIconName(), "drawable", context.getPackageName());
+        holder.weatherIcon.setImageResource(resID);
     }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

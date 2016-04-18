@@ -24,8 +24,9 @@ public class AlertSettingsDAO implements Parcelable{
     private boolean checkSun;
     private double checkInterval;
     private boolean mon, tue, wed, thu, fri, sat, sun;
+    private String iconName;
 
-    public AlertSettingsDAO(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, LocationDAO location) {
+    public AlertSettingsDAO(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, String iconName, LocationDAO location) {
         this.id = id;
         this.location = location;
         this.tempMin = tempMin;
@@ -44,6 +45,7 @@ public class AlertSettingsDAO implements Parcelable{
         this.fri = fri > 0;
         this.sat = sat > 0;
         this.sun = sun > 0;
+        this.iconName = iconName;
     }
 
     public AlertSettingsDAO(){
@@ -208,6 +210,13 @@ public class AlertSettingsDAO implements Parcelable{
         this.sat = sat;
     }
 
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
+    }
 
     public String getWeekDaysSelected(Resources resources){
         String res = "";
@@ -245,6 +254,7 @@ public class AlertSettingsDAO implements Parcelable{
         fri = in.readInt() > 0;
         sat = in.readInt() > 0;
         sun = in.readInt() > 0;
+        iconName = in.readString();
     }
 
     @Override
@@ -272,6 +282,7 @@ public class AlertSettingsDAO implements Parcelable{
         dest.writeInt(fri ? 1 : 0);
         dest.writeInt(sat ? 1 : 0);
         dest.writeInt(sun ? 1 : 0);
+        dest.writeString(iconName);
     }
     /*
     * This is needed for Android to be able to
