@@ -43,22 +43,65 @@
     <string name ="name_of_prefs_saved">prefValuesSaved</string>
     <string name="save_prefs_button">Save</string>
     <string name="cancel_prefs_button">Cancel</string>
+
     <string name="temp_pref_key">tempPref</string>
+    <string name="temp_pref_key_min">minTemp</string>
+    <string name="temp_pref_key_max">maxTemp</string>
     <string name="temp_range_key">tempRange</string>
+
     <string name="precip_pref_key">precipPref</string>
+    <string name="precip_pref_key_min">minPrecip</string>
+    <string name="precip_pref_key_max">maxPrecip</string>
     <string name="precip_range_key">precipRange</string>
+
     <string name="windspeed_pref_key">windSpeedPref</string>
+    <string name="windspeed_pref_key_min">minWindSpeed</string>
+    <string name="windspeed_pref_key_max">maxWindSpeed</string>
     <string name="windspeed_range_key">windSpeedRange</string>
+
     <string name="winddir_pref_key">windDirPref</string>
     <string name="winddir_select_key">windDir</string>
+
     <string name="sunny_pref_key">sunnyPref</string>
+
     <string name="weekdays_pref_key">weekdays</string>
+
     <string name="checkintr_pref_key">checkIntrPref</string>
+
+    <string name="prefered_icon_key">iconPref</string>
+    <string name="prefered_icon_key_default">ic_custom</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- CompareAXService-strings: -->
+<<<<<<< HEAD
     <!-- AlertOverViewAbout-->
     <string name="about">Info</string>
+=======
+    <string name="notification_message_title">Vi har en match!</string>
+    <string name="notification_message_text">Område: </string>
+    <string name="generate_temperature">Temperatur: </string>
+    <string name="generate_precipitatiion">Nedbør: </string>
+    <string name="generate_clear">Det er meldt klarvær! </string>
+    <string name="generate_winddirection">Vindretning: </string>
+    <string name="generate_windspeed">Vindstyrke: </string>
+
+    <!-- Arrays.xml-strings: -->
+    <string name="weekdays_monday">Mandag</string>
+    <string name="weekdays_tuesday">Tirsdag</string>
+    <string name="weekdays_wednesday">Onsdag</string>
+    <string name="weekdays_thursday">Torsdag</string>
+    <string name="weekdays_friday">Fredag</string>
+    <string name="weekdays_saturday">Lørdag</string>
+    <string name="weekdays_sunday">Søndag</string>
+
+    <string name="checkinterval_one">Hver 1. time</string>
+    <string name="checkinterval_two">Hver 2. time</string>
+    <string name="checkinterval_four">Hver 4. time</string>
+    <string name="checkinterval_six">Hver 6. time</string>
+    <string name="checkinterval_twelve">Hver 12. time</string>
+    <string name="checkinterval_day">Hver 24. time</string>
+    <string name="checkinterval_twodays">Hver 48. time</string>
+>>>>>>> d654296f06525ff91fde49bf723669546121877a
 
 </resources>

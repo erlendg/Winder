@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         llManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llManager);
         alertSettingsList = getAlertSettingsDataSet();
-        rvAdapter = new RVAdapter(alertSettingsList, new RVAdapter.OnItemClickListener(){
+        rvAdapter = new RVAdapter(this, alertSettingsList, new RVAdapter.OnItemClickListener(){
             @Override public void onItemClick(AlertSettingsDAO item) {
                 Log.i(TAG, " " +item.getLocation().getName());
                 startAlertOverViewActivity(item);
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         //Updates the view in case of changes in the alertlist
         super.onResume();
         alertSettingsList = getAlertSettingsDataSet();
-        rvAdapter = new RVAdapter(alertSettingsList, new RVAdapter.OnItemClickListener(){
+        rvAdapter = new RVAdapter(this, alertSettingsList, new RVAdapter.OnItemClickListener(){
             @Override public void onItemClick(AlertSettingsDAO item) {
                 Log.i(TAG, " " +item.getLocation().getName());
                 startAlertOverViewActivity(item);
@@ -175,8 +175,9 @@ public class MainActivity extends AppCompatActivity {
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                         ArrayList<ForecastDAO> listeTing = compare.findAllOccurences();
-
-                        compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
+                        if (!listeTing.isEmpty()) {
+                            compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
+                        }
                     }
                     Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
                 }

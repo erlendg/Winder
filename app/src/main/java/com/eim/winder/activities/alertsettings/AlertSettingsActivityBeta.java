@@ -54,14 +54,12 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         setContentView(R.layout.alertprefsettings_layout);
         getSupportActionBar().setTitle(R.string.settings_for_alert);
         getFragmentManager().beginTransaction().replace(R.id.prefFragment, new AlertSettingsPrefFragment()).commit();
-        PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
+        //PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
         bundle = getIntent().getExtras();
         locationSelected = bundle.getParcelable("LocationDAO");
         updateMode = bundle.getBoolean("edit");
         // instantiate database handler
         alertdatasource = new AlertSettingsDSService(this);
-        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
-
     }
 
     /**
@@ -75,15 +73,17 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
         SharedPreferences.Editor editor2 = sharedPrefs.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
         editor2.clear();
-        editor2.commit();
+        editor2.apply();
     }
 
 
     public void onCancelButtonClick(View v) {
+        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved) );
         finish();
     }
+
     private void updatePreferences(){
         sharedPrefs = getSharedPreferences(getResources().getString(R.string.name_of_prefs_saved), getApplicationContext().MODE_PRIVATE);
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -103,6 +103,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         }
         interval = asd.getCheckInterval();
         boolean ok = saveAlertSettings(asd);
+        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved) );
         if (!ok) {
             Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
         } else {
@@ -137,40 +138,40 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     public AlertSettingsDAO makeObjFromSettings(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
         AlertSettingsDAO asd = new AlertSettingsDAO();
         //Temperature:
-        if (defaultSharedPrefs.getBoolean("tempPref", false)) {
-            int tempMin = sharedPrefs.getInt("minTemp", -50);
-            int tempMax = sharedPrefs.getInt("maxTemp", 50);
+        if (defaultSharedPrefs.getBoolean(getString(R.string.temp_pref_key), false)) {
+            int tempMin = sharedPrefs.getInt(getString(R.string.temp_pref_key_min), -50);
+            int tempMax = sharedPrefs.getInt(getString(R.string.temp_pref_key_max), 50);
             asd.setTempMin(tempMin);
             asd.setTempMax(tempMax);
             haveSelectedSomething = true;
             Log.i(TAG, "Temp: Min: " + tempMin + " Max: " + tempMax);
         }
         //Rain:
-        if (defaultSharedPrefs.getBoolean("precipPref", false)) {
-            double precipMin = CustomPrecipRangePreference.getDouble(sharedPrefs, "minPrecip", 0.0);
-            double precipMax = CustomPrecipRangePreference.getDouble(sharedPrefs, "maxPrecip", 30.0);
+        if (defaultSharedPrefs.getBoolean(getString(R.string.precip_pref_key), false)) {
+            double precipMin = CustomPrecipRangePreference.getDouble(sharedPrefs, getString(R.string.precip_pref_key_min), 0.0);
+            double precipMax = CustomPrecipRangePreference.getDouble(sharedPrefs, getString(R.string.precip_pref_key_max), 30.0);
             asd.setPrecipitationMin(precipMin);
             asd.setPrecipitationMax(precipMax);
             haveSelectedSomething = true;
             Log.i(TAG, "Rain: Min: " + precipMin + " Max: " + precipMax);
         }
         //Wind:
-        if (defaultSharedPrefs.getBoolean("windSpeedPref", false)) {
-            int windSpeedMin = sharedPrefs.getInt("minWindSpeed", 0);
-            int windSpeedMax = sharedPrefs.getInt("maxWindSpeed", 40);
+        if (defaultSharedPrefs.getBoolean(getString(R.string.windspeed_pref_key), false)) {
+            int windSpeedMin = sharedPrefs.getInt(getString(R.string.windspeed_pref_key_min), 0);
+            int windSpeedMax = sharedPrefs.getInt(getString(R.string.windspeed_pref_key_max), 40);
             asd.setWindSpeedMin(windSpeedMin);
             asd.setWindSpeedMax(windSpeedMax);
             haveSelectedSomething = true;
             Log.i(TAG, "Wind: Min: " + windSpeedMin + " Max: " + windSpeedMax);
         }
-        if (defaultSharedPrefs.getBoolean("windDirPref", false)) {
-            String windDirections = sharedPrefs.getString("windDir", "NOT VALID");
+        if (defaultSharedPrefs.getBoolean(getString(R.string.winddir_pref_key), false)) {
+            String windDirections = sharedPrefs.getString(getString(R.string.winddir_select_key), "NOT VALID");
             asd.setWindDirection(windDirections);
             haveSelectedSomething = true;
             Log.i(TAG, "WindDir: " + windDirections);
         }
         //Weekdays:
-        Set<String> weekdaysSet = sharedPrefs.getStringSet("weekdays", null);
+        Set<String> weekdaysSet = sharedPrefs.getStringSet(getString(R.string.weekdays), null);
         if(weekdaysSet == null || weekdaysSet.size() == 0){
             asd.setMon(true); asd.setTue(true); asd.setWed(true); asd.setThu(true); asd.setFri(true); asd.setSat(true); asd.setSun(true);
         }else {
@@ -186,15 +187,18 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             }
         }
         //Check interval:
-        String interval = sharedPrefs.getString("checkIntrPref", "Every 6 hour");
+        String interval = sharedPrefs.getString(getString(R.string.checkintr_pref_key), "Every 6 hour");
         String split[] = interval.split(" ");
         Log.i(TAG, "CheckInterval: " + interval);
         asd.setCheckInterval(Double.parseDouble(split[1]));
         //Sun:
-        if(defaultSharedPrefs.getBoolean("sunnyPref", false)){
+        if(defaultSharedPrefs.getBoolean(getString(R.string.sunny_pref_key), false)){
             asd.setCheckSun(true);
             haveSelectedSomething = true;
         }
+        // Icon:
+        String icon = sharedPrefs.getString(getString(R.string.prefered_icon_key),getString(R.string.prefered_icon_key_default));
+        asd.setIconName(icon);
         return asd;
     }
 
