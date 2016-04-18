@@ -104,4 +104,10 @@
     <string name="checkinterval_twodays">Hver 48. time</string>
 >>>>>>> d654296f06525ff91fde49bf723669546121877a
 
+
+    <!--AlertPreferences-->
+    <string name="choose_winddirection_string">Choose wind direction</string>
+    <string name="choose_weekdays_string">Choose which days you prefer the weather to occur</string>
+    <string name="preferences_suncheck">Suncheck</string>
+
 </resources>

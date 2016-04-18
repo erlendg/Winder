@@ -98,11 +98,11 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             editor.commit();
             return true;
         }if(pref == windDir){
-            setMultiSelectPreferenceSummary(windDir, newValue, "windDir", "Choose wind direction", false);
+            setMultiSelectPreferenceSummary(windDir, newValue, "windDir", getResources().getString(R.string.choose_winddirection_string) , false);
             return true;
 
         }if(pref == weekdays){
-            setMultiSelectPreferenceSummary(weekdays, newValue, "weekdays", "Choose which days you prefer the weather to occure", true);
+            setMultiSelectPreferenceSummary(weekdays, newValue, "weekdays", getResources().getString(R.string.choose_weekdays_string), true);
             return true;
         }
         return false;
