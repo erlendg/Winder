@@ -98,4 +98,5 @@
     <string name="windspeed_pref_key_min">minWindSpeed</string>
     <string name="windspeed_range_key">windSpeedRange</string>
     <string name="weekdays_pref_key">weekdays</string>
+    <string name="yr_credits">Værdata fra yr.no</string>
 </resources>

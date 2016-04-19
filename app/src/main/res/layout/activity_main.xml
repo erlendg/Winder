@@ -36,4 +36,5 @@
     <!-- Her inkluderes layoutfilen content_main: -->
     <include layout="@layout/content_main" />
 
+
 </android.support.design.widget.CoordinatorLayout>

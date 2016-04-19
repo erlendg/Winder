@@ -19,4 +19,10 @@
         android:paddingBottom="80dp"
         android:clipToPadding="false"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/yr_credits"/>
+
 </RelativeLayout>
