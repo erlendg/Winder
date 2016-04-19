@@ -3,6 +3,8 @@ package com.eim.winder.activities;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +13,7 @@ import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -30,6 +33,7 @@ import com.eim.winder.db.LocationDAO;
 import com.eim.winder.db.LocationDSService;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setLocale();
+        Log.e("Locale:", Locale.getDefault().getLanguage());
 
         //Initiates the datasource:
         datasource = new LocationDSService(this);
@@ -196,6 +202,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void setLocale() {
+
+        //Setter den til norsk hvis det er satt på enheten ved oppstart:
+        Locale l = getResources().getConfiguration().locale;
+        if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")){
+            l = new Locale("no","NO");
+            //hvis ikke norsk så settes den til britisk ved oppstart:
+        }else{
+            l = new Locale("en","en_US");
+        }
+        Configuration config = new Configuration();
+        config.locale = l;
+        Resources res = getBaseContext().getResources();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        // refresh your views here
+        super.onConfigurationChanged(newConfig);
+    }
     public int getNumOfLocations(){
         return numOfLocations;
     }
@@ -237,17 +265,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
     */
-    /*@Override
-    protected void onResume() {
-        //datasource.open();
-        datasource = new LocationDSService(this);
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        datasource.close();
-        super.onPause();
-    }*/
 
 }

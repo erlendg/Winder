@@ -2,42 +2,42 @@
     <string name="app_name">Winder</string>
     <string name="action_settings">Settings</string>
 
-    <string name="temp_interval">Temperatur:</string>
-    <string name="nedboer_intervall">Nedbør: </string>
-    <string name="vind_styrke">Vindstyrke:</string>
-    <string name="vind_retning">Vindretning:</string>
-    <string name="sjekk_intervall">Sjekkintervall:</string>
-    <string name="sol_varsel">Solvarsel:</string>
-    <string name="lagre_varsel_button">Lagre</string>
-    <string name="from">Fra:</string>
-    <string name="til">Til:</string>
-    <string name="choose_location">Velg sted for varsel</string>
-    <string name="soek_hint">Søk etter stedsnavn...</string>
-    <string name="next">Neste</string>
-    <string name="cancel">Avbryt</string>
-    <string name="toast_more_then_ten_alerts">OBS! Varsellisten er full, slett en for å legge til ny</string>
+    <string name="temp_interval">Temperature:</string>
+    <string name="nedboer_intervall">Precipitation:</string>
+    <string name="vind_styrke">Windspeed:</string>
+    <string name="vind_retning">Winddirection:</string>
+    <string name="sjekk_intervall">Check interval:</string>
+    <string name="sol_varsel">Sunalert:</string>
+    <string name="lagre_varsel_button">Save</string>
+    <string name="from">From:</string>
+    <string name="til">To:</string>
+    <string name="choose_location">Choose location for alerts</string>
+    <string name="soek_hint">Search for location....</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
+    <string name="toast_more_then_ten_alerts">Warning! Alertlist is fully populated, delete one to make room</string>
 
     <string name="settings_for_alert">Velg innstillinger for varsel</string>
     <!-- AlertOverViewActivity-->
     <string name="title_activity_alert_over_view">AlertOverViewActivity</string>
-    <string name="your_preferences">Dine innstillinger: </string>
+    <string name="your_preferences">Your preferences:</string>
     <string name="check_interval">Check interval: </string>
-    <string name="settings">Innstillinger</string>
-    <string name="eventlist">Hendelser</string>
-    <string name="weekdays">Ukedager: </string>
-    <string name="monday">Mandag</string>
-    <string name="tuesday">Tirsdag</string>
-    <string name="wednesday">Onsdag</string>
-    <string name="thursday">Torsdag</string>
-    <string name="friday">Fredag</string>
-    <string name="saturday">Lørdag</string>
-    <string name="sunday">Søndag</string>
-    <string name="yes">Ja</string>
-    <string name="no">Nei</string>
+    <string name="settings">Settings</string>
+    <string name="eventlist">Events</string>
+    <string name="weekdays">Weekdays:</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
     <!-- AlertSettings Preference strings: -->
-    <string name="on_next_button_click_warning">Fyll inn et korrekt stedsnavn!</string>
+    <string name="on_next_button_click_warning">Enter a valid location!</string>
     <string name="wind_dir_not_chosen">"Please select preferred wind directions"</string>
     <string name="no_settings_selected">No settings selected..</string>
     <string name ="name_of_prefs_saved">prefValuesSaved</string>
@@ -70,36 +70,36 @@
 
     <string name="prefered_icon_key">iconPref</string>
     <string name="prefered_icon_key_default">ic_custom</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- CompareAXService-strings: -->
     <!-- AlertOverViewAbout-->
-    <string name="about">Info</string>
-    <string name="notification_message_title">Vi har en match!</string>
-    <string name="notification_message_text">Område: </string>
+    <string name="about">Winder is an Application provided by EIM Development. Thiss app is supposed to be a tool for users who are occupied by-  or depending on weather conditions in the activities you are planning to conduct. By defining your prefrences for weather  forecasting or by predefined custom options based on  different activities, you will receive a notification when your conditions is satisfied. To make this happen we have used weather forecast from Yr, delivered by the Norwegian Meteorological Institute and NRK</string>
+    <string name="notification_message_title">We have a match!</string>
+    <string name="notification_message_text">Area:</string>
     <string name="generate_temperature">Temperatur: </string>
-    <string name="generate_precipitatiion">Nedbør: </string>
-    <string name="generate_clear">Det er meldt klarvær! </string>
-    <string name="generate_winddirection">Vindretning: </string>
-    <string name="generate_windspeed">Vindstyrke: </string>
+    <string name="generate_precipitatiion">Precipitation:</string>
+    <string name="generate_clear">Clear weather!</string>
+    <string name="generate_winddirection">Wind direction:</string>
+    <string name="generate_windspeed">Windspeed:</string>
 
     <!-- Arrays.xml-strings: -->
     <string name="weekdays_monday">Mandag</string>
-    <string name="weekdays_tuesday">Tirsdag</string>
-    <string name="weekdays_wednesday">Onsdag</string>
-    <string name="weekdays_thursday">Torsdag</string>
-    <string name="weekdays_friday">Fredag</string>
-    <string name="weekdays_saturday">Lørdag</string>
-    <string name="weekdays_sunday">Søndag</string>
+    <string name="weekdays_tuesday">Tuesday</string>
+    <string name="weekdays_wednesday">Wednesday</string>
+    <string name="weekdays_thursday">Thursday</string>
+    <string name="weekdays_friday">Friday</string>
+    <string name="weekdays_saturday">Saturday</string>
+    <string name="weekdays_sunday">Sunday</string>
 
-    <string name="checkinterval_one">Hver 1. time</string>
-    <string name="checkinterval_two">Hver 2. time</string>
-    <string name="checkinterval_four">Hver 4. time</string>
-    <string name="checkinterval_six">Hver 6. time</string>
-    <string name="checkinterval_twelve">Hver 12. time</string>
-    <string name="checkinterval_day">Hver 24. time</string>
-    <string name="checkinterval_twodays">Hver 48. time</string>
+    <string name="checkinterval_one">Every 1 hours</string>
+    <string name="checkinterval_two">Every 2 hours</string>
+    <string name="checkinterval_four">Every 4 hours</string>
+    <string name="checkinterval_six">Every 6 hours</string>
+    <string name="checkinterval_twelve">Every 12 hours</string>
+    <string name="checkinterval_day">Every 24 hours</string>
+    <string name="checkinterval_twodays">Every 48 hours</string>
 
 
     <!--AlertPreferences-->
@@ -109,11 +109,11 @@
     <string name="preferences_precipitation_amount_period">mm, per 6 hour period</string>
     <string name="preferences_windspeed">Windspeed</string>
     <string name="preferences_windspeed_description">m/s</string>
-    <string name="preferences_winddir">Winddirection</string>
+    <string name="preferences_winddir">Wind direction</string>
     <string name="preferences_weekdays_check">Weekdays for check</string>
-    <string name="preferences_interval">Check-interval</string>
+    <string name="preferences_interval">Check interval</string>
     <string name="preferences_interval_description">Choose frequency for the automatic weather-check</string>
-    <string name="choose_winddirection_string">Choose winddirection</string>
+    <string name="choose_winddirection_string">Choose wind direction</string>
     <string name="choose_weekdays_string">Choose which days you prefer the weather to occur</string>
     <string name="preferences_suncheck">Suncheck</string>
 

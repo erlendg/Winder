@@ -44,8 +44,8 @@
     <string name="sunday">Søndag</string>
     <string name="sunny_pref_key">solInst</string>
     <string name="temp_interval">Temperatur:</string>
-    <string name="temp_pref_key">tempInst</string>
-    <string name="temp_range_key">tempInterv</string>
+    <string name="temp_pref_key">tempPref</string>
+    <string name="temp_range_key">tempRange</string>
     <string name="thursday">Torsdag</string>
     <string name="til">Til:</string>
     <string name="title_activity_alert_over_view">AlertOverViewActivity</string>
@@ -83,7 +83,7 @@
     <string name="preferences_interval">Sjekkintervall</string>
     <string name="preferences_interval_description">Velg frekvens for automatisk værvarsel</string>
     <string name="preferences_precipitation">Nedbør</string>
-    <string name="preferences_precipitation_amount_period">mm, iløpet av 6-timers perioder</string>
+    <string name="preferences_precipitation_amount_period">mm, i løpet av 6-timers perioder</string>
     <string name="preferences_suncheck">Solvarsel</string>
     <string name="preferences_temperature">Temperatur</string>
     <string name="preferences_temperature_scale">\u2103</string>

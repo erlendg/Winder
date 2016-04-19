@@ -26,7 +26,7 @@
         android:drawableRight="@drawable/ic_search_api_holo_light"
         android:id="@+id/search_view"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:completionThreshold="1"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="10dp"

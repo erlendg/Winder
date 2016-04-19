@@ -14,6 +14,7 @@ import com.eim.winder.R;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -41,7 +42,6 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.alert_preferences);
-
         tempPref = (CheckBoxPreference) findPreference("tempPref");
         precipPref = (CheckBoxPreference) findPreference("precipPref");
         windSpeedPref= (CheckBoxPreference)findPreference("windSpeedPref");
