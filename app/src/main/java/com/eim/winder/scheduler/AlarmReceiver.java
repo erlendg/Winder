@@ -30,6 +30,7 @@ public class AlarmReceiver extends BroadcastReceiver{
         //Extracting the integer id from intent:
         Integer id = intent.getIntExtra("id", -1);
         String url = intent.getStringExtra("url");
+        int compareResult;
 
         //Finding the alertsettings-object  based on the Id contained in the received intent:
         AlertSettingsDSService alertdatasource = new AlertSettingsDSService(context);
@@ -45,11 +46,11 @@ public class AlarmReceiver extends BroadcastReceiver{
             //creating the NotificationManager needed to display notifications:
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             //run the comparison logic:
-            ArrayList<ForecastDAO> listeTing = compare.findAllOccurences();
+            compareResult = compare.findAllOccurences(settings.getId(), context, MainActivity.class, mNotificationManager);
             //send notificaton to the user based on the results received:
-            if (!listeTing.isEmpty()) {
+            /*if (!listeTing.isEmpty()) {
                 compare.generateNotification(listeTing, settings.getId(), context, MainActivity.class, mNotificationManager);
-            }
+            }*/
         }
         Toast.makeText(context, "Alertsetting " + url, Toast.LENGTH_SHORT).show();
 

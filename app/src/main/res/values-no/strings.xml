@@ -12,7 +12,6 @@
     <string name="checkinterval_two">Hver 2. time</string>
     <string name="checkinterval_twodays">Hver 48. time</string>
     <string name="choose_location">Velg sted for varsel</string>
-    <string name="checkintr_pref_key">sjekkIntrPref</string>
     <string name="eventlist">Hendelser</string>
     <string name="friday">Fredag</string>
     <string name="from">Fra:</string>
@@ -32,8 +31,6 @@
     <string name="notification_message_text">Område:</string>
     <string name="notification_message_title">Vi har en match!</string>
     <string name="on_next_button_click_warning">Fyll inn et korrekt stedsnavn!</string>
-    <string name="precip_pref_key">nedborInst</string>
-    <string name="precip_range_key">nedborInterv</string>
     <string name="saturday">Lørdag</string>
     <string name="save_prefs_button">Lagre</string>
     <string name="settings">Instillinger</string>
@@ -42,10 +39,7 @@
     <string name="soek_hint">Søk etter stedsnavn...</string>
     <string name="sol_varsel">Solvarsel:</string>
     <string name="sunday">Søndag</string>
-    <string name="sunny_pref_key">solInst</string>
     <string name="temp_interval">Temperatur:</string>
-    <string name="temp_pref_key">tempInst</string>
-    <string name="temp_range_key">tempInterv</string>
     <string name="thursday">Torsdag</string>
     <string name="til">Til:</string>
     <string name="title_activity_alert_over_view">AlertOverViewActivity</string>
@@ -57,28 +51,17 @@
     <string name="weekdays">Ukedager:</string>
     <string name="weekdays_friday">Fredag</string>
     <string name="weekdays_monday">Mandag</string>
-    <string name="weekdays_pref_key">ukedager</string>
     <string name="weekdays_saturday">Lørdag</string>
     <string name="weekdays_sunday">Søndag</string>
     <string name="weekdays_thursday">Torsdag</string>
     <string name="weekdays_tuesday">Tirsdag</string>
     <string name="weekdays_wednesday">Onsdag</string>
     <string name="wind_dir_not_chosen">"Vennligst velg foretrukne vindretninger"</string>
-    <string name="winddir_pref_key">vindRetnInst</string>
-    <string name="winddir_select_key">vindRetn</string>
-    <string name="windspeed_pref_key">vindHastInst</string>
-    <string name="windspeed_range_key">vindHastInterv</string>
     <string name="yes">Ja</string>
     <string name="your_preferences">Dine innstillinger:</string>
     <string name="action_settings">Instillinger</string>
     <string name="choose_weekdays_string">Velg hvilke dager du er interessert i varsel for</string>
     <string name="choose_winddirection_string">Velg vindretning</string>
-    <string name="temp_pref_key_max">maxTemp</string>
-    <string name="temp_pref_key_min">minTemp</string>
-    <string name="precip_pref_key_max">maxPrecip</string>
-    <string name="precip_pref_key_min">minPrecip</string>
-    <string name="prefered_icon_key">iconPref</string>
-    <string name="prefered_icon_key_default">ic_custom</string>
     <string name="preferences_interval">Sjekkintervall</string>
     <string name="preferences_interval_description">Velg frekvens for automatisk værvarsel</string>
     <string name="preferences_precipitation">Nedbør</string>
@@ -90,6 +73,4 @@
     <string name="preferences_winddir">Vindretning</string>
     <string name="preferences_windspeed">Vindstyrke</string>
     <string name="preferences_windspeed_description">m/s</string>
-    <string name="windspeed_pref_key_max">maxWindSpeed</string>
-    <string name="windspeed_pref_key_min">minWindSpeed</string>
 </resources>

@@ -42,18 +42,18 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.alert_preferences);
 
-        tempPref = (CheckBoxPreference) findPreference("tempPref");
-        precipPref = (CheckBoxPreference) findPreference("precipPref");
-        windSpeedPref= (CheckBoxPreference)findPreference("windSpeedPref");
-        windDirPref = (CheckBoxPreference)findPreference("windDirPref");
-        sunnyPref = (CheckBoxPreference)findPreference("sunnyPref");
-        checkIntrPref = (ListPreference)findPreference("checkIntrPref");
+        tempPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.temp_pref_key));
+        precipPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.precip_pref_key));
+        windSpeedPref= (CheckBoxPreference)findPreference(getResources().getString(R.string.windspeed_pref_key));
+        windDirPref = (CheckBoxPreference)findPreference(getResources().getString(R.string.winddir_pref_key));
+        sunnyPref = (CheckBoxPreference)findPreference(getResources().getString(R.string.sunny_pref_key));
+        checkIntrPref = (ListPreference)findPreference(getResources().getString(R.string.checkintr_pref_key));
 
-        tempRange = findPreference("tempRange");
-        precipRange = findPreference("precipRange");
-        windSpeedRange = findPreference("windSpeedRange");
-        windDir = (MultiSelectListPreference) findPreference("windDir");
-        weekdays = (MultiSelectListPreference) findPreference("weekdays");
+        tempRange = findPreference(getResources().getString(R.string.temp_range_key));
+        precipRange = findPreference(getResources().getString(R.string.precip_range_key));
+        windSpeedRange = findPreference(getResources().getString(R.string.windspeed_range_key));
+        windDir = (MultiSelectListPreference) findPreference(getResources().getString(R.string.winddir_select_key));
+        weekdays = (MultiSelectListPreference) findPreference(getResources().getString(R.string.weekdays_pref_key));
         //weekdays.setValues(new HashSet<String>(Arrays.asList(getResources().getStringArray(R.array.weekdays_values))));
 
         setPrefsChangedListener();
@@ -94,15 +94,15 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             int id = Integer.parseInt((String)newValue);
             checkIntrPref.setSummary(entries[(int) id-1]);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("checkIntrPref",(entries[(int) id-1]).toString());
+            editor.putString(getResources().getString(R.string.checkintr_pref_key),(entries[(int) id-1]).toString());
             editor.commit();
             return true;
         }if(pref == windDir){
-            setMultiSelectPreferenceSummary(windDir, newValue, "windDir", getResources().getString(R.string.choose_winddirection_string) , false);
+            setMultiSelectPreferenceSummary(windDir, newValue, getResources().getString(R.string.winddir_select_key), getResources().getString(R.string.choose_winddirection_string) , false);
             return true;
 
         }if(pref == weekdays){
-            setMultiSelectPreferenceSummary(weekdays, newValue, "weekdays", getResources().getString(R.string.choose_weekdays_string), true);
+            setMultiSelectPreferenceSummary(weekdays, newValue, getResources().getString(R.string.weekdays_pref_key), getResources().getString(R.string.choose_weekdays_string), true);
             return true;
         }
         return false;

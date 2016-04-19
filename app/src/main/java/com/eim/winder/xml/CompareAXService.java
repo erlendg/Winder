@@ -88,15 +88,20 @@ public class CompareAXService {
      * @param context context of activity that called the method.
      * @param cl class of activity
      * @param nm notificationmanager injected from previously mentioned activity
+     * @param type indicates which kind of notification should be issued.
      */
-    public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm){
+    public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm, int type){
                 notification = new NotificationCompat.Builder(context);
                 notification.setSmallIcon(R.mipmap.ic_launcher);
                 notification.setColor(context.getResources().getColor(R.color.colorPrimary));
 
-                notification.setContentTitle(context.getResources().getString(R.string.notification_message_title));
-                notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!");
-
+                if (type == 1){
+                    notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_success));
+                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!");
+                }else if(type == 2){
+                    notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_no_success));
+                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!!!!!");
+                }
 
                 // Creates an explicit intent for an Activity in your app
                 Intent resultIntent = new Intent(context, cl);
@@ -155,22 +160,6 @@ public class CompareAXService {
 
     private String fixDate(String fromDate, String toDate){
         String result = "";
-       /*
-       //Variant 1:
-       c = Calendar.getInstance();
-
-        try {
-            d = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.FRANCE).parse(fromDate);
-            d2 = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.FRENCH).parse(toDate);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            System.out.println("div datofeil");
-        }
-        c.setTime(d);
-        result += c.get(Calendar.DAY_OF_MONTH)+ "/" + c.get(Calendar.MONTH) + "/" +c.get(Calendar.YEAR) + ": " + c.get(Calendar.HOUR_OF_DAY) + "." + c.get(Calendar.MINUTE) + " - ";
-        c.setTime(d2);
-        result += c.get(Calendar.HOUR_OF_DAY) + "." + c.get(Calendar.MINUTE);*/
 
         result += fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + "/" + fromDate.substring(0,4) + ": "+ fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
 
@@ -196,12 +185,13 @@ public class CompareAXService {
         //return ok;
     }
 
-    public ArrayList<ForecastDAO> findAllOccurences(){
+    public int findAllOccurences(int id, Context context, Class cl, NotificationManager nm){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
         ArrayList<ForecastDAO> returnList = new ArrayList<>();
         ForecastDAO temp;
         String dateandinfo;
+        int result = -1;
         for (int i = 0; i<list.size(); i++){
             sendNotification = findOccurence(list.get(i));
 
@@ -217,11 +207,36 @@ public class CompareAXService {
 
         }
 
-        //// TODO: 08.04.2016 This is where logic for database storage of Forecast is implemented
-        addShitToDB(returnList);
+        //// TODO: 19.04.2016 this is where code to handle the four different notification-scenarios is implemented:
 
-
-        return returnList;
+        if(!forecastDSService.findIfForecastsExistsForAlertSettingsID(id)){
+            //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
+            if(!returnList.isEmpty()){
+                Log.e(TAG, "CASE1");
+                addShitToDB(returnList);
+                generateNotification(returnList, id, context, cl, nm, 1);
+                return 1;
+            } else{
+                //Case 2: No new Forecast-entries found from new XML, and no previous Forecast-entries are found in the DB
+              // do nothing atm
+                Log.e(TAG, "CASE2");
+                return 2;
+            }
+        } else{
+            if (!returnList.isEmpty()){
+                //Case 4: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
+                addShitToDB(returnList);
+                //generateNotification(returnList, id, context, cl, nm, 1);
+                Log.e(TAG, "CASE3");
+                return 3;
+            }else{
+                //Case 3: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
+                forecastDSService.deleteForecastByAlertSettingsID(id);
+                generateNotification(returnList, id, context, cl, nm, 2);
+                Log.e(TAG, "CASE4");
+                return 4;
+            }
+        }
     }
 
     private boolean findOccurence(TabularInfo div){

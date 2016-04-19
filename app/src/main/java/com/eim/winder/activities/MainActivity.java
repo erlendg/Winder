@@ -170,14 +170,15 @@ public class MainActivity extends AppCompatActivity {
                     compare = new CompareAXService(this, temp);
                     //run the xml-parser:
                     div = compare.runHandleXML();
+                    int compareResult;
                     //if the parsing is done, run findAllOccurences:
                     if(div) {
                         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-                        ArrayList<ForecastDAO> listeTing = compare.findAllOccurences();
-                        if (!listeTing.isEmpty()) {
+                        compareResult = compare.findAllOccurences(temp.getId(), this, this.getClass(), mNotificationManager);
+                       /* if (!listeTing.isEmpty()) {
                             compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
-                        }
+                        }*/
                     }
                     Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
                 }

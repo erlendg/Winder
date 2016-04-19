@@ -17,51 +17,51 @@
 
     <CheckBoxPreference
         android:id="@+id/precipPref"
-        android:key="precipPref"
+        android:key="@string/precip_pref_key"
         android:title="@string/preferences_precipitation"
         android:summary="@string/preferences_precipitation_amount_period"
         android:icon="@drawable/nedboer"
         android:defaultValue="false"/>
 
     <com.eim.winder.activities.alertsettings.CustomPrecipRangePreference
-        android:key="precipRange" />
+        android:key="@string/precip_range_key" />
 
     <CheckBoxPreference
-        android:key="windSpeedPref"
+        android:key="@string/windspeed_pref_key"
         android:title="@string/preferences_windspeed"
         android:summary="@string/preferences_windspeed_description"
         android:icon="@drawable/vindstyrke"
         android:defaultValue="false"/>
 
     <com.eim.winder.activities.alertsettings.CustomWindSpRangePreference
-        android:key="windSpeedRange" />
+        android:key="@string/windspeed_range_key" />
 
     <CheckBoxPreference
-        android:key="windDirPref"
+        android:key="@string/winddir_pref_key"
         android:title="@string/preferences_winddir"
         android:icon="@drawable/vindretning"
         android:defaultValue="false"/>
 
     <MultiSelectListPreference
-        android:key="windDir"
+        android:key="@string/winddir_select_key"
         android:summary="@string/choose_winddirection_string"
         android:entries="@array/windDirection_array"
         android:entryValues="@array/windDirection_values"/>
     <CheckBoxPreference
-        android:key="sunnyPref"
+        android:key="@string/sunny_pref_key"
         android:title="@string/preferences_suncheck"
         android:icon="@drawable/sol"
         android:defaultValue="false"/>
 
     <MultiSelectListPreference
-        android:key="weekdays"
+        android:key="@string/weekdays_pref_key"
         android:title="@string/preferences_weekdays_check"
         android:summary="@string/choose_weekdays_string"
         android:entries="@array/weekdays_array"
         android:icon="@android:drawable/ic_menu_my_calendar"
         android:entryValues="@array/weekdays_values"/>
     <ListPreference
-        android:key="checkIntrPref"
+        android:key="@string/checkintr_pref_key"
         android:title="@string/preferences_interval"
         android:summary="@string/preferences_interval_description"
         android:entries="@array/checkinterval_array"

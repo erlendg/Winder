@@ -72,6 +72,19 @@ public class ForecastDSService {
         return list;
     }
 
+    public boolean findIfForecastsExistsForAlertSettingsID(int id){
+        boolean result = true;
+        Cursor cursor = null;
+        try{
+            open();
+            cursor = database.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id =" + id, null);
+            if (cursor.getCount() == 0) result = false;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public boolean deleteAllForecastsByAlertSettingsID(int id){
         boolean ok = false;
 
