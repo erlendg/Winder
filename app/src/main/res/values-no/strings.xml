@@ -23,7 +23,7 @@
     <string name="hello_blank_fragment">Hei blankt fragment</string>
     <string name="lagre_varsel_button">Lagre</string>
     <string name="monday">Mandag</string>
-    <string name="name_of_prefs_saved">foretrukneVerdierLagret</string>
+    <string name="name_of_prefs_saved">prefValuesSaved</string>
     <string name="nedboer_intervall">Nedbør:</string>
     <string name="next">Neste</string>
     <string name="no">Nei</string>
@@ -33,7 +33,7 @@
     <string name="on_next_button_click_warning">Fyll inn et korrekt stedsnavn!</string>
     <string name="saturday">Lørdag</string>
     <string name="save_prefs_button">Lagre</string>
-    <string name="settings">Instillinger</string>
+    <string name="settings">Innstillinger</string>
     <string name="settings_for_alert">Velg instillinger for varsel</string>
     <string name="sjekk_intervall">Sjekkintervall:</string>
     <string name="soek_hint">Søk etter stedsnavn...</string>
@@ -79,4 +79,23 @@
     <string name="preferences_winddir">Vindretning</string>
     <string name="preferences_windspeed">Vindstyrke</string>
     <string name="preferences_windspeed_description">m/s</string>
+    <string name="checkintr_pref_key">checkIntrPref</string>
+    <string name="notification_message_title_no_success">Ikke lenger noen match!</string>
+    <string name="notification_message_title_success">Vi har en match!</string>
+    <string name="precip_pref_key">precipPref</string>
+    <string name="precip_pref_key_max">maxPrecip</string>
+    <string name="precip_pref_key_min">minPrecip</string>
+    <string name="precip_range_key">precipRange</string>
+    <string name="prefered_icon_key">iconPref</string>
+    <string name="prefered_icon_key_default">ic_custom</string>
+    <string name="sunny_pref_key">sunnyPref</string>
+    <string name="temp_pref_key_max">maxTemp</string>
+    <string name="temp_pref_key_min">minTemp</string>
+    <string name="winddir_pref_key">windDirPref</string>
+    <string name="winddir_select_key">windDir</string>
+    <string name="windspeed_pref_key">windSpeedPref</string>
+    <string name="windspeed_pref_key_max">maxWindSpeed</string>
+    <string name="windspeed_pref_key_min">minWindSpeed</string>
+    <string name="windspeed_range_key">windSpeedRange</string>
+    <string name="weekdays_pref_key">weekdays</string>
 </resources>

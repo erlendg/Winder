@@ -7,7 +7,7 @@
         android:id="@+id/action_refresh"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:icon="@drawable/ic_action_refresh_white"
+        android:icon="@drawable/ic_autorenew_white_24dp"
         android:title="Refresh"/>
     <item
         android:id="@+id/action_settings"
