@@ -30,6 +30,8 @@ import com.eim.winder.db.AlertSettingsDSService;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.scheduler.AlarmReceiver;
 
+import java.util.Locale;
+
 public class AlertOverViewActivity extends AppCompatActivity {
     private final String TAG = "AlertOverWievActivity";
     private AlertSettingsDAO alertSettingsDAO;
@@ -46,6 +48,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alert_over_view);
+
         //Gets the object that was sent from MainActivity
         Bundle bundle = getIntent().getExtras();
         alertSettingsDAO = bundle.getParcelable("AlertSettingsDAO");
@@ -84,14 +87,6 @@ public class AlertOverViewActivity extends AppCompatActivity {
         //Sets the onclick-listener to the preference-title field:
         preferencesTitle = (TextView) findViewById(R.id.preferences_title);
         preferencesTable = (GridLayout) findViewById(R.id.preferences_table);
-
-        /*preferencesTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                preferencesTable.setVisibility(preferencesTable.isShown() ? View.GONE : View.VISIBLE );
-
-            }
-        });*/
     }
     //Sets the onclick-listener to the preference-title field:
     public void onDeleteButtonClick(View v){

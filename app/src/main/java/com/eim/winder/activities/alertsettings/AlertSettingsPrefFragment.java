@@ -14,6 +14,7 @@ import com.eim.winder.R;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -42,12 +43,21 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.alert_preferences);
 
+
         tempPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.temp_pref_key));
         precipPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.precip_pref_key));
         windSpeedPref= (CheckBoxPreference)findPreference(getResources().getString(R.string.windspeed_pref_key));
         windDirPref = (CheckBoxPreference)findPreference(getResources().getString(R.string.winddir_pref_key));
         sunnyPref = (CheckBoxPreference)findPreference(getResources().getString(R.string.sunny_pref_key));
         checkIntrPref = (ListPreference)findPreference(getResources().getString(R.string.checkintr_pref_key));
+
+        tempPref = (CheckBoxPreference) findPreference("tempPref");
+        precipPref = (CheckBoxPreference) findPreference("precipPref");
+        windSpeedPref= (CheckBoxPreference)findPreference("windSpeedPref");
+        windDirPref = (CheckBoxPreference)findPreference("windDirPref");
+        sunnyPref = (CheckBoxPreference)findPreference("sunnyPref");
+        checkIntrPref = (ListPreference)findPreference("checkIntrPref");
+
 
         tempRange = findPreference(getResources().getString(R.string.temp_range_key));
         precipRange = findPreference(getResources().getString(R.string.precip_range_key));

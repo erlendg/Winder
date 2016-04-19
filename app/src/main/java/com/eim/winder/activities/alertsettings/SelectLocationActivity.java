@@ -117,7 +117,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
         if(sunButton.isSelected()){
             editor.putBoolean(getString(R.string.sunny_pref_key), true);
-            editor2.putString(getString(R.string.prefered_icon_key), "ic_sun");
+            editor2.putString(getString(R.string.prefered_icon_key), "ic_sun_filled");
             editor.apply();
             editor2.apply();
             return true;

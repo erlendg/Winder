@@ -92,7 +92,7 @@ public class CompareAXService {
      */
     public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm, int type){
                 notification = new NotificationCompat.Builder(context);
-                notification.setSmallIcon(R.mipmap.ic_launcher);
+                notification.setSmallIcon(R.drawable.ic_stat_name);
                 notification.setColor(context.getResources().getColor(R.color.colorPrimary));
 
                 if (type == 1){
