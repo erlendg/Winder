@@ -5,19 +5,19 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.ForecastDAO;
-import com.eim.winder.db.ForecastDSService;
+import com.eim.winder.db.ForecastRepo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Erlend on 19.02.2016.
@@ -36,7 +36,7 @@ public class CompareAXService {
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     String url;
     private NotificationCompat.Builder notification;
-    private ForecastDSService forecastDSService;
+    private ForecastRepo forecastRepo;
     Context context;
 
     public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj){
@@ -44,7 +44,7 @@ public class CompareAXService {
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = alertSettingsObj.getLocation().getXmlURL();
-        this.forecastDSService = new ForecastDSService(context);
+        this.forecastRepo = new ForecastRepo(context);
 
         try {
             System.err.println("url: " +  url);
@@ -61,7 +61,7 @@ public class CompareAXService {
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = url;
-        this.forecastDSService = new ForecastDSService(context);
+        this.forecastRepo = new ForecastRepo(context);
 
 
         try {
@@ -93,7 +93,7 @@ public class CompareAXService {
     public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm, int type){
                 notification = new NotificationCompat.Builder(context);
                 notification.setSmallIcon(R.drawable.ic_stat_name);
-                notification.setColor(context.getResources().getColor(R.color.colorPrimary));
+                notification.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
                 if (type == 1){
                     notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_success));
@@ -175,7 +175,7 @@ public class CompareAXService {
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
-                forecastDSService.insertForecastList(list, alertSettingsObj.getId());
+                forecastRepo.insertForecastList(list, alertSettingsObj.getId());
             }
         });
         thread.start();
@@ -209,7 +209,7 @@ public class CompareAXService {
 
         //// TODO: 19.04.2016 this is where code to handle the four different notification-scenarios is implemented:
 
-        if(!forecastDSService.findIfForecastsExistsForAlertSettingsID(id)){
+        if(!forecastRepo.findIfForecastsExistsForAlertSettingsID(id)){
             //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
             if(!returnList.isEmpty()){
                 Log.e(TAG, "CASE1");
@@ -231,7 +231,7 @@ public class CompareAXService {
                 return 3;
             }else{
                 //Case 3: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
-                forecastDSService.deleteForecastByAlertSettingsID(id);
+                forecastRepo.deleteForecastByAlertSettingsID(id);
                 generateNotification(returnList, id, context, cl, nm, 2);
                 Log.e(TAG, "CASE4");
                 return 4;

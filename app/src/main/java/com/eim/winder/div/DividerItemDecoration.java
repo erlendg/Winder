@@ -1,4 +1,4 @@
-package com.eim.winder.activities.alertoverview;
+package com.eim.winder.div;
 
 import android.content.Context;
 import android.content.res.TypedArray;

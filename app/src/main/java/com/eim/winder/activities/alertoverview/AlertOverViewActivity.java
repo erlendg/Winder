@@ -26,20 +26,24 @@ import com.eim.winder.R;
 import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
 import com.eim.winder.databinding.ActivityAlertOverViewBinding;
 import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.AlertSettingsRepo;
+import com.eim.winder.db.DBService;
+import com.eim.winder.db.ForecastRepo;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.scheduler.AlarmReceiver;
 
-import java.util.Locale;
+import javax.sql.DataSource;
 
 public class AlertOverViewActivity extends AppCompatActivity {
     private final String TAG = "AlertOverWievActivity";
     private AlertSettingsDAO alertSettingsDAO;
     private LocationDAO location;
+    private AlertSettingsRepo alertDataSource;
+    private ForecastRepo forecastDataSource;
+    private DBService dbService;
     private CollapsingToolbarLayout collapsingToolbar;
     private TextView preferencesTitle;
     private GridLayout preferencesTable;
-    private AlertSettingsDSService datasource;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
@@ -53,8 +57,12 @@ public class AlertOverViewActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         alertSettingsDAO = bundle.getParcelable("AlertSettingsDAO");
         location = alertSettingsDAO.getLocation();
+
         //Opens datasource usage:
-        datasource = new AlertSettingsDSService(this);
+        alertDataSource = new AlertSettingsRepo(this);
+        forecastDataSource = new ForecastRepo(this);
+        dbService = new DBService(alertDataSource,forecastDataSource);
+
         //Enables databinding to the xml-layout:
         ActivityAlertOverViewBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_alert_over_view);
         //Enables toolbar:
@@ -90,24 +98,24 @@ public class AlertOverViewActivity extends AppCompatActivity {
     }
     //Sets the onclick-listener to the preference-title field:
     public void onDeleteButtonClick(View v){
-        final int alertId = alertSettingsDAO.getId();
         new AlertDialog.Builder(this)
-                .setMessage("Do you want to delete the alert?")
+                .setMessage(getString(R.string.delete_message))
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if (datasource.deleteAlertSettings(alertSettingsDAO.getId())) {
+                        if (dbService.deleteAlertSettingAndForecasts(alertSettingsDAO.getId())) {
                             finish();
-                            cancelAlarm(alertId);
-                            Toast.makeText(AlertOverViewActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                            cancelAlarm(alertSettingsDAO.getId());
+                            Toast.makeText(AlertOverViewActivity.this, getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(AlertOverViewActivity.this, "Something went wrong..", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AlertOverViewActivity.this, getString(R.string.something_whent_wrong), Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
                 .setNegativeButton(android.R.string.no, null).show();
     }
+
     public AlertSettingsDAO getAlertSettingsDAO(){
         return alertSettingsDAO;
     }

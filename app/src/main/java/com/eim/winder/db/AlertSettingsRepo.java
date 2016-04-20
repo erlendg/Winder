@@ -12,18 +12,18 @@ import java.util.ArrayList;
 /**
  * Created by Mari on 11.02.2016.
  */
-public class AlertSettingsDSService {
-    public final static String TAG = "AlertSettingsDSService";
+public class AlertSettingsRepo {
+    public final static String TAG = "AlertSettingsRepo";
     private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
     private String table = SQLiteDBHelper.TABLE_ALERTSETTINGS;
-    private String[] allColumns = { SQLiteDBHelper.C_ALERT_ID, SQLiteDBHelper.C_TEMPMIN, SQLiteDBHelper.C_TEMPMAX,
-            SQLiteDBHelper.C_PRECIPITATIONMIN, SQLiteDBHelper.C_PRECIPITATIONMAX, SQLiteDBHelper.C_WINDSPEEDMIN,
-            SQLiteDBHelper.C_WINDSPEEDMAX, SQLiteDBHelper.C_WINDIRECTION, SQLiteDBHelper.C_CHECKSUN, SQLiteDBHelper.C_CHECKINTERVAL,
-            SQLiteDBHelper.C_MON, SQLiteDBHelper.C_TUE, SQLiteDBHelper.C_WED, SQLiteDBHelper.C_THU,
-            SQLiteDBHelper.C_FRI, SQLiteDBHelper.C_SAT, SQLiteDBHelper.C_SUN, SQLiteDBHelper.C_ICON_NAME};
+    private String[] allColumns = { SQLiteDBHelper.A_ALERT_ID, SQLiteDBHelper.A_TEMPMIN, SQLiteDBHelper.A_TEMPMAX,
+            SQLiteDBHelper.A_PRECIPITATIONMIN, SQLiteDBHelper.A_PRECIPITATIONMAX, SQLiteDBHelper.A_WINDSPEEDMIN,
+            SQLiteDBHelper.A_WINDSPEEDMAX, SQLiteDBHelper.A_WINDIRECTION, SQLiteDBHelper.A_CHECKSUN, SQLiteDBHelper.A_CHECKINTERVAL,
+            SQLiteDBHelper.A_MON, SQLiteDBHelper.A_TUE, SQLiteDBHelper.A_WED, SQLiteDBHelper.A_THU,
+            SQLiteDBHelper.A_FRI, SQLiteDBHelper.A_SAT, SQLiteDBHelper.A_SUN, SQLiteDBHelper.A_ICON_NAME};
 
-    public AlertSettingsDSService( Context context) {
+    public AlertSettingsRepo(Context context) {
         this.dbHelper = new SQLiteDBHelper(context);
     }
     public void open()throws SQLException {
@@ -42,7 +42,7 @@ public class AlertSettingsDSService {
         Cursor cursor = null;
         try{
             open();
-            cursor = database.rawQuery("SELECT " + SQLiteDBHelper.C_ALERT_ID + " FROM " + table + " WHERE " + SQLiteDBHelper.C_ALERT_ID + " = '" + location.getId() + "'", null);
+            cursor = database.rawQuery("SELECT " + SQLiteDBHelper.A_ALERT_ID + " FROM " + table + " WHERE " + SQLiteDBHelper.A_ALERT_ID + " = '" + location.getId() + "'", null);
             if(cursor!=null) {
                 if(cursor.getCount()>0) {
                     exist = true;
@@ -61,7 +61,7 @@ public class AlertSettingsDSService {
         boolean ok = false;
         try{
             open();
-            ok = database.delete(table, SQLiteDBHelper.C_ALERT_ID + " = " + id, null) > 0;
+            ok = database.delete(table, SQLiteDBHelper.A_ALERT_ID + " = " + id, null) > 0;
             Log.i(TAG, "deleteAlertSettings: "+ ok);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,24 +76,24 @@ public class AlertSettingsDSService {
         try{
             open();
             ContentValues values = new ContentValues();
-            values.put(SQLiteDBHelper.C_TEMPMIN, alert.getTempMin());
-            values.put(SQLiteDBHelper.C_TEMPMAX, alert.getTempMax());
-            values.put(SQLiteDBHelper.C_PRECIPITATIONMIN, alert.getPrecipitationMin());
-            values.put(SQLiteDBHelper.C_PRECIPITATIONMAX, alert.getPrecipitationMax());
-            values.put(SQLiteDBHelper.C_WINDSPEEDMIN, alert.getWindSpeedMin());
-            values.put(SQLiteDBHelper.C_WINDSPEEDMAX, alert.getWindSpeedMax());
-            values.put(SQLiteDBHelper.C_WINDIRECTION, alert.getWindDirection());
-            values.put(SQLiteDBHelper.C_CHECKSUN, alert.isCheckSun());
-            values.put(SQLiteDBHelper.C_CHECKINTERVAL, alert.getCheckInterval());
-            values.put(SQLiteDBHelper.C_MON, alert.isMon());
-            values.put(SQLiteDBHelper.C_TUE, alert.isTue());
-            values.put(SQLiteDBHelper.C_WED, alert.isWed());
-            values.put(SQLiteDBHelper.C_THU, alert.isThu());
-            values.put(SQLiteDBHelper.C_FRI, alert.isFri());
-            values.put(SQLiteDBHelper.C_SAT, alert.isSat());
-            values.put(SQLiteDBHelper.C_SUN, alert.isSun());
-            values.put(SQLiteDBHelper.C_ICON_NAME, alert.getIconName());
-            values.put(SQLiteDBHelper.C_LOC_ID, alert.getLocation().getId());
+            values.put(SQLiteDBHelper.A_TEMPMIN, alert.getTempMin());
+            values.put(SQLiteDBHelper.A_TEMPMAX, alert.getTempMax());
+            values.put(SQLiteDBHelper.A_PRECIPITATIONMIN, alert.getPrecipitationMin());
+            values.put(SQLiteDBHelper.A_PRECIPITATIONMAX, alert.getPrecipitationMax());
+            values.put(SQLiteDBHelper.A_WINDSPEEDMIN, alert.getWindSpeedMin());
+            values.put(SQLiteDBHelper.A_WINDSPEEDMAX, alert.getWindSpeedMax());
+            values.put(SQLiteDBHelper.A_WINDIRECTION, alert.getWindDirection());
+            values.put(SQLiteDBHelper.A_CHECKSUN, alert.isCheckSun());
+            values.put(SQLiteDBHelper.A_CHECKINTERVAL, alert.getCheckInterval());
+            values.put(SQLiteDBHelper.A_MON, alert.isMon());
+            values.put(SQLiteDBHelper.A_TUE, alert.isTue());
+            values.put(SQLiteDBHelper.A_WED, alert.isWed());
+            values.put(SQLiteDBHelper.A_THU, alert.isThu());
+            values.put(SQLiteDBHelper.A_FRI, alert.isFri());
+            values.put(SQLiteDBHelper.A_SAT, alert.isSat());
+            values.put(SQLiteDBHelper.A_SUN, alert.isSun());
+            values.put(SQLiteDBHelper.A_ICON_NAME, alert.getIconName());
+            values.put(SQLiteDBHelper.A_LOC_ID, alert.getLocation().getId());
             res = database.insert(table, null, values);
         }catch (SQLException e){
             e.printStackTrace();
@@ -107,23 +107,23 @@ public class AlertSettingsDSService {
         try{
             open();
             ContentValues values = new ContentValues();
-            values.put(SQLiteDBHelper.C_TEMPMIN, alert.getTempMin());
-            values.put(SQLiteDBHelper.C_TEMPMAX, alert.getTempMax());
-            values.put(SQLiteDBHelper.C_PRECIPITATIONMIN, alert.getPrecipitationMin());
-            values.put(SQLiteDBHelper.C_PRECIPITATIONMAX, alert.getPrecipitationMax());
-            values.put(SQLiteDBHelper.C_WINDSPEEDMIN, alert.getWindSpeedMin());
-            values.put(SQLiteDBHelper.C_WINDSPEEDMAX, alert.getWindSpeedMax());
-            values.put(SQLiteDBHelper.C_WINDIRECTION, alert.getWindDirection());
-            values.put(SQLiteDBHelper.C_CHECKSUN, alert.isCheckSun());
-            values.put(SQLiteDBHelper.C_CHECKINTERVAL, alert.getCheckInterval());
-            values.put(SQLiteDBHelper.C_MON, alert.isMon());
-            values.put(SQLiteDBHelper.C_TUE, alert.isTue());
-            values.put(SQLiteDBHelper.C_WED, alert.isWed());
-            values.put(SQLiteDBHelper.C_THU, alert.isThu());
-            values.put(SQLiteDBHelper.C_FRI, alert.isFri());
-            values.put(SQLiteDBHelper.C_SAT, alert.isSat());
-            values.put(SQLiteDBHelper.C_SUN, alert.isSun());
-            values.put(SQLiteDBHelper.C_ICON_NAME, alert.getIconName());
+            values.put(SQLiteDBHelper.A_TEMPMIN, alert.getTempMin());
+            values.put(SQLiteDBHelper.A_TEMPMAX, alert.getTempMax());
+            values.put(SQLiteDBHelper.A_PRECIPITATIONMIN, alert.getPrecipitationMin());
+            values.put(SQLiteDBHelper.A_PRECIPITATIONMAX, alert.getPrecipitationMax());
+            values.put(SQLiteDBHelper.A_WINDSPEEDMIN, alert.getWindSpeedMin());
+            values.put(SQLiteDBHelper.A_WINDSPEEDMAX, alert.getWindSpeedMax());
+            values.put(SQLiteDBHelper.A_WINDIRECTION, alert.getWindDirection());
+            values.put(SQLiteDBHelper.A_CHECKSUN, alert.isCheckSun());
+            values.put(SQLiteDBHelper.A_CHECKINTERVAL, alert.getCheckInterval());
+            values.put(SQLiteDBHelper.A_MON, alert.isMon());
+            values.put(SQLiteDBHelper.A_TUE, alert.isTue());
+            values.put(SQLiteDBHelper.A_WED, alert.isWed());
+            values.put(SQLiteDBHelper.A_THU, alert.isThu());
+            values.put(SQLiteDBHelper.A_FRI, alert.isFri());
+            values.put(SQLiteDBHelper.A_SAT, alert.isSat());
+            values.put(SQLiteDBHelper.A_SUN, alert.isSun());
+            values.put(SQLiteDBHelper.A_ICON_NAME, alert.getIconName());
             res = database.update(table, values, "_id="+alert.getId(), null);
         }catch (SQLException e){
             e.printStackTrace();

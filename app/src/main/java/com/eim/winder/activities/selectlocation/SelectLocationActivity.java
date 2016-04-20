@@ -1,10 +1,9 @@
-package com.eim.winder.activities.alertsettings;
+package com.eim.winder.activities.selectlocation;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,9 +15,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
+import com.eim.winder.activities.alertsettings.CustomPrecipRangePreference;
+import com.eim.winder.db.DBService;
 import com.eim.winder.db.LocationDAO;
-import com.eim.winder.db.LocationDSService;
+import com.eim.winder.db.LocationRepo;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,8 @@ import java.util.ArrayList;
  */
 public class SelectLocationActivity extends AppCompatActivity {
     private final static String TAG = "SelectLocationActivity";
-    private LocationDSService datasource;
+    private LocationRepo locationDataSource;
+    private DBService dbService;
     private ArrayList<LocationDAO> searchLocations;
     private AutoCompleteTextView searchView;
     private ArrayAdapter<LocationDAO> searchAdapter;
@@ -46,9 +48,10 @@ public class SelectLocationActivity extends AppCompatActivity {
         setContentView(R.layout.location_layout);
         getSupportActionBar().setTitle(R.string.choose_location);
 
-        // instantiate database handler
-        datasource = new LocationDSService(this);
-        searchLocations = datasource.getAllLocations();
+        // instantiate datasource
+        locationDataSource = new LocationRepo(this);
+        dbService = new DBService(locationDataSource);
+        searchLocations = dbService.getAllLocations();
 
         // autocompletetextview is in location_layout.xml
         searchView = (AutoCompleteTextView) findViewById(R.id.search_view);

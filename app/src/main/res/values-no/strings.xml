@@ -99,4 +99,7 @@
     <string name="windspeed_range_key">windSpeedRange</string>
     <string name="weekdays_pref_key">weekdays</string>
     <string name="yr_credits">Værdata fra yr.no</string>
+    <string name="deleted">Stettet</string>
+    <string name="something_whent_wrong">Noe gikk galt..</string>
+    <string name="delete_message">Ønsker du å slette stedet for værvarsling?</string>
 </resources>

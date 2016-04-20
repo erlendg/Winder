@@ -1,13 +1,12 @@
 package com.eim.winder;
 
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.eim.winder.activities.MainActivity;
+import com.eim.winder.activities.main.MainActivity;
 import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.AlertSettingsRepo;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,7 +15,6 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
 import cucumber.api.java.no.Og;
@@ -48,7 +46,7 @@ public class LeggTilNyttStedStepDef2 {
     @Test
     @Gitt("^at bruker har ti steder registrert$")
     public void at_bruker_har_ti_steder_registrert(){
-        AlertSettingsDSService testService = Mockito.mock(AlertSettingsDSService.class);
+        AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.getAllAlertSettings()).thenCallRealMethod();
         asd = mainActivity.getActivity().getAlertSettingsDataSet();
         size = asd.size();

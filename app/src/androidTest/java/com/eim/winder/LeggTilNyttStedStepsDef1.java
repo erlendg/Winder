@@ -3,9 +3,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.eim.winder.activities.MainActivity;
+import com.eim.winder.activities.main.MainActivity;
 import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.AlertSettingsRepo;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class LeggTilNyttStedStepsDef1 {
     @Gitt("^at bruker har mindre enn ti steder registrert$")
     public void at_bruker_har_mindre_enn_ti_steder_registrert(){
         // Express the Regexp above with the code you wish you had
-        AlertSettingsDSService testService = Mockito.mock(AlertSettingsDSService.class);
+        AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.getAllAlertSettings()).thenCallRealMethod();
         asd = mainActivity.getActivity().getAlertSettingsDataSet();
         size = asd.size();

@@ -11,15 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
-import com.eim.winder.activities.MainActivity;
+import com.eim.winder.activities.main.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;

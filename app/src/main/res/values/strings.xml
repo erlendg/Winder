@@ -35,6 +35,9 @@
     <string name="sunday">Sunday</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="deleted">Deleted</string>
+    <string name="something_whent_wrong">Something went wrong..</string>
+    <string name="delete_message">Do you want to delete de alert?</string>
 
 
     <!-- AlertSettings Preference strings: -->

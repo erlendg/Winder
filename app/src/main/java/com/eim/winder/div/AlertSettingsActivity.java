@@ -1,4 +1,4 @@
-package com.eim.winder.activities;
+package com.eim.winder.div;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -19,9 +19,9 @@ import android.widget.Toast;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.LocationDAO;
-import com.eim.winder.db.LocationDSService;
+import com.eim.winder.db.LocationRepo;
 import com.eim.winder.scheduler.AlarmReceiver;
 
 import java.util.ArrayList;
@@ -33,8 +33,8 @@ import java.util.GregorianCalendar;
 public class AlertSettingsActivity extends AppCompatActivity {
     private static final String TAG = "AlertSettingsActivity";
 
-    public LocationDSService datasource;
-    public AlertSettingsDSService alertdatasource;
+    public LocationRepo datasource;
+    public AlertSettingsRepo alertdatasource;
     public AutoCompleteTextView searchView;
     public ArrayAdapter<LocationDAO> searchAdapter;
     public ArrayList<LocationDAO> searchLocations;
@@ -59,8 +59,8 @@ public class AlertSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.choose_location);
 
         // instantiate database handler
-        datasource = new LocationDSService(this);
-        alertdatasource = new AlertSettingsDSService(this);
+        datasource = new LocationRepo(this);
+        alertdatasource = new AlertSettingsRepo(this);
         searchLocations = datasource.getAllLocations();
 
         // autocompletetextview is in location_layout.xml

@@ -8,29 +8,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.LocationDAO;
-import com.eim.winder.db.LocationDSService;
 import com.eim.winder.scheduler.AlarmReceiver;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -39,7 +28,7 @@ import java.util.Set;
 public class AlertSettingsActivityBeta extends AppCompatActivity {
     private static final String TAG = "ASActivityBeta";
 
-    public AlertSettingsDSService alertdatasource;
+    public AlertSettingsRepo alertdatasource;
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
     private LocationDAO locationSelected;
@@ -59,7 +48,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         locationSelected = bundle.getParcelable("LocationDAO");
         updateMode = bundle.getBoolean("edit");
         // instantiate database handler
-        alertdatasource = new AlertSettingsDSService(this);
+        alertdatasource = new AlertSettingsRepo(this);
     }
 
     /**

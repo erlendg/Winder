@@ -12,14 +12,14 @@ import java.util.ArrayList;
 /**
  * Created by Erlend on 08.04.2016.
  */
-public class ForecastDSService {
-    private final String TAG = "ForecastDSService";
+public class ForecastRepo {
+    private final String TAG = "ForecastRepo";
     private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
     private String table = SQLiteDBHelper.TABLE_FORECAST;
-    private String[] allColumns = {SQLiteDBHelper.F_FORECAST_ID, SQLiteDBHelper.F_FORMATEDDATE, SQLiteDBHelper.F_FORMATEDINFO, SQLiteDBHelper.F_ICON, SQLiteDBHelper.F_ALERTSETTINGS_ID};
+    private String[] allColumns = {SQLiteDBHelper.F_FORECAST_ID, SQLiteDBHelper.F_FORMATEDDATE, SQLiteDBHelper.F_FORMATEDINFO, SQLiteDBHelper.F_ICON, SQLiteDBHelper.F_ALERT_ID};
 
-    public ForecastDSService(Context context){
+    public ForecastRepo(Context context){
         this.dbHelper = new SQLiteDBHelper(context);
     }
 
@@ -95,7 +95,7 @@ public class ForecastDSService {
         boolean ok = false;
         try{
             open();
-            ok = database.delete(table, SQLiteDBHelper.F_ALERTSETTINGS_ID + " = " + id, null) > 0;
+            ok = database.delete(table, SQLiteDBHelper.F_ALERT_ID + " = " + id, null) > 0;
             Log.i(TAG, "deleteForecastByAlertSettingsID " + ok);
         }
         catch (SQLException e){
@@ -136,7 +136,7 @@ public class ForecastDSService {
                 values.put(SQLiteDBHelper.F_FORMATEDDATE, temp.getFormatedDate());
                 values.put(SQLiteDBHelper.F_FORMATEDINFO, temp.getFormatedInfo());
                 values.put(SQLiteDBHelper.F_ICON, temp.getIcon());
-                values.put(SQLiteDBHelper.F_ALERTSETTINGS_ID, temp.getAlertSettingId());
+                values.put(SQLiteDBHelper.F_ALERT_ID, temp.getAlertSettingId());
                 res = database.insert(table, null, values);
                 if (res == -1) {
                     ok = false;

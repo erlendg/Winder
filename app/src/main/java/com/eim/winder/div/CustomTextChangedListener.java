@@ -6,7 +6,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import com.eim.winder.activities.AlertSettingsActivity;
 import com.eim.winder.db.LocationDAO;
 
 /**

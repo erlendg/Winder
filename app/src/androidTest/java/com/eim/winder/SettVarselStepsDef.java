@@ -14,9 +14,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
-import com.eim.winder.activities.MainActivity;
+import com.eim.winder.activities.main.MainActivity;
 import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.AlertSettingsDSService;
+import com.eim.winder.db.AlertSettingsRepo;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -92,7 +92,7 @@ public class SettVarselStepsDef {
     @Og("^har registrerte steder i listen$")
     public void har_registrerte_steder_i_listen() {
         at_brukeren_har_åpnet_appen();
-        AlertSettingsDSService testService = Mockito.mock(AlertSettingsDSService.class);
+        AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.getAllAlertSettings()).thenCallRealMethod();
         asd = mainActivity.getActivity().getAlertSettingsDataSet();
         size = asd.size();
@@ -129,7 +129,7 @@ public class SettVarselStepsDef {
     @Når("^brukeren trykker på slett-knappen$")
     public void brukeren_trykker_på_slett_knappen(){
         har_trykket_på_stedet_for_detaljoversikt();
-        AlertSettingsDSService testService = Mockito.mock(AlertSettingsDSService.class);
+        AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.deleteAlertSettings(id)).thenReturn(true);
         AlertOverViewActivity testActivity = Mockito.mock(AlertOverViewActivity.class);
         BDDMockito.willDoNothing().given(testActivity).cancelAlarm(id);

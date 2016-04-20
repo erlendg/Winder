@@ -1,4 +1,4 @@
-package com.eim.winder.activities;
+package com.eim.winder.activities.main;
 
 import android.app.NotificationManager;
 import android.content.Context;
@@ -8,13 +8,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -22,16 +20,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
-import com.eim.winder.activities.alertsettings.SelectLocationActivity;
-import com.eim.winder.db.ForecastDAO;
+import com.eim.winder.activities.selectlocation.SelectLocationActivity;
+import com.eim.winder.db.DBService;
 import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
-import com.eim.winder.div.Locations;
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.AlertSettingsDSService;
-import com.eim.winder.db.LocationDAO;
-import com.eim.winder.db.LocationDSService;
+import com.eim.winder.db.AlertSettingsRepo;
+import com.eim.winder.db.LocationRepo;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -39,19 +35,22 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int MAX_LOCATIONS = 10;
-    private int numOfLocations;
-    private LocationDSService datasource;
-    private AlertSettingsDSService alertdatasource;
+
+    private DBService dbService;
+    private LocationRepo locationDataSource;
+    private AlertSettingsRepo alertDataSource;
+
     private ArrayList<AlertSettingsDAO> alertSettingsList;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private LinearLayoutManager llManager;
     private RecyclerView.Adapter rvAdapter;
     private CompareAXService compare;
-    private HandleXML xmlhandler;
     private boolean div = false;
+
     private boolean div2;
     private NotificationCompat.Builder notification;
+    private HandleXML xmlhandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,30 +60,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_stat_name);
-        setLocale();
+
+        //Set application language:
+        setApplicationLocale(getResources().getConfiguration().locale);
         Log.e("Locale:", Locale.getDefault().getLanguage());
 
         //Initiates the datasource:
-        datasource = new LocationDSService(this);
-        alertdatasource = new AlertSettingsDSService(this);
+        locationDataSource = new LocationRepo(this);
+        alertDataSource = new AlertSettingsRepo(this);
+        dbService = new DBService(alertDataSource, locationDataSource);
 
         //Cardview:Initiates the list with locationalerts and the adapter that "listens" on the list:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
+        alertSettingsList = dbService.getAlertSettingsAndLocation();
         llManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(llManager);
-        alertSettingsList = getAlertSettingsDataSet();
-        rvAdapter = new RVAdapter(this, alertSettingsList, new RVAdapter.OnItemClickListener(){
-            @Override public void onItemClick(AlertSettingsDAO item) {
-                Log.i(TAG, " " +item.getLocation().getName());
-                startAlertOverViewActivity(item);
+        buildRecyclerView(recyclerView, llManager, alertSettingsList);
 
-            }
-        });
-        recyclerView.setAdapter(rvAdapter);
-
-        //div for xmlhandling and comparison:
-
+        //Floating action button:
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +85,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void buildRecyclerView(RecyclerView recyclerView, LinearLayoutManager llManager, ArrayList<AlertSettingsDAO> alertSettingsList){
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(llManager);
+        setRvAdapter( recyclerView, alertSettingsList);
+
+    }
+    private void setRvAdapter(RecyclerView recyclerView, ArrayList<AlertSettingsDAO> alertSettingsList){
+        rvAdapter = new RVAdapter(this, alertSettingsList, new RVAdapter.OnItemClickListener(){
+            @Override public void onItemClick(AlertSettingsDAO item) {
+                Log.i(TAG, " " +item.getLocation().getName());
+                startAlertOverViewActivity(item);
+
+            }
+        });
+        recyclerView.setAdapter(rvAdapter);
     }
 
     public void startSelectLocationActivity(View v){
@@ -113,22 +122,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public ArrayList<AlertSettingsDAO> getAlertSettingsDataSet() {
-        Log.i(TAG, "getAlertSettingsDataSet()");
-        ArrayList<AlertSettingsDAO> results = alertdatasource.getAllAlertSettings();
-        if(results != null && results.size() > 0){
-            Log.i(TAG, "getAlertSettingsDataSet() Data size: "+ results.size());
-            numOfLocations= results.size();
-            for(int i = 0; i < results.size(); i++){
-                int id = (int) results.get(i).getLocation().getId();
-                LocationDAO loc =  datasource.getLocationFromID(id);
-                results.get(i).setLocation(loc);
-            }
-        }else {
-            results = Locations.getTestAlertList();
-        }
-        return results;
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -137,14 +130,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         //Updates the view in case of changes in the alertlist
         super.onResume();
-        alertSettingsList = getAlertSettingsDataSet();
-        rvAdapter = new RVAdapter(this, alertSettingsList, new RVAdapter.OnItemClickListener(){
-            @Override public void onItemClick(AlertSettingsDAO item) {
-                Log.i(TAG, " " +item.getLocation().getName());
-                startAlertOverViewActivity(item);
-            }
-        });
-        recyclerView.setAdapter(rvAdapter);
+        alertSettingsList = dbService.getAlertSettingsAndLocation();
+        setRvAdapter(recyclerView, alertSettingsList);
     }
 
     @Override
@@ -206,10 +193,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void setLocale() {
-
+    public void setApplicationLocale(Locale l) {
         //Setter den til norsk hvis det er satt på enheten ved oppstart:
-        Locale l = getResources().getConfiguration().locale;
         if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")){
             l = new Locale("no","NO");
             //hvis ikke norsk så settes den til britisk ved oppstart:
@@ -228,8 +213,9 @@ public class MainActivity extends AppCompatActivity {
         // refresh your views here
         super.onConfigurationChanged(newConfig);
     }
+
     public int getNumOfLocations(){
-        return numOfLocations;
+        return alertSettingsList.size();
     }
 /**
  * This method is moved to another place in the code:
