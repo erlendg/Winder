@@ -102,4 +102,6 @@
     <string name="deleted">Stettet</string>
     <string name="something_whent_wrong">Noe gikk galt..</string>
     <string name="delete_message">Ønsker du å slette stedet for værvarsling?</string>
+    <string name="saved_toast">Lagret!</string>
+    <string name="something_went_wrong_toast">Noe gikk galt..</string>
 </resources>

@@ -34,6 +34,10 @@ public class DBService {
         this.forecastDataSource = forecastDataSource;
     }
 
+    public DBService(AlertSettingsRepo alertDataSource) {
+        this.alertDataSource = alertDataSource;
+    }
+
     public DBService(LocationRepo locationDataSource) {
         this.locationDataSource = locationDataSource;
     }
@@ -68,5 +72,16 @@ public class DBService {
 
     public long addAlertSettings(AlertSettingsDAO alertSettingsDAO){
         return alertDataSource.insertAlertSettings(alertSettingsDAO);
+    }
+
+    public boolean updateAlertSettings(AlertSettingsDAO alertSettingsDAO){
+        long ok = alertDataSource.updateAlertSettings(alertSettingsDAO);
+        if((int) ok != 0){
+            Log.i(TAG, "updateAlertSettings() updated: "+ ok);
+            return true;
+        }else{
+            Log.e(TAG, "updateAlertSettings() failed due to value: " +ok);
+            return false;
+        }
     }
 }

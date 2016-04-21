@@ -30,18 +30,19 @@
         <item>@string/checkinterval_twodays</item>
     </string-array>
     <string-array name="checkinterval_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
         <item>6</item>
-        <item>7</item>
     </string-array>
     <string-array name="windDirection_array">
         <item>N</item><item>NE</item><item>E</item><item>SE</item><item>S</item><item>SW</item><item>W</item><item>NW</item>
     </string-array>
     <string-array name="windDirection_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -49,7 +50,6 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
-        <item>8</item>
     </string-array>
     <string-array name="weekdays_array">
         <item>@string/weekdays_monday</item>
@@ -61,13 +61,13 @@
         <item>@string/weekdays_sunday</item>
     </string-array>
     <string-array name="weekdays_values">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
         <item>6</item>
-        <item>7</item>
     </string-array>
 
 </resources>

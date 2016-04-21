@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         //Setter den til norsk hvis det er satt på enheten ved oppstart:
         if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")){
             l = new Locale("no","NO");
-            //hvis ikke norsk så settes den til britisk ved oppstart:
+            //hvis ikke norsk så settes den til engelsk ved oppstart:
         }else{
             l = new Locale("en","en_US");
         }

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettingsDAO;
 import com.eim.winder.db.AlertSettingsRepo;
+import com.eim.winder.db.DBService;
 import com.eim.winder.db.LocationDAO;
 import com.eim.winder.scheduler.AlarmReceiver;
 
@@ -28,12 +29,12 @@ import java.util.Set;
 public class AlertSettingsActivityBeta extends AppCompatActivity {
     private static final String TAG = "ASActivityBeta";
 
-    public AlertSettingsRepo alertdatasource;
+    public AlertSettingsRepo alertDataSource;
+    private DBService dbService;
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
     private LocationDAO locationSelected;
     private boolean haveSelectedSomething = false;
-    private double interval;
     private boolean updateMode;
     Bundle bundle;
 
@@ -48,7 +49,8 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         locationSelected = bundle.getParcelable("LocationDAO");
         updateMode = bundle.getBoolean("edit");
         // instantiate database handler
-        alertdatasource = new AlertSettingsRepo(this);
+        alertDataSource = new AlertSettingsRepo(this);
+        dbService = new DBService(alertDataSource);
     }
 
     /**
@@ -79,7 +81,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     }
     public void onSaveButtonClick(View v) {
         updatePreferences();
-        AlertSettingsDAO asd = makeObjFromSettings(defaultSharedPrefs, sharedPrefs);
+        AlertSettingsDAO asd = makeObjFromPreferences(defaultSharedPrefs, sharedPrefs);
         if(!haveSelectedSomething){
             Toast.makeText(this, getString(R.string.no_settings_selected), Toast.LENGTH_LONG).show();
             return;
@@ -90,18 +92,12 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
                 return;
             }
         }
-        interval = asd.getCheckInterval();
         boolean ok = saveAlertSettings(asd);
-        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved) );
+        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
         if (!ok) {
-            Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.something_whent_wrong), Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
-            /*ArrayList<AlertSettingsDAO> test;
-            test = alertdatasource.getAllAlertSettings();
-            for (int i = 0; i < test.size(); i++) {
-                Log.i("TEST", "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
-            }*/
+            Toast.makeText(this, R.string.saved_toast, Toast.LENGTH_LONG).show();
             //Finishes the Activity and return to MainActivity
             finish();
         }
@@ -109,23 +105,23 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
 
     public boolean saveAlertSettings(AlertSettingsDAO asd) {
         Log.i(TAG, "saveAlertSettings()");
-        long isOk = -1;
         if(updateMode){
             asd.setId(bundle.getInt("alertID"));
-            isOk = alertdatasource.updateAlertSettings(asd);
-        }else {
-            asd.setLocation(locationSelected);
-            isOk = alertdatasource.insertAlertSettings(asd);
-        }
-        if((int)isOk != -1 && (int) isOk != 0) {
-            scheduleAlarm((int) isOk, interval);
+            if(dbService.updateAlertSettings(asd))scheduleAlarm(asd.getId(), asd.getCheckInterval());
             return true;
+        }else {
+            long ok = dbService.addAlertSettings(asd);
+            if((int) ok != -1){
+                scheduleAlarm((int) ok, asd.getCheckInterval());
+                return true;
+            }
         }
         return false;
     }
 
-    public AlertSettingsDAO makeObjFromSettings(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
+    public AlertSettingsDAO makeObjFromPreferences(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
         AlertSettingsDAO asd = new AlertSettingsDAO();
+        asd.setLocation(locationSelected);
         //Temperature:
         if (defaultSharedPrefs.getBoolean(getString(R.string.temp_pref_key), false)) {
             int tempMin = sharedPrefs.getInt(getString(R.string.temp_pref_key_min), -50);
@@ -160,18 +156,19 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
             Log.i(TAG, "WindDir: " + windDirections);
         }
         //Weekdays:
-        Set<String> weekdaysSet = sharedPrefs.getStringSet(getString(R.string.weekdays), null);
+        Set<String> weekdaysSet = defaultSharedPrefs.getStringSet(getString(R.string.weekdays_pref_key), null);
         if(weekdaysSet == null || weekdaysSet.size() == 0){
+            Log.e("dasdasdasd", "nooooooooo");
             asd.setMon(true); asd.setTue(true); asd.setWed(true); asd.setThu(true); asd.setFri(true); asd.setSat(true); asd.setSun(true);
         }else {
             for(String weekday : weekdaysSet){
-                if(weekday.equals("1")) asd.setMon(true);
-                if(weekday.equals("2")) asd.setTue(true);
-                if(weekday.equals("3")) asd.setWed(true);
-                if(weekday.equals("4")) asd.setThu(true);
-                if(weekday.equals("5")) asd.setFri(true);
-                if(weekday.equals("6")) asd.setSat(true);
-                if(weekday.equals("7")) asd.setSun(true);
+                if(weekday.equals("0")) asd.setMon(true);
+                if(weekday.equals("1")) asd.setTue(true);
+                if(weekday.equals("2")) asd.setWed(true);
+                if(weekday.equals("3")) asd.setThu(true);
+                if(weekday.equals("4")) asd.setFri(true);
+                if(weekday.equals("5")) asd.setSat(true);
+                if(weekday.equals("6")) asd.setSun(true);
                 Log.i(TAG, "Weekdays: " + weekdaysSet.toString());
             }
         }
