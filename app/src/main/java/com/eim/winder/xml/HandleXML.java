@@ -122,25 +122,26 @@ public class HandleXML {
                             }
                         }
                         else if (name.equalsIgnoreCase("windDirection")){
-                            for (int i = 0; i<myParser.getAttributeCount(); i++){
-                                if(myParser.getAttributeName(i).equalsIgnoreCase("deg")){
-                                    tabular.setWindDirectionDeg(Double.parseDouble(myParser.getAttributeValue(i)));
-                                }
-                                else if (myParser.getAttributeName(i).equalsIgnoreCase("code")){
-                                    tabular.setWindDirectionCode(myParser.getAttributeValue(i));
-                                }
-                                else if (myParser.getAttributeName(i).equalsIgnoreCase("name")){
-                                    tabular.setWindDirectionName(myParser.getAttributeValue(i));
+                            if (!checkFlag2) {
+                                for (int i = 0; i < myParser.getAttributeCount(); i++) {
+                                    if (myParser.getAttributeName(i).equalsIgnoreCase("deg")) {
+                                        tabular.setWindDirectionDeg(Double.parseDouble(myParser.getAttributeValue(i)));
+                                    } else if (myParser.getAttributeName(i).equalsIgnoreCase("code")) {
+                                        tabular.setWindDirectionCode(myParser.getAttributeValue(i));
+                                    } else if (myParser.getAttributeName(i).equalsIgnoreCase("name")) {
+                                        tabular.setWindDirectionName(myParser.getAttributeValue(i));
+                                    }
                                 }
                             }
                         }
                         else if (name.equalsIgnoreCase("windspeed")){
-                            for (int i = 0; i<myParser.getAttributeCount(); i++){
-                                if(myParser.getAttributeName(i).equalsIgnoreCase("mps")){
-                                    tabular.setWindSpeed(Double.parseDouble(myParser.getAttributeValue(i)));
-                                }
-                                else if (myParser.getAttributeName(i).equalsIgnoreCase("name")){
-                                    tabular.setWindSpeedName(myParser.getAttributeValue(i));
+                            if (!checkFlag2) {
+                                for (int i = 0; i < myParser.getAttributeCount(); i++) {
+                                    if (myParser.getAttributeName(i).equalsIgnoreCase("mps")) {
+                                        tabular.setWindSpeed(Double.parseDouble(myParser.getAttributeValue(i)));
+                                    } else if (myParser.getAttributeName(i).equalsIgnoreCase("name")) {
+                                        tabular.setWindSpeedName(myParser.getAttributeValue(i));
+                                    }
                                 }
                             }
                         }

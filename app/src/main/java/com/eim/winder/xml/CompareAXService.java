@@ -32,7 +32,6 @@ public class CompareAXService {
     private boolean sendNotification;
     private Calendar c;
     private Date d,d2;
-    private final static String tag = "CompareAXService";
     private boolean tempCheck, precipitationCheck, sunCheck, windDirectionCheck, windSpeedCheck;
     String url;
     private NotificationCompat.Builder notification;
@@ -83,14 +82,13 @@ public class CompareAXService {
     /**
      *Generates and displays one notification if there has been an occurence for the specific alertsetting.
      *
-     * @param a list of values
      * @param i alertsettingID
      * @param context context of activity that called the method.
      * @param cl class of activity
      * @param nm notificationmanager injected from previously mentioned activity
      * @param type indicates which kind of notification should be issued.
      */
-    public void generateNotification(ArrayList<ForecastDAO> a, int i, Context context, Class cl, NotificationManager nm, int type){
+    public void generateNotification(int i, Context context, Class cl, NotificationManager nm, int type){
                 notification = new NotificationCompat.Builder(context);
                 notification.setSmallIcon(R.drawable.ic_stat_name);
                 notification.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
@@ -149,12 +147,83 @@ public class CompareAXService {
             returnString += context.getResources().getString(R.string.generate_precipitatiion)+ " " + info.getPrecipitationValue() + "mm" + "\n";
         }
         if(windDirectionCheck){
-            returnString += context.getResources().getString(R.string.generate_winddirection) + " " + info.getWindDirectionName() + "\n";
+
+            String input = "";
+            switch (info.getWindDirectionCode()){
+                //<string name="N">North</string>
+                case "N":
+                    input = context.getResources().getString(R.string.N);
+                    break;
+                //<string name="NNW">North-Northwest</string>
+                case "NNW":
+                    input = context.getResources().getString(R.string.NNW);
+                    break;
+                //<string name="NW">Northwest</string>
+                case "NW":
+                    input = context.getResources().getString(R.string.NW);
+                    break;
+                //<string name="WNW">West-Northwest</string>
+                case "WNW":
+                    input = context.getResources().getString(R.string.WNW);
+                    break;
+                //<string name="W">West</string>
+                case "W":
+                    input = context.getResources().getString(R.string.W);
+                    break;
+                //<string name="WSW">West-Southwest</string>
+                case "WSW":
+                    input = context.getResources().getString(R.string.WSW);
+                    break;
+                //<string name="SW">Southwest</string>
+                case "SW":
+                    input = context.getResources().getString(R.string.SW);
+                    break;
+                //<string name="SSW">South-Southwest</string>
+                case "SSW":
+                    input = context.getResources().getString(R.string.SSW);
+                    break;
+                //<string name="S">South</string>
+                case "S":
+                    input = context.getResources().getString(R.string.S);
+                    break;
+                //<string name="SSE">South-Southeast</string>
+                case "SSE":
+                    input = context.getResources().getString(R.string.SSE);
+                    break;
+                //<string name="SE">Southeast</string>
+                case "SE":
+                    input = context.getResources().getString(R.string.SE);
+                    break;
+                //<string name="ESE">East-Southeast</string>
+                case "ESE":
+                    input = context.getResources().getString(R.string.ESE);
+                    break;
+                //<string name="E">East</string>
+                case "E":
+                    input = context.getResources().getString(R.string.E);
+                    break;
+                //<string name="ENE">East-Northeast</string>
+                case "ENE":
+                    input = context.getResources().getString(R.string.ENE);
+                    break;
+                //<string name="NE">Northeast</string>
+                case "NE":
+                    input = context.getResources().getString(R.string.NE);
+                    break;
+                //<string name="NNE">North-Northeast</string>
+                case "NNE":
+                    input = context.getResources().getString(R.string.NNE);
+                    break;
+                default:
+
+                    break;
+            }
+            returnString += context.getResources().getString(R.string.generate_winddirection) + " " + input + "\n";
         }
         if (windSpeedCheck){
             returnString += context.getResources().getString(R.string.generate_windspeed)+ " " + info.getWindSpeed() + "m/s \n";
         }
-        Log.i(tag, returnString);
+        Log.i(TAG, returnString);
         return returnString.trim();
     }
 
@@ -214,7 +283,7 @@ public class CompareAXService {
             if(!returnList.isEmpty()){
                 Log.e(TAG, "CASE1");
                 addShitToDB(returnList);
-                generateNotification(returnList, id, context, cl, nm, 1);
+                generateNotification(id, context, cl, nm, 1);
                 return 1;
             } else{
                 //Case 2: No new Forecast-entries found from new XML, and no previous Forecast-entries are found in the DB
@@ -232,7 +301,7 @@ public class CompareAXService {
             }else{
                 //Case 3: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
                 forecastRepo.deleteForecastByAlertSettingsID(id);
-                generateNotification(returnList, id, context, cl, nm, 2);
+                generateNotification(id, context, cl, nm, 2);
                 Log.e(TAG, "CASE4");
                 return 4;
             }
@@ -303,45 +372,45 @@ public class CompareAXService {
     public int checkTemp(double value){
 
         if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) {
-            //Log.d(tag, "Temp returverdi = 0, innverdi = " + value);
+            //Log.d(TAG, "Temp returverdi = 0, innverdi = " + value);
             tempCheck = true;
             return 0;
         }
         if(alertSettingsObj.getTempMin() == -274){
-            //Log.d(tag, "Temp returverdi = 1, innverdi = " + value);
+            //Log.d(TAG, "Temp returverdi = 1, innverdi = " + value);
             return 1;
         }
-        //Log.d(tag, "Temp returverdi = 2, innverdi = " + value);
+        //Log.d(TAG, "Temp returverdi = 2, innverdi = " + value);
         return 2;
     }
     //private double precipitationMin;
     //private double precipitationMax;
     public int checkPrecipitation(double value) {
         if ((alertSettingsObj.getPrecipitationMin()) < (value) && (value < (alertSettingsObj.getPrecipitationMax()))){
-            //Log.d(tag, "Nedbør returverdi = 0, innverdi = " + value);
+            //Log.d(TAG, "Nedbør returverdi = 0, innverdi = " + value);
             precipitationCheck = true;
             return 0;
         }
         if(alertSettingsObj.getPrecipitationMax() == -1){
-            //Log.d(tag, "Nedbør returverdi = 1, innverdi = " + value);
+            //Log.d(TAG, "Nedbør returverdi = 1, innverdi = " + value);
             return 1;
         }
-        //Log.d(tag, "Nedbør returverdi = 2, innverdi = " + value);
+        //Log.d(TAG, "Nedbør returverdi = 2, innverdi = " + value);
         return 2;
     }
     //private double windSpeedMin;
     //private double windSpeedMax;
     public int checkWindSpeed(double value){
         if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) {
-            //Log.d(tag, "Vindstyrke returverdi = 0, innverdi = " + value);
+            //Log.d(TAG, "Vindstyrke returverdi = 0, innverdi = " + value);
             windSpeedCheck = true;
             return 0;
         }
         if(alertSettingsObj.getWindSpeedMin() == -1) {
-            //Log.d(tag, "Vindstyrke returverdi = 1, innverdi = " + value);
+            //Log.d(TAG, "Vindstyrke returverdi = 1, innverdi = " + value);
             return 1;
         }
-        //Log.d(tag, "Vindstyrke returverdi = 2, innverdi = " + value);
+        //Log.d(TAG, "Vindstyrke returverdi = 2, innverdi = " + value);
         return 2;
     }
 
@@ -354,11 +423,11 @@ public class CompareAXService {
 
             return 1;
         }
-        Log.d(tag, alertSettingsObj.getWindDirection());
+        Log.d(TAG, alertSettingsObj.getWindDirection());
         String[] div = alertSettingsObj.getWindDirection().split(", ");
         for (int i = 0; i<div.length; i++){
             if (div[i].equalsIgnoreCase(a)) {
-                Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                 windDirectionCheck = true;
                 return 0;
             }
@@ -366,49 +435,49 @@ public class CompareAXService {
                 switch (a){
                     case "NNW":
                         if (div[i].equalsIgnoreCase("NW") || div[i].equalsIgnoreCase("N")){
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                         }
                         break;
                     case  "WNW":
                         if (div[i].equalsIgnoreCase("W") || div[i].equalsIgnoreCase("NW")) {
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                     }
                         break;
                     case "WSW":
                         if (div[i].equalsIgnoreCase("W") || div[i].equalsIgnoreCase("SW")){
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                         }
                         break;
                     case "SSW":
                         if (div[i].equalsIgnoreCase("S") || div[i].equalsIgnoreCase("SW")){
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                         }
                         break;
                     case "SSE":
                         if (div[i].equalsIgnoreCase("S") || div[i].equalsIgnoreCase("SE")){
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                         }
                         break;
                     case "ESE":
                         if (div[i].equalsIgnoreCase("E") || div[i].equalsIgnoreCase("SE")){
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                         }
                         break;
                     case "NNE":
                         if (div[i].equalsIgnoreCase("N") || div[i].equalsIgnoreCase("NE")){
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                         }
                         break;
                     case "ENE":
                         if (div[i].equalsIgnoreCase("E") || div[i].equalsIgnoreCase("NE")){
-                            Log.d(tag, "Vindretning returverdi = 0, innverdi = " + a);
+                            Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
                             return 0;
                         }
                         break;
@@ -417,23 +486,23 @@ public class CompareAXService {
 
         }
 
-        Log.d(tag, "Vindretning returverdi = 2, innverdi = " + a);
+        Log.d(TAG, "Vindretning returverdi = 2, innverdi = " + a);
         return 2;
     }
     //private boolean checkSun;
     public int checkSymbolSun(String a) {
-        //Log.d(tag, "innhold i SunString: " + a);
+        //Log.d(TAG, "innhold i SunString: " + a);
 
         if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("clear sky")){
-            //Log.d(tag, "Sol returverdi = 0, innverdi = " + a);
+            //Log.d(TAG, "Sol returverdi = 0, innverdi = " + a);
             sunCheck = true;
             return 0;
         }
         if (!alertSettingsObj.isCheckSun()){
-            //Log.d(tag, "sol returverdi 1, innverdi = " +a);
+            //Log.d(TAG, "sol returverdi 1, innverdi = " +a);
             return 1;
         }
-            //Log.d(tag, "Sol returverdi = 2, innverdi = " + a);
+            //Log.d(TAG, "Sol returverdi = 2, innverdi = " + a);
             return 2;
 
         //return 0;

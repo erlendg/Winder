@@ -211,7 +211,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
         if(asd.getCheckInterval() == 12.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[4]);
         if(asd.getCheckInterval() == 24.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[5]);
         if(asd.getCheckInterval() == 48.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[6]);
-        editor2.putString(getString(R.string.prefered_icon_key), asd.getIconName()); 
+        editor2.putString(getString(R.string.prefered_icon_key), asd.getIconName());
         editor.apply();
         editor2.apply();
     }

@@ -125,4 +125,21 @@
     <string name="something_went_wrong_toast">Something went wrong..</string>
     <string name="saved_toast">Saved!</string>
 
+    <!--Winddirection-array -->
+    <string name="N">North</string>
+    <string name="NNW">North-Northwest</string>
+    <string name="NW">Northwest</string>
+    <string name="WNW">West-Northwest</string>
+    <string name="W">West</string>
+    <string name="WSW">West-Southwest</string>
+    <string name="SW">Southwest</string>
+    <string name="SSW">South-Southwest</string>
+    <string name="S">South</string>
+    <string name="SSE">South-Southeast</string>
+    <string name="SE">Southeast</string>
+    <string name="ESE">East-Southeast</string>
+    <string name="E">East</string>
+    <string name="ENE">East-Northeast</string>
+    <string name="NE">Northeast</string>
+    <string name="NNE">North-Northeast</string>
 </resources>

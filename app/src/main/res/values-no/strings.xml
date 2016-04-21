@@ -104,4 +104,21 @@
     <string name="delete_message">Ønsker du å slette stedet for værvarsling?</string>
     <string name="saved_toast">Lagret!</string>
     <string name="something_went_wrong_toast">Noe gikk galt..</string>
+
+    <string name="E">Øst</string>
+    <string name="ENE">Øst-Nordøst</string>
+    <string name="ESE">Øst-Sørøst</string>
+    <string name="N">Nord</string>
+    <string name="NE">Nordøst</string>
+    <string name="NNE">Nord-Nordøst</string>
+    <string name="NNW">Nord-Nordvest</string>
+    <string name="NW">Nordvest</string>
+    <string name="S">Sør</string>
+    <string name="SE">Sørøst</string>
+    <string name="SSE">Sør-Sørøst</string>
+    <string name="SSW">Sør-Sørvest</string>
+    <string name="SW">Sørvest</string>
+    <string name="W">Vest</string>
+    <string name="WNW">Vest-Nordvest</string>
+    <string name="WSW">Vest-Sørvest</string>
 </resources>
