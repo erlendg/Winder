@@ -123,4 +123,21 @@
     <string name="about">Winder is an Application provided by EIM Development. Thiss app is supposed to be a tool for users who are occupied by-  or depending on weather conditions in the activities you are planning to conduct. By defining your prefrences for weather  forecasting or by predefined custom options based on  different activities, you will receive a notification when your conditions is satisfied. To make this happen we have used weather forecast from Yr, delivered by the Norwegian Meteorological Institute and NRK</string>
     <string name="notification_message_title">We have a match!</string>
 
+    <!--Winddirection-array -->
+    <string name="N">North</string>
+    <string name="NNW">North-Northwest</string>
+    <string name="NW">Northwest</string>
+    <string name="WNW">West-Northwest</string>
+    <string name="W">West</string>
+    <string name="WSW">West-Southwest</string>
+    <string name="SW">Southwest</string>
+    <string name="SSW">South-Southwest</string>
+    <string name="S">South</string>
+    <string name="SSE">South-Southeast</string>
+    <string name="SE">Southeast</string>
+    <string name="ESE">East-Southeast</string>
+    <string name="E">East</string>
+    <string name="ENE">East-Northeast</string>
+    <string name="NE">Northeast</string>
+    <string name="NNE">North-Northeast</string>
 </resources>
