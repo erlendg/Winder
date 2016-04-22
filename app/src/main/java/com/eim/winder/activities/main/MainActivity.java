@@ -158,33 +158,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
         */
         switch (item.getItemId()) {
+
             // action with ID action_refresh was selected
             case R.id.action_refresh:
-                Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
-                for (AlertSettingsDAO temp : alertSettingsList) {
-                    //create an instance of CompareAXService:
-                    compare = new CompareAXService(this, temp);
-                    //run the xml-parser:
-                    div = compare.runHandleXML();
-                    int compareResult;
-                    //if the parsing is done, run findAllOccurences:
-                    if(div) {
-                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                doManualForecastRefresh();
 
-                        compareResult = compare.findAllOccurences(temp.getId(), this, this.getClass(), mNotificationManager);
-                       /* if (!listeTing.isEmpty()) {
-                            compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
-                        }*/
-                    }
-                    Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
-                }
-                Toast.makeText(this, "... done!", Toast.LENGTH_SHORT);
                 break;
+
             // action with ID action_settings was selected
             case R.id.action_settings:
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
 
                 break;
+
             default:
                 break;
         }
@@ -193,6 +179,28 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void doManualForecastRefresh(){
+        Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
+        for (AlertSettingsDAO temp : alertSettingsList) {
+            //create an instance of CompareAXService:
+            compare = new CompareAXService(this, temp);
+            //run the xml-parser:
+            div = compare.runHandleXML();
+            int compareResult;
+            //if the parsing is done, run findAllOccurences:
+            if(div) {
+                NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                compareResult = compare.findAllOccurences(temp.getId(), temp.getLocation().getName(), this, this.getClass(), mNotificationManager);
+                       /* if (!listeTing.isEmpty()) {
+                            compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
+                        }*/
+            }
+            Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(this, "... done!", Toast.LENGTH_SHORT).show();
+    }
+
     public void setApplicationLocale(Locale l) {
         //Setter den til norsk hvis det er satt på enheten ved oppstart:
         if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")){

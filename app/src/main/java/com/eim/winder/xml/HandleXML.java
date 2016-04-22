@@ -13,6 +13,7 @@ import java.net.URL;
  * Created by topkek on 09/02/16.
  */
 public class HandleXML {
+    private final String TAG = "HandleXML.java";
 
     private ForecastInfo forecast;
     private TabularInfo tabular;
@@ -217,11 +218,13 @@ public class HandleXML {
     public ForecastInfo getForecastInfo(){
         return forecast;
     }
+
     public void fetchXML(){
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
                 try {
+                    long start = System.nanoTime();
                     URL url = new URL(urlString);
                     HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
@@ -239,7 +242,10 @@ public class HandleXML {
                     myparser.setInput(stream, null);
 
                     parseXMLAndStoreIt(myparser);
+
                     stream.close();
+                    long end = System.nanoTime();
+                    Log.i(TAG, url + " Tid brukt i millisekund: " + (end-start)/1000000);
                 }
                 catch (Exception e) {
                     e.printStackTrace();

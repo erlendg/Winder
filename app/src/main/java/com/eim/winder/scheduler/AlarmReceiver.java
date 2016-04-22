@@ -43,7 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             //creating the NotificationManager needed to display notifications:
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             //run the comparison logic:
-            compareResult = compare.findAllOccurences(settings.getId(), context, MainActivity.class, mNotificationManager);
+            compareResult = compare.findAllOccurences(settings.getId(), settings.getLocation().getName(), context, MainActivity.class, mNotificationManager);
             //send notificaton to the user based on the results received:
             /*if (!listeTing.isEmpty()) {
                 compare.generateNotification(listeTing, settings.getId(), context, MainActivity.class, mNotificationManager);

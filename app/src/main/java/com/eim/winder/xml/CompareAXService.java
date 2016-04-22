@@ -83,22 +83,23 @@ public class CompareAXService {
      *Generates and displays one notification if there has been an occurence for the specific alertsetting.
      *
      * @param i alertsettingID
+     * @param locName location name for the current alertSetting
      * @param context context of activity that called the method.
      * @param cl class of activity
      * @param nm notificationmanager injected from previously mentioned activity
      * @param type indicates which kind of notification should be issued.
      */
-    public void generateNotification(int i, Context context, Class cl, NotificationManager nm, int type){
+    public void generateNotification(int i, String locName, Context context, Class cl, NotificationManager nm, int type){
                 notification = new NotificationCompat.Builder(context);
                 notification.setSmallIcon(R.drawable.ic_stat_name);
                 notification.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
                 if (type == 1){
                     notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_success));
-                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!");
+                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + " " + locName);
                 }else if(type == 2){
                     notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_no_success));
-                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!!!!!");
+                    notification.setContentText(context.getResources().getString(R.string.notification_message_text)+ " " + locName);
                 }
 
                 // Creates an explicit intent for an Activity in your app
@@ -136,7 +137,7 @@ public class CompareAXService {
     private String generateInfo(TabularInfo info){
         String returnString = "";
         returnString += fixDate(info.getFrom(), info.getTo());
-        if (tempCheck){
+        if(tempCheck){
             returnString += context.getResources().getString(R.string.generate_temperature)+ " " + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
 
         }
@@ -250,11 +251,9 @@ public class CompareAXService {
         thread.start();
 
         boolean ok = false;
-        //ok = forecastDSService.insertForecastList(list, alertSettingsObj.getId());
-        //return ok;
     }
 
-    public int findAllOccurences(int id, Context context, Class cl, NotificationManager nm){
+    public int findAllOccurences(int id, String locName, Context context, Class cl, NotificationManager nm){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
         ArrayList<ForecastDAO> returnList = new ArrayList<>();
@@ -276,14 +275,12 @@ public class CompareAXService {
 
         }
 
-        //// TODO: 19.04.2016 this is where code to handle the four different notification-scenarios is implemented:
-
         if(!forecastRepo.findIfForecastsExistsForAlertSettingsID(id)){
             //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
             if(!returnList.isEmpty()){
                 Log.e(TAG, "CASE1");
                 addShitToDB(returnList);
-                generateNotification(id, context, cl, nm, 1);
+                generateNotification(id, locName, context, cl, nm, 1);
                 return 1;
             } else{
                 //Case 2: No new Forecast-entries found from new XML, and no previous Forecast-entries are found in the DB
@@ -301,7 +298,7 @@ public class CompareAXService {
             }else{
                 //Case 3: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
                 forecastRepo.deleteForecastByAlertSettingsID(id);
-                generateNotification(id, context, cl, nm, 2);
+                generateNotification(id, locName, context, cl, nm, 2);
                 Log.e(TAG, "CASE4");
                 return 4;
             }
