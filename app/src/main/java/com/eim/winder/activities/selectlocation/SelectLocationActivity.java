@@ -18,7 +18,7 @@ import com.eim.winder.R;
 import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
 import com.eim.winder.activities.alertsettings.CustomPrecipRangePreference;
 import com.eim.winder.db.DBService;
-import com.eim.winder.db.LocationDAO;
+import com.eim.winder.db.Location;
 import com.eim.winder.db.LocationRepo;
 
 import java.util.ArrayList;
@@ -30,10 +30,10 @@ public class SelectLocationActivity extends AppCompatActivity {
     private final static String TAG = "SelectLocationActivity";
     private LocationRepo locationDataSource;
     private DBService dbService;
-    private ArrayList<LocationDAO> searchLocations;
+    private ArrayList<Location> searchLocations;
     private AutoCompleteTextView searchView;
-    private ArrayAdapter<LocationDAO> searchAdapter;
-    private LocationDAO locationSelected;
+    private ArrayAdapter<Location> searchAdapter;
+    private Location locationSelected;
     private ImageButton sunButton;
     private ImageButton snowButton;
     private ImageButton windButton;
@@ -60,7 +60,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                locationSelected = (LocationDAO) arg0.getItemAtPosition(position);
+                locationSelected = (Location) arg0.getItemAtPosition(position);
                 Log.d("############", locationSelected.getId() + " " + locationSelected.toString());
             }
         });
@@ -179,7 +179,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     public void onNextButtonClick(View v) {
         if (locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())) {
             Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
-            intent.putExtra("LocationDAO", locationSelected);
+            intent.putExtra("Location", locationSelected);
             intent.putExtra("edit", false);
             boolean t = initializeTemplatePreferences();
             Log.i(TAG, "---> startAlertSettingsActivity");

@@ -1,11 +1,9 @@
 package com.eim.winder.activities.alertoverview;
 
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,7 @@ import android.widget.TextView;
 
 import com.eim.winder.R;
 import com.eim.winder.databinding.FragmentSettingsBinding;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 
 
 /**
@@ -30,7 +28,7 @@ public class SettingsFragment extends Fragment {
     private LinearLayout sunLayout;
     private TextView sunCheck;
     private AlertOverViewActivity activity;
-    private AlertSettingsDAO alertSettingsDAO;
+    private AlertSettings alertSettings;
 
 
     public SettingsFragment() {
@@ -43,13 +41,13 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         FragmentSettingsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
         activity = (AlertOverViewActivity) getActivity();
-        alertSettingsDAO = activity.getAlertSettingsDAO();
-        binding.setAlertsettings(alertSettingsDAO);
-        binding.setLocation(alertSettingsDAO.getLocation());
+        alertSettings = activity.getAlertSettings();
+        binding.setAlertsettings(alertSettings);
+        binding.setLocation(alertSettings.getLocation());
         View v = binding.getRoot();
         TextView weekdays = (TextView) v.findViewById(R.id.row8_column2);
-        weekdays.setText(alertSettingsDAO.getWeekDaysSelected(getResources()));
-        removeDefaultValues(v, activity.getAlertSettingsDAO());
+        weekdays.setText(alertSettings.getWeekDaysSelected(getResources()));
+        removeDefaultValues(v, activity.getAlertSettings());
         return v;
     }
 
@@ -58,7 +56,7 @@ public class SettingsFragment extends Fragment {
      * @param view
      * @param asd
      */
-    public void removeDefaultValues(View view, AlertSettingsDAO asd){
+    public void removeDefaultValues(View view, AlertSettings asd){
         //Log.d(TAG, "prøver å oppdatere...");
         fromToLayout = (LinearLayout) view.findViewById(R.id.row2_fromTo);
         tempLayout = (LinearLayout) view.findViewById(R.id.row3_temp);

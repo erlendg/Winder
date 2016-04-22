@@ -1,5 +1,6 @@
 package com.eim.winder.activities.alertsettings;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -11,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.eim.winder.R;
+import com.eim.winder.db.AlertSettings;
+import com.eim.winder.div.AlertSettingsActivity;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -37,13 +40,14 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
     MultiSelectListPreference weekdays;
     SharedPreferences prefs;
     SharedPreferences defaultPrefs;
+    AlertSettingsActivityBeta activity;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.alert_preferences);
-
+        activity = (AlertSettingsActivityBeta) getActivity();
 
         tempPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.temp_pref_key));
         precipPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.precip_pref_key));
@@ -198,16 +202,22 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         return false;
     }
     public void initializeTemplatePrefs(){
+        defaultPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if(tempPref.isChecked()) {
             getPreferenceScreen().addPreference(tempRange);
         }if(precipPref.isChecked()) {
             getPreferenceScreen().addPreference(precipRange);
-        }if(windSpeedPref.isChecked()){
+        }if(windSpeedPref.isChecked()) {
             getPreferenceScreen().addPreference(windSpeedRange);
-        }if(windDirPref.isChecked()) {
-            getPreferenceScreen().addPreference(windDir);
-            SharedPreferences defSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            prefsChanged(windDir, defSharedPrefs.getStringSet(getString(R.string.winddir_select_key), null));
+        }
+        // If the previous activity was AlertSettingsOverview then there are already settings to be shown and defaults must be overridden.
+        if(activity.getUpdateMode()) {
+            if(windDirPref.isChecked()) {
+                getPreferenceScreen().addPreference(windDir);
+                prefsChanged(windDir, defaultPrefs.getStringSet(getString(R.string.winddir_select_key), null));
+            }
+            prefsChanged(weekdays, defaultPrefs.getStringSet(getString(R.string.weekdays_pref_key), null));
+            prefsChanged(checkIntrPref, defaultPrefs.getString(getString(R.string.checkintr_pref_key), null));
         }
     }
 }

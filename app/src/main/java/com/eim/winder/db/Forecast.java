@@ -6,18 +6,18 @@ import android.os.Parcelable;
 /**
  * Created by Erlend on 08.04.2016.
  */
-public class ForecastDAO implements Parcelable {
+public class Forecast implements Parcelable {
     private int id;
     private String formatedDate;
     private String formatedInfo;
     private int icon;
     private int alertSettingId;
 
-    public ForecastDAO() {
+    public Forecast() {
 
     }
 
-    public ForecastDAO(int id, String formatedDate, String formatedInfo, int icon, int alertSettingId){
+    public Forecast(int id, String formatedDate, String formatedInfo, int icon, int alertSettingId){
         this.id = id;
         this.formatedDate = formatedDate;
         this.formatedInfo = formatedInfo;
@@ -79,7 +79,7 @@ public class ForecastDAO implements Parcelable {
         dest.writeInt(alertSettingId);
     }
 
-    ForecastDAO(Parcel in) {
+    Forecast(Parcel in) {
         readFromParcel(in);
     }
 
@@ -97,12 +97,12 @@ public class ForecastDAO implements Parcelable {
     * */
     public static final Parcelable.Creator CREATOR =
             new Parcelable.Creator() {
-                public ForecastDAO createFromParcel(Parcel in) {
-                    return new ForecastDAO(in);
+                public Forecast createFromParcel(Parcel in) {
+                    return new Forecast(in);
                 }
 
-                public ForecastDAO[] newArray(int size) {
-                    return new ForecastDAO[size];
+                public Forecast[] newArray(int size) {
+                    return new Forecast[size];
                 }
             };
 

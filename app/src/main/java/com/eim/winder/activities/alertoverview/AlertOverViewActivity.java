@@ -11,8 +11,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,26 +26,22 @@ import com.eim.winder.R;
 import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
 import com.eim.winder.activities.alertsettings.CustomPrecipRangePreference;
 import com.eim.winder.databinding.ActivityAlertOverViewBinding;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.DBService;
 import com.eim.winder.db.ForecastRepo;
-import com.eim.winder.db.LocationDAO;
+import com.eim.winder.db.Location;
 import com.eim.winder.scheduler.AlarmReceiver;
 
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import javax.sql.DataSource;
 
 public class AlertOverViewActivity extends AppCompatActivity {
     private final String TAG = "AlertOverWievActivity";
-    private AlertSettingsDAO alertSettingsDAO;
-    private LocationDAO location;
+    private AlertSettings alertSettings;
+    private Location location;
     private AlertSettingsRepo alertDataSource;
     private ForecastRepo forecastDataSource;
     private DBService dbService;
@@ -65,8 +59,8 @@ public class AlertOverViewActivity extends AppCompatActivity {
 
         //Gets the object that was sent from MainActivity
         Bundle bundle = getIntent().getExtras();
-        alertSettingsDAO = bundle.getParcelable("AlertSettingsDAO");
-        location = alertSettingsDAO.getLocation();
+        alertSettings = bundle.getParcelable("AlertSettings");
+        location = alertSettings.getLocation();
 
         //Opens datasource usage:
         alertDataSource = new AlertSettingsRepo(this);
@@ -92,7 +86,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
 
         //Sets the toolbar name to the location name (doesn't work in xml)
         collapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
-        collapsingToolbar.setTitle(alertSettingsDAO.getLocation().getName());
+        collapsingToolbar.setTitle(alertSettings.getLocation().getName());
         // Sets the action of the blue floating action button:
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -114,9 +108,9 @@ public class AlertOverViewActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        if (dbService.deleteAlertSettingAndForecasts(alertSettingsDAO.getId())) {
+                        if (dbService.deleteAlertSettingAndForecasts(alertSettings.getId())) {
                             finish();
-                            cancelAlarm(alertSettingsDAO.getId());
+                            cancelAlarm(alertSettings.getId());
                             Toast.makeText(AlertOverViewActivity.this, getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(AlertOverViewActivity.this, getString(R.string.something_whent_wrong), Toast.LENGTH_SHORT).show();
@@ -126,8 +120,8 @@ public class AlertOverViewActivity extends AppCompatActivity {
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
-    public AlertSettingsDAO getAlertSettingsDAO(){
-        return alertSettingsDAO;
+    public AlertSettings getAlertSettings(){
+        return alertSettings;
     }
 
 
@@ -145,15 +139,15 @@ public class AlertOverViewActivity extends AppCompatActivity {
     }
     public void onEditAlertButtonClick(View v){
         Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
-        intent.putExtra("LocationDAO", alertSettingsDAO.getLocation());
+        intent.putExtra("Location", alertSettings.getLocation());
         intent.putExtra("edit", true);
-        intent.putExtra("alertID", alertSettingsDAO.getId());
+        intent.putExtra("alertID", alertSettings.getId());
         Log.i(TAG, "---> startAlertSettingsActivity");
-        makePreferencesFromObject(alertSettingsDAO);
+        makePreferencesFromObject(alertSettings);
         startActivity(intent);
         finish();
     }
-    public void makePreferencesFromObject(AlertSettingsDAO asd){
+    public void makePreferencesFromObject(AlertSettings asd){
         SharedPreferences defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences sharedPrefs = getSharedPreferences(getString(R.string.name_of_prefs_saved), this.MODE_PRIVATE);
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
@@ -204,13 +198,13 @@ public class AlertOverViewActivity extends AppCompatActivity {
             editor.putStringSet(getString(R.string.winddir_select_key), days);
         }
         String[] checkintr = getResources().getStringArray(R.array.windDirection_array);
-        if(asd.getCheckInterval() == 1.0)editor.putString(getString(R.string.checkintr_pref_key), checkintr[0]);
-        if(asd.getCheckInterval() == 2.0)editor.putString(getString(R.string.checkintr_pref_key), checkintr[1]);
-        if(asd.getCheckInterval() == 4.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[2]);
-        if(asd.getCheckInterval() == 6.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[3]);
-        if(asd.getCheckInterval() == 12.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[4]);
-        if(asd.getCheckInterval() == 24.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[5]);
-        if(asd.getCheckInterval() == 48.0)editor.putString(getString(R.string.checkintr_pref_key),checkintr[6]);
+        if(asd.getCheckInterval() == 1.0)editor.putString(getString(R.string.checkintr_pref_key), ""+0);
+        if(asd.getCheckInterval() == 2.0)editor.putString(getString(R.string.checkintr_pref_key), ""+1);
+        if(asd.getCheckInterval() == 4.0)editor.putString(getString(R.string.checkintr_pref_key),""+2);
+        if(asd.getCheckInterval() == 6.0)editor.putString(getString(R.string.checkintr_pref_key),""+3);
+        if(asd.getCheckInterval() == 12.0)editor.putString(getString(R.string.checkintr_pref_key),""+4);
+        if(asd.getCheckInterval() == 24.0)editor.putString(getString(R.string.checkintr_pref_key),""+5);
+        if(asd.getCheckInterval() == 48.0)editor.putString(getString(R.string.checkintr_pref_key),""+6);
         editor2.putString(getString(R.string.prefered_icon_key), asd.getIconName());
         editor.apply();
         editor2.apply();

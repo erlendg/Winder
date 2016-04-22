@@ -1,7 +1,7 @@
 package com.eim.winder.div;
 
-import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.LocationDAO;
+import com.eim.winder.db.AlertSettings;
+import com.eim.winder.db.Location;
 
 import java.util.ArrayList;
 
@@ -11,24 +11,24 @@ import java.util.ArrayList;
 public class Locations {
     public static final String[] locations = {"Trondheim Sentrum", "Lade", "Ila", "Orkanger", "Stjørdal","Hatmountainvalley", "Åre", "UtiGokk"};
 
-    public static ArrayList<AlertSettingsDAO> getTestAlertList() {
-            ArrayList<AlertSettingsDAO> testAlerts = new ArrayList<>();
-            LocationDAO loc = new LocationDAO();
+    public static ArrayList<AlertSettings> getTestAlertList() {
+            ArrayList<AlertSettings> testAlerts = new ArrayList<>();
+            Location loc = new Location();
             loc.setName("Trondheim");
             loc.setId(-1);
             loc.setXmlURL("http://www.yr.no/place/Norway/Sør-Trøndelag/Trondheim/Trondheim/forecast.xml");
-            LocationDAO loc2 = new LocationDAO();
+            Location loc2 = new Location();
             loc2.setName("Ørlandet");
             loc2.setId(-2);
             loc2.setXmlURL("http://www.yr.no/place/Norway/Sør-Trøndelag/Ørland/Ørland_lufthavn/forecast.xml");
-            LocationDAO loc3 = new LocationDAO();
+            Location loc3 = new Location();
             loc3.setName("Stjørdal");
             loc3.setId(-3);
             loc3.setXmlURL("http://www.yr.no/place/Norway/Nord-Trøndelag/Stjørdal/Stjørdal/forecast.xml");
 
-            testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 1, 1, 1, 1, 1, 1, 1, "ic_sun", loc));
-            testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 6, 1, 1, 1, 1, 1, 1, "ic_sun", loc2));
-            testAlerts.add(new AlertSettingsDAO(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 0.5, 1, 1, 1, 1, 1, 1, 1, "ic_sun", loc3));
+            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 1, 1, 1, 1, 1, 1, 1, "ic_sun", loc));
+            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 6, 1, 1, 1, 1, 1, 1, "ic_sun", loc2));
+            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 0.5, 1, 1, 1, 1, 1, 1, 1, "ic_sun", loc3));
             return testAlerts;
     }
     public static final String[][] locationsComplete = new String[][]{

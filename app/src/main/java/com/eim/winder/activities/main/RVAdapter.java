@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 
 import java.util.ArrayList;
 
@@ -20,12 +20,12 @@ import java.util.ArrayList;
  */
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>{
     private static String TAG = "RVAdapter";
-    private ArrayList<AlertSettingsDAO> alertsettings;
+    private ArrayList<AlertSettings> alertsettings;
     private static OnItemClickListener listener;
     private Context context;
 
     //Constructor receives an object that implements the listener interface, along with items
-    RVAdapter(Context context, ArrayList<AlertSettingsDAO> alertsettings, OnItemClickListener listener){
+    RVAdapter(Context context, ArrayList<AlertSettings> alertsettings, OnItemClickListener listener){
         this.alertsettings = alertsettings;
         this.listener = listener;
         this.context = context;
@@ -33,12 +33,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
 
     // Interface that specifies listener’s behaviour
     public interface OnItemClickListener {
-        void onItemClick(AlertSettingsDAO item);
+        void onItemClick(AlertSettings item);
     }
     /*public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
-    public MyRecyclerViewAdapter(ArrayList<AlertSettingsDAO> alertsettings) {
+    public MyRecyclerViewAdapter(ArrayList<AlertSettings> alertsettings) {
         mDataset = myDataset;
     }*/
     //This method is called when the custom ViewHolder needs to be initialized.
@@ -91,7 +91,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
             weatherIcon = (ImageButton)itemView.findViewById(R.id.weather_photo);
         }
         //Binds template_selected_shape listener to each item
-        public void bind(final AlertSettingsDAO item, final OnItemClickListener listener){
+        public void bind(final AlertSettings item, final OnItemClickListener listener){
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override public void onClick(View v){
                     listener.onItemClick(item);

@@ -5,7 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.eim.winder.activities.main.MainActivity;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 
 import org.junit.Rule;
@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 public class LeggTilNyttStedStepDef2 {
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
-    private ArrayList<AlertSettingsDAO> asd;
+    private ArrayList<AlertSettings> asd;
     private int size;
 
     @Test

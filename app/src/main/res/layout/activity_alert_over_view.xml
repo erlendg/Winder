@@ -2,8 +2,8 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="alertsettings" type="com.eim.winder.db.AlertSettingsDAO"/>
-        <variable name="location" type="com.eim.winder.db.LocationDAO"/>
+        <variable name="alertsettings" type="com.eim.winder.db.AlertSettings"/>
+        <variable name="location" type="com.eim.winder.db.Location"/>
     </data>
 
 <android.support.design.widget.CoordinatorLayout

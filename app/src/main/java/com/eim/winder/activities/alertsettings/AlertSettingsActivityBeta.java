@@ -14,10 +14,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.DBService;
-import com.eim.winder.db.LocationDAO;
+import com.eim.winder.db.Location;
 import com.eim.winder.scheduler.AlarmReceiver;
 
 import java.util.GregorianCalendar;
@@ -33,7 +33,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     private DBService dbService;
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
-    private LocationDAO locationSelected;
+    private Location locationSelected;
     private boolean haveSelectedSomething = false;
     private boolean updateMode;
     Bundle bundle;
@@ -46,7 +46,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(R.id.prefFragment, new AlertSettingsPrefFragment()).commit();
         //PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
         bundle = getIntent().getExtras();
-        locationSelected = bundle.getParcelable("LocationDAO");
+        locationSelected = bundle.getParcelable("Location");
         updateMode = bundle.getBoolean("edit");
         // instantiate database handler
         alertDataSource = new AlertSettingsRepo(this);
@@ -81,7 +81,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     }
     public void onSaveButtonClick(View v) {
         updatePreferences();
-        AlertSettingsDAO asd = makeObjFromPreferences(defaultSharedPrefs, sharedPrefs);
+        AlertSettings asd = makeObjFromPreferences(defaultSharedPrefs, sharedPrefs);
         if(!haveSelectedSomething){
             Toast.makeText(this, getString(R.string.no_settings_selected), Toast.LENGTH_LONG).show();
             return;
@@ -103,7 +103,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         }
     }
 
-    public boolean saveAlertSettings(AlertSettingsDAO asd) {
+    public boolean saveAlertSettings(AlertSettings asd) {
         Log.i(TAG, "saveAlertSettings()");
         if(updateMode){
             asd.setId(bundle.getInt("alertID"));
@@ -119,8 +119,8 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         return false;
     }
 
-    public AlertSettingsDAO makeObjFromPreferences(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
-        AlertSettingsDAO asd = new AlertSettingsDAO();
+    public AlertSettings makeObjFromPreferences(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
+        AlertSettings asd = new AlertSettings();
         asd.setLocation(locationSelected);
         //Temperature:
         if (defaultSharedPrefs.getBoolean(getString(R.string.temp_pref_key), false)) {
@@ -215,6 +215,9 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, toDo);
 
         Toast.makeText(this, "Alarm scheduled for Id: " + id + "!", Toast.LENGTH_LONG).show();
+    }
+    public boolean getUpdateMode(){
+        return updateMode;
     }
 }
 

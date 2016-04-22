@@ -2,8 +2,8 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="alertsettings" type="com.eim.winder.db.AlertSettingsDAO"/>
-        <variable name="location" type="com.eim.winder.db.LocationDAO"/>
+        <variable name="alertsettings" type="com.eim.winder.db.AlertSettings"/>
+        <variable name="location" type="com.eim.winder.db.Location"/>
     </data>
 <android.support.v4.widget.NestedScrollView
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -210,6 +210,7 @@
 
             <LinearLayout
                 app:layout_columnWeight="1"
+                android:weightSum="3"
                 android:id="@+id/row6_windDir"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -228,7 +229,7 @@
                 android:padding="10dip"/>
 
             <TextView
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/row6_column2"
@@ -239,6 +240,7 @@
 
             <LinearLayout
                 app:layout_columnWeight="1"
+                android:weightSum="3"
                 android:id="@+id/row7_sun"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -248,21 +250,18 @@
                 android:background="@drawable/table_lines"
                 >
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_columnSpan="1"
-                app:layout_rowSpan="1"
+                android:layout_weight="1"
                 android:id="@+id/row7_column1"
                 android:text="@string/sol_varsel"
                 android:gravity="left"
                 android:padding="10dip"/>
 
             <TextView
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_columnSpan="2"
-                app:layout_rowSpan="1"
                 android:id="@+id/row7_column2"
                 android:text=""
                 android:gravity="center"
@@ -271,6 +270,7 @@
             <LinearLayout
                 app:layout_columnWeight="1"
                 android:layout_width="0dp"
+                android:weightSum="3"
                 android:layout_height="wrap_content"
                 app:layout_columnSpan="3"
                 app:layout_rowSpan="1"
@@ -278,14 +278,15 @@
                 android:background="@drawable/table_lines"
                 >
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:text="@string/weekdays"
                     android:gravity="left|center_vertical"
                     android:padding="10dip"
                     />
                 <TextView
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/row8_column2"
@@ -296,6 +297,7 @@
 
             <LinearLayout
                 app:layout_columnWeight="1"
+                android:weightSum="3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_columnSpan="3"
@@ -305,14 +307,15 @@
                 >
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:id="@+id/row9_column1"
                 android:text="@string/sjekk_intervall"
                 android:gravity="left"
                 android:padding="10dip"/>
             <TextView
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/row9_column2"
