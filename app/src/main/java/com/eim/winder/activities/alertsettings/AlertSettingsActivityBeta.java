@@ -44,7 +44,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         setContentView(R.layout.alertprefsettings_layout);
         getSupportActionBar().setTitle(R.string.settings_for_alert);
         getFragmentManager().beginTransaction().replace(R.id.prefFragment, new AlertSettingsPrefFragment()).commit();
-        //PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
+        PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
         bundle = getIntent().getExtras();
         locationSelected = bundle.getParcelable("Location");
         updateMode = bundle.getBoolean("edit");
