@@ -114,31 +114,54 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             return true;
         }if(pref == windDir){
             SharedPreferences.Editor editor = prefs.edit();
-            setMultiSelectPreferenceSummary(windDir, newValue, getResources().getString(R.string.winddir_select_key), getResources().getString(R.string.choose_winddirection_string) , editor, false);
+            setMultiSelectWinDirPrefSummary(windDir, newValue, getResources().getString(R.string.winddir_select_key), getResources().getString(R.string.choose_winddirection_string), editor);
             return true;
 
         }if(pref == weekdays){
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).edit();
-            setMultiSelectPreferenceSummary(weekdays, newValue, getResources().getString(R.string.weekdays_pref_key), getResources().getString(R.string.choose_weekdays_string), editor, true);
+            setMultiSelectWeekdaysPrefSummary(weekdays, newValue, getResources().getString(R.string.weekdays_pref_key), getResources().getString(R.string.choose_weekdays_string), editor);
             return true;
         }
         return false;
     }
-    private void setMultiSelectPreferenceSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue, SharedPreferences.Editor editor, boolean saveIntSet){
-        String res = "";
-        //SharedPreferences.Editor editor;
-        if(newValue == null){
+    private void setMultiSelectWeekdaysPrefSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue, SharedPreferences.Editor editor){
+        String summary = "";
+        CharSequence[] entries = multipref.getEntries();
+        Set<String> selections = (Set<String>) newValue;
+        String[] selected = selections.toArray(new String[selections.size()]);
+        if(selected.length == 0 ) {
             multipref.setSummary(defValue);
-            return;
+            Log.i("HEIEHI", "lenght = 0");
+            editor.putStringSet(saveName, null);
+        }else{
+            int[] help = new int[selected.length];
+            for(int i = 0; i < selected.length; i++){
+                help[i] = Integer.parseInt(selected[i]);
+            }
+            Arrays.sort(help);
+            for (int i = 0; i < help.length; i++) {
+                int id = help[i];
+                if (i == help.length - 1) {
+                    summary += entries[id];
+                } else {
+                    summary += entries[id] + ", ";
+                }
+            }
+            editor.putStringSet(saveName, selections);
+            multipref.setSummary(summary);
         }
+        editor.apply();
+    }
+    private void setMultiSelectWinDirPrefSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue, SharedPreferences.Editor editor){
+        String res = "";
         CharSequence[] entries = multipref.getEntries();
         Set<String> selections = (Set<String>) newValue;
         String[] selected = selections.toArray(new String[selections.size()]);
         int[] help = new int[selected.length];
         if(selected.length == 0 ){
             multipref.setSummary(defValue);
+            Log.i("HEIEHI", "lenght = 0");
             editor.putString(saveName, "NOT VALID");
-            //Log.i("HEIEHI","lenght = 0" );
         }else {
             for(int i = 0; i < selected.length; i++){
                 help[i] = Integer.parseInt(selected[i]);
@@ -152,13 +175,8 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
                     res += entries[id] + ", ";
                 }
             }
-            Log.i("HEIEHI", "" + selections.toString() + " " + res);
-            if(saveIntSet){
-                editor.putStringSet(saveName, selections);
-            }
-            else {
-                editor.putString(saveName, res);
-            }
+
+            editor.putString(saveName, res);
             multipref.setSummary(res);
         }
         editor.apply();

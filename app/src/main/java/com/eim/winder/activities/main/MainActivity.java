@@ -1,5 +1,6 @@
 package com.eim.winder.activities.main;
 
+import android.app.ActivityOptions;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -119,7 +120,11 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "---> startAlertOverViewActivity");
         Intent intent = new Intent(this, AlertOverViewActivity.class);
         intent.putExtra("AlertSettings", asd);
-        startActivity(intent);
+        Bundle bndlanimation = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.pull_in_right_anim, R.anim.push_out_left_anim).toBundle();
+        startActivity(intent, bndlanimation);
+    }
+    public ArrayList<AlertSettings> getRecycleViewDataset(){
+        return dbService.getAllAlertSettingsAndLocations();
     }
 
     @Override

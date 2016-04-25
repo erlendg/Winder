@@ -50,7 +50,7 @@ public class LeggTilNyttStedStepsDef1 {
         // Express the Regexp above with the code you wish you had
         AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.getAllAlertSettings()).thenCallRealMethod();
-        asd = mainActivity.getActivity().getAlertSettingsDataSet();
+        asd = mainActivity.getActivity().getRecycleViewDataset();
         size = asd.size();
         assertTrue(size < 10);
     }

@@ -48,7 +48,7 @@ public class LeggTilNyttStedStepDef2 {
     public void at_bruker_har_ti_steder_registrert(){
         AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.getAllAlertSettings()).thenCallRealMethod();
-        asd = mainActivity.getActivity().getAlertSettingsDataSet();
+        asd = mainActivity.getActivity().getRecycleViewDataset();
         size = asd.size();
         assertTrue(size == 10);
 

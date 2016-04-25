@@ -59,7 +59,8 @@
         android:summary="@string/choose_weekdays_string"
         android:entries="@array/weekdays_array"
         android:icon="@android:drawable/ic_menu_my_calendar"
-        android:entryValues="@array/weekdays_values"/>
+        android:entryValues="@array/weekdays_values"
+        />
     <ListPreference
         android:key="@string/checkintr_pref_key"
         android:title="@string/preferences_interval"
