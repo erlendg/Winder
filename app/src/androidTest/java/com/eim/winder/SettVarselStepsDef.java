@@ -15,7 +15,7 @@ import android.view.View;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
 import com.eim.winder.activities.main.MainActivity;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 
 import org.hamcrest.Description;
@@ -60,7 +60,7 @@ public class SettVarselStepsDef {
     private String deletedLocation = "";
     private int size = 0;
     private int id = 0;
-    private ArrayList<AlertSettingsDAO> asd;
+    private ArrayList<AlertSettings> asd;
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);

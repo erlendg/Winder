@@ -66,6 +66,7 @@
         android:summary="@string/preferences_interval_description"
         android:entries="@array/checkinterval_array"
         android:entryValues="@array/checkinterval_values"
-        android:icon="@android:drawable/ic_lock_idle_alarm"/>
+        android:icon="@android:drawable/ic_lock_idle_alarm"
+        android:defaultValue="3"/>
 
 </PreferenceScreen>

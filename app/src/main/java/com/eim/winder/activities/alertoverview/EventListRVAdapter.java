@@ -1,15 +1,13 @@
 package com.eim.winder.activities.alertoverview;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.eim.winder.R;
-import com.eim.winder.db.ForecastDAO;
+import com.eim.winder.db.Forecast;
 
 import java.util.ArrayList;
 
@@ -18,17 +16,17 @@ import java.util.ArrayList;
  */
 public class EventListRVAdapter extends RecyclerView.Adapter<EventListRVAdapter.WeatherViewHolder> {
     private static String TAG = "EventListRVAdapter";
-    private ArrayList<ForecastDAO> forecastList;
+    private ArrayList<Forecast> forecastList;
 
     //Constructor receives an object that implements the listener interface, along with items
-    EventListRVAdapter(ArrayList<ForecastDAO> forecastList){
+    EventListRVAdapter(ArrayList<Forecast> forecastList){
         this.forecastList = forecastList;
     }
 
     /*public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
-    public MyRecyclerViewAdapter(ArrayList<AlertSettingsDAO> alertsettings) {
+    public MyRecyclerViewAdapter(ArrayList<AlertSettings> alertsettings) {
         mDataset = myDataset;
     }*/
     //This method is called when the custom ViewHolder needs to be initialized.

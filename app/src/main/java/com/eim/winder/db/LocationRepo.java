@@ -34,16 +34,16 @@ public class LocationRepo {
         Log.i(TAG, "close()");
     }
 
-    public ArrayList<LocationDAO> getAllLocations() {
+    public ArrayList<Location> getAllLocations() {
         Log.i(TAG, "getAllLocations");
-        ArrayList<LocationDAO> locations = new ArrayList<LocationDAO>();
+        ArrayList<Location> locations = new ArrayList<Location>();
         Cursor res = null;
         try{
             open();
             res = database.rawQuery("select * from " + SQLiteDBHelper.TABLE_LOCATIONS + " ORDER BY " + SQLiteDBHelper.L_NAME + " ASC", null);
             res.moveToFirst();
             while (!res.isAfterLast()) {
-                LocationDAO location = cursorToLocation(res);
+                Location location = cursorToLocation(res);
                 locations.add(location);
                 res.moveToNext();
             }
@@ -67,9 +67,9 @@ public class LocationRepo {
         cursor.close();
         return names.toArray(new String[names.size()]);
     }
-    public LocationDAO getLocationFromID(int id){
+    public Location getLocationFromID(int id){
         Cursor cursor;
-        LocationDAO location = null;
+        Location location = null;
         try{
             open();
             cursor = database.query(table,null,SQLiteDBHelper.L_LOCATION_ID + " = ?", new String[]{""+id}, null, null, null);
@@ -87,14 +87,14 @@ public class LocationRepo {
         return location;
     }
 
-    private LocationDAO cursorToLocation(Cursor cursor) {
-        LocationDAO location = new LocationDAO(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+    private Location cursorToLocation(Cursor cursor) {
+        Location location = new Location(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
         return location;
     }
     //Read records related to the search term:
-    public ArrayList<LocationDAO> readSearch(String searchTerm) {
+    public ArrayList<Location> readSearch(String searchTerm) {
         Log.i(TAG, "readSearch()");
-        ArrayList<LocationDAO> recordsList = new ArrayList<LocationDAO>();
+        ArrayList<Location> recordsList = new ArrayList<Location>();
         // select query
         String sql = "";
         sql += "SELECT * FROM " + SQLiteDBHelper.TABLE_LOCATIONS;
@@ -109,7 +109,7 @@ public class LocationRepo {
             // looping through all rows and adding to list
             cursor.moveToFirst();
             while(!cursor.isAfterLast()) {
-                LocationDAO location = cursorToLocation(cursor);
+                Location location = cursorToLocation(cursor);
                 // add to list
                 recordsList.add(location);
                 cursor.moveToNext();

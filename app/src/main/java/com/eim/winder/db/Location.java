@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Mari on 08.02.2016.
  */
-public class LocationDAO implements Parcelable{
+public class Location implements Parcelable{
     private int id;
     private String name;
     private String type;
@@ -14,7 +14,7 @@ public class LocationDAO implements Parcelable{
     private String county;
     private String xmlURL;
 
-    public LocationDAO(int id, String name, String type, String municipality, String county, String xmlURL) {
+    public Location(int id, String name, String type, String municipality, String county, String xmlURL) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -22,7 +22,7 @@ public class LocationDAO implements Parcelable{
         this.county = county;
         this.xmlURL = xmlURL;
     }
-    public LocationDAO(){
+    public Location(){
 
     }
 
@@ -73,7 +73,7 @@ public class LocationDAO implements Parcelable{
         this.xmlURL = xmlURL;
     }
 
-    LocationDAO(Parcel in){
+    Location(Parcel in){
         readFromParcel(in);
     }
 
@@ -110,12 +110,12 @@ public class LocationDAO implements Parcelable{
     }
     public static final Parcelable.Creator CREATOR =
             new Parcelable.Creator() {
-                public LocationDAO createFromParcel(Parcel in) {
-                    return new LocationDAO(in);
+                public Location createFromParcel(Parcel in) {
+                    return new Location(in);
                 }
 
-                public LocationDAO[] newArray(int size) {
-                    return new LocationDAO[size];
+                public Location[] newArray(int size) {
+                    return new Location[size];
                 }
             };
 }

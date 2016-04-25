@@ -32,12 +32,12 @@ public class ForecastRepo {
         dbHelper.close();
         Log.i(TAG, "close()");
     }
-    private ForecastDAO cursorToForecast(Cursor cursor){
-        ForecastDAO forecast = new ForecastDAO(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4));
+    private Forecast cursorToForecast(Cursor cursor){
+        Forecast forecast = new Forecast(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4));
         return forecast;
     }
-    public ForecastDAO getForecastByAlertSettingsID(int id){
-        ForecastDAO result = null;
+    public Forecast getForecastByAlertSettingsID(int id){
+        Forecast result = null;
         Cursor cursor;
         boolean ok = false;
         try{
@@ -52,10 +52,10 @@ public class ForecastRepo {
         return result;
     }
 
-    public ArrayList<ForecastDAO> getAllForecastsByAlertSettingsID(int id){
-        ArrayList<ForecastDAO> list = new ArrayList<>();
+    public ArrayList<Forecast> getAllForecastsByAlertSettingsID(int id){
+        ArrayList<Forecast> list = new ArrayList<>();
         Cursor cursor = null;
-        ForecastDAO temp;
+        Forecast temp;
         try{
             open();
             cursor = database.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id =" + id, null);
@@ -105,7 +105,7 @@ public class ForecastRepo {
         return ok;
     }
 
-    /*public long insertForecast(ForecastDAO forecast){
+    /*public long insertForecast(Forecast forecast){
 
         long res = -1;
         try{
@@ -124,14 +124,14 @@ public class ForecastRepo {
         return res;
     }*/
 
-    public boolean insertForecastList(ArrayList<ForecastDAO> forecastList, int id){
+    public boolean insertForecastList(ArrayList<Forecast> forecastList, int id){
         deleteForecastByAlertSettingsID(id);
         long res = -1;
         boolean ok = true;
         try{
 
             open();
-            for (ForecastDAO temp:forecastList) {
+            for (Forecast temp:forecastList) {
                 ContentValues values = new ContentValues();
                 values.put(SQLiteDBHelper.F_FORMATEDDATE, temp.getFormatedDate());
                 values.put(SQLiteDBHelper.F_FORMATEDINFO, temp.getFormatedInfo());

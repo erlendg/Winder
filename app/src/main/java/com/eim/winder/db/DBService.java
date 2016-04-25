@@ -34,6 +34,10 @@ public class DBService {
         this.forecastDataSource = forecastDataSource;
     }
 
+    public DBService(AlertSettingsRepo alertDataSource) {
+        this.alertDataSource = alertDataSource;
+    }
+
     public DBService(LocationRepo locationDataSource) {
         this.locationDataSource = locationDataSource;
     }
@@ -42,15 +46,15 @@ public class DBService {
         this.forecastDataSource = forecastDataSource;
     }
 
-    public ArrayList<AlertSettingsDAO> getAlertSettingsAndLocation() {
+    public ArrayList<AlertSettings> getAllAlertSettingsAndLocations() {
         Log.i(TAG, "getAlertSettingsAndLocation()");
-        ArrayList<AlertSettingsDAO> results = alertDataSource.getAllAlertSettings();
+        ArrayList<AlertSettings> results = alertDataSource.getAllAlertSettings();
         if(results != null && results.size() > 0){
             Log.i(TAG, "getAlertSettingsDataSet() Data size: "+ results.size());
             //numOfLocations= results.size();
             for(int i = 0; i < results.size(); i++){
                 int id = (int) results.get(i).getLocation().getId();
-                LocationDAO loc =  locationDataSource.getLocationFromID(id);
+                Location loc =  locationDataSource.getLocationFromID(id);
                 results.get(i).setLocation(loc);
             }
         }else {
@@ -62,11 +66,25 @@ public class DBService {
         forecastDataSource.deleteForecastByAlertSettingsID(alertID);
         return alertDataSource.deleteAlertSettings(alertID);
     }
-    public ArrayList<LocationDAO> getAllLocations(){
+    public ArrayList<Location> getAllLocations(){
         return locationDataSource.getAllLocations();
     }
 
-    public long addAlertSettings(AlertSettingsDAO alertSettingsDAO){
-        return alertDataSource.insertAlertSettings(alertSettingsDAO);
+    public long addAlertSettings(AlertSettings alertSettings){
+        return alertDataSource.insertAlertSettings(alertSettings);
+    }
+
+    public boolean updateAlertSettings(AlertSettings alertSettings){
+        long ok = alertDataSource.updateAlertSettings(alertSettings);
+        if((int) ok != 0){
+            Log.i(TAG, "updateAlertSettings() updated: "+ ok);
+            return true;
+        }else{
+            Log.e(TAG, "updateAlertSettings() failed due to value: " +ok);
+            return false;
+        }
+    }
+    public boolean addForecastList(ArrayList<Forecast> forecasts, int alertId){
+        return forecastDataSource.insertForecastList(forecasts, alertId);
     }
 }

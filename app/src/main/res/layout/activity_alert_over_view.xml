@@ -2,8 +2,8 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="alertsettings" type="com.eim.winder.db.AlertSettingsDAO"/>
-        <variable name="location" type="com.eim.winder.db.LocationDAO"/>
+        <variable name="alertsettings" type="com.eim.winder.db.AlertSettings"/>
+        <variable name="location" type="com.eim.winder.db.Location"/>
     </data>
 
 <android.support.design.widget.CoordinatorLayout
@@ -66,7 +66,8 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_mode_edit_white_48dp"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end" />
+        app:layout_anchorGravity="bottom|end"
+        android:onClick="onEditAlertButtonClick"/>
 
 
     <android.support.design.widget.FloatingActionButton

@@ -25,7 +25,7 @@ import com.eim.winder.db.DBService;
 import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.LocationRepo;
 
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationRepo locationDataSource;
     private AlertSettingsRepo alertDataSource;
 
-    private ArrayList<AlertSettingsDAO> alertSettingsList;
+    private ArrayList<AlertSettings> alertSettingsList;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private LinearLayoutManager llManager;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Cardview:Initiates the list with locationalerts and the adapter that "listens" on the list:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        alertSettingsList = dbService.getAlertSettingsAndLocation();
+        alertSettingsList = dbService.getAllAlertSettingsAndLocations();
         llManager = new LinearLayoutManager(this);
         buildRecyclerView(recyclerView, llManager, alertSettingsList);
 
@@ -87,15 +87,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void buildRecyclerView(RecyclerView recyclerView, LinearLayoutManager llManager, ArrayList<AlertSettingsDAO> alertSettingsList){
+    private void buildRecyclerView(RecyclerView recyclerView, LinearLayoutManager llManager, ArrayList<AlertSettings> alertSettingsList){
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(llManager);
         setRvAdapter( recyclerView, alertSettingsList);
 
     }
-    private void setRvAdapter(RecyclerView recyclerView, ArrayList<AlertSettingsDAO> alertSettingsList){
+    private void setRvAdapter(RecyclerView recyclerView, ArrayList<AlertSettings> alertSettingsList){
         rvAdapter = new RVAdapter(this, alertSettingsList, new RVAdapter.OnItemClickListener(){
-            @Override public void onItemClick(AlertSettingsDAO item) {
+            @Override public void onItemClick(AlertSettings item) {
                 Log.i(TAG, " " +item.getLocation().getName());
                 startAlertOverViewActivity(item);
 
@@ -115,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void startAlertOverViewActivity(AlertSettingsDAO asd){
+    public void startAlertOverViewActivity(AlertSettings asd){
         Log.i(TAG, "---> startAlertOverViewActivity");
         Intent intent = new Intent(this, AlertOverViewActivity.class);
-        intent.putExtra("AlertSettingsDAO", asd);
+        intent.putExtra("AlertSettings", asd);
         startActivity(intent);
     }
 
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         //Updates the view in case of changes in the alertlist
         super.onResume();
-        alertSettingsList = dbService.getAlertSettingsAndLocation();
+        alertSettingsList = dbService.getAllAlertSettingsAndLocations();
         setRvAdapter(recyclerView, alertSettingsList);
     }
 
@@ -161,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
 
             // action with ID action_refresh was selected
             case R.id.action_refresh:
-                doManualForecastRefresh();
 
+                doManualForecastRefresh();
                 break;
 
             // action with ID action_settings was selected
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void doManualForecastRefresh(){
         Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
-        for (AlertSettingsDAO temp : alertSettingsList) {
+        for (AlertSettings temp : alertSettingsList) {
             //create an instance of CompareAXService:
             compare = new CompareAXService(this, temp);
             //run the xml-parser:
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         //Setter den til norsk hvis det er satt på enheten ved oppstart:
         if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")){
             l = new Locale("no","NO");
-            //hvis ikke norsk så settes den til britisk ved oppstart:
+            //hvis ikke norsk så settes den til engelsk ved oppstart:
         }else{
             l = new Locale("en","en_US");
         }

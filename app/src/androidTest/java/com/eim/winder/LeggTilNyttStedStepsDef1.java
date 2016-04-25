@@ -4,7 +4,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.eim.winder.activities.main.MainActivity;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 
 import org.junit.Rule;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LeggTilNyttStedStepsDef1 {
-    private ArrayList<AlertSettingsDAO> asd;
+    private ArrayList<AlertSettings> asd;
     private int size = 0;
 
     @Rule

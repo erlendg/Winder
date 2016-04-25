@@ -10,8 +10,9 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.ForecastDAO;
+import com.eim.winder.db.AlertSettings;
+import com.eim.winder.db.DBService;
+import com.eim.winder.db.Forecast;
 import com.eim.winder.db.ForecastRepo;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ public class CompareAXService {
     private final String TAG = "CompareAXService";
 
     private HandleXML xmlHandlerObj;
-    private AlertSettingsDAO alertSettingsObj;
+    private AlertSettings alertSettingsObj;
     private ForecastInfo forecast;
     private boolean onCreateSuccess = false;
     private boolean sendNotification;
@@ -38,7 +39,7 @@ public class CompareAXService {
     private ForecastRepo forecastRepo;
     Context context;
 
-    public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj){
+    public CompareAXService(Context context, AlertSettings alertSettingsObj){
         this.context = context;
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
@@ -51,11 +52,11 @@ public class CompareAXService {
             onCreateSuccess =true;
         }
         catch (Exception e){
-            System.out.println("Error most likely due to empty LocationDAO for AlertSettingsDAO");
+            System.out.println("Error most likely due to empty Location for AlertSettings");
             onCreateSuccess = false;
         }
     }
-    public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj, String url){
+    public CompareAXService(Context context, AlertSettings alertSettingsObj, String url){
         this.context = context;
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
@@ -69,7 +70,7 @@ public class CompareAXService {
             onCreateSuccess =true;
         }
         catch (Exception e){
-            System.out.println("Error most likely due to empty LocationDAO for AlertSettingsDAO");
+            System.out.println("Error most likely due to empty Location for AlertSettings");
             onCreateSuccess = false;
         }
     }
@@ -241,11 +242,12 @@ public class CompareAXService {
         return true;
 
     }
-    public void addShitToDB(final ArrayList<ForecastDAO> list){
+    public void addNewForecastsToDB(final ArrayList<Forecast> list){
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
-                forecastRepo.insertForecastList(list, alertSettingsObj.getId());
+                DBService dbService = new DBService(forecastRepo);
+                dbService.addForecastList(list, alertSettingsObj.getId());
             }
         });
         thread.start();
@@ -256,8 +258,8 @@ public class CompareAXService {
     public int findAllOccurences(int id, String locName, Context context, Class cl, NotificationManager nm){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
-        ArrayList<ForecastDAO> returnList = new ArrayList<>();
-        ForecastDAO temp;
+        ArrayList<Forecast> returnList = new ArrayList<>();
+        Forecast temp;
         String dateandinfo;
         int result = -1;
         for (int i = 0; i<list.size(); i++){
@@ -265,7 +267,7 @@ public class CompareAXService {
 
             if (sendNotification){
                 dateandinfo = generateInfo(list.get(i));
-                temp = new ForecastDAO();
+                temp = new Forecast();
                 temp.setAlertSettingId(alertSettingsObj.getId());
                 temp.setFormatedDate(dateandinfo.substring(0,25));
                 temp.setFormatedInfo(dateandinfo.substring(25));
@@ -279,8 +281,10 @@ public class CompareAXService {
             //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
             if(!returnList.isEmpty()){
                 Log.e(TAG, "CASE1");
-                addShitToDB(returnList);
+
+                addNewForecastsToDB(returnList);
                 generateNotification(id, locName, context, cl, nm, 1);
+
                 return 1;
             } else{
                 //Case 2: No new Forecast-entries found from new XML, and no previous Forecast-entries are found in the DB
@@ -291,7 +295,7 @@ public class CompareAXService {
         } else{
             if (!returnList.isEmpty()){
                 //Case 4: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
-                addShitToDB(returnList);
+                addNewForecastsToDB(returnList);
                 //generateNotification(returnList, id, context, cl, nm, 1);
                 Log.e(TAG, "CASE3");
                 return 3;

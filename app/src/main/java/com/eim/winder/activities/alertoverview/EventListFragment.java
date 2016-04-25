@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.ForecastDAO;
+import com.eim.winder.db.AlertSettings;
+import com.eim.winder.db.Forecast;
 import com.eim.winder.db.ForecastRepo;
 
 import java.util.ArrayList;
@@ -22,10 +22,10 @@ import java.util.ArrayList;
  */
 public class EventListFragment extends Fragment {
     private RecyclerView eventList;
-    private ArrayList<ForecastDAO> forecastList;
+    private ArrayList<Forecast> forecastList;
     private EventListRVAdapter listAdapter;
     private ForecastRepo datasource;
-    private AlertSettingsDAO alertSettingsDAO;
+    private AlertSettings alertSettings;
     private LinearLayoutManager llmanager;
 
     public EventListFragment() {
@@ -38,8 +38,8 @@ public class EventListFragment extends Fragment {
         // Inflate the layout for this fragment
         datasource = new ForecastRepo(getContext());
         View v = inflater.inflate(R.layout.fragment_event_list, container, false);
-        alertSettingsDAO = ((AlertOverViewActivity) getActivity()).getAlertSettingsDAO();
-        forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettingsDAO.getId());
+        alertSettings = ((AlertOverViewActivity) getActivity()).getAlertSettings();
+        forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettings.getId());
         eventList = (RecyclerView) v.findViewById(R.id.event_listview);
         if(forecastList != null || forecastList.size() == 0) {
             listAdapter = new EventListRVAdapter(forecastList);

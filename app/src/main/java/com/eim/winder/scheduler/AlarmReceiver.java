@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.eim.winder.activities.main.MainActivity;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.xml.CompareAXService;
 
@@ -31,7 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         //Finding the alertsettings-object  based on the Id contained in the received intent:
         AlertSettingsRepo alertdatasource = new AlertSettingsRepo(context);
-        AlertSettingsDAO settings= alertdatasource.getAlertSettingById(id);
+        AlertSettings settings= alertdatasource.getAlertSettingById(id);
 
         CompareAXService compare = new CompareAXService(context, settings, url);
 

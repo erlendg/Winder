@@ -1,5 +1,6 @@
 package com.eim.winder.activities.alertsettings;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -7,9 +8,12 @@ import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.eim.winder.R;
+import com.eim.winder.db.AlertSettings;
+import com.eim.winder.div.AlertSettingsActivity;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -36,13 +40,14 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
     MultiSelectListPreference weekdays;
     SharedPreferences prefs;
     SharedPreferences defaultPrefs;
+    AlertSettingsActivityBeta activity;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.alert_preferences);
-
+        activity = (AlertSettingsActivityBeta) getActivity();
 
         tempPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.temp_pref_key));
         precipPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.precip_pref_key));
@@ -102,28 +107,34 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         if(pref == checkIntrPref){
             CharSequence[] entries = checkIntrPref.getEntries();
             int id = Integer.parseInt((String)newValue);
-            checkIntrPref.setSummary(entries[(int) id-1]);
+            checkIntrPref.setSummary(entries[(int) id]);
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(getResources().getString(R.string.checkintr_pref_key),(entries[(int) id-1]).toString());
-            editor.commit();
+            editor.putString(getResources().getString(R.string.checkintr_pref_key), (entries[(int) id]).toString());
+            editor.apply();
             return true;
         }if(pref == windDir){
-            setMultiSelectPreferenceSummary(windDir, newValue, getResources().getString(R.string.winddir_select_key), getResources().getString(R.string.choose_winddirection_string) , false);
+            SharedPreferences.Editor editor = prefs.edit();
+            setMultiSelectPreferenceSummary(windDir, newValue, getResources().getString(R.string.winddir_select_key), getResources().getString(R.string.choose_winddirection_string) , editor, false);
             return true;
 
         }if(pref == weekdays){
-            setMultiSelectPreferenceSummary(weekdays, newValue, getResources().getString(R.string.weekdays_pref_key), getResources().getString(R.string.choose_weekdays_string), true);
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()).edit();
+            setMultiSelectPreferenceSummary(weekdays, newValue, getResources().getString(R.string.weekdays_pref_key), getResources().getString(R.string.choose_weekdays_string), editor, true);
             return true;
         }
         return false;
     }
-    private void setMultiSelectPreferenceSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue, boolean saveIntSet){
+    private void setMultiSelectPreferenceSummary(MultiSelectListPreference multipref, Object newValue, String saveName, String defValue, SharedPreferences.Editor editor, boolean saveIntSet){
         String res = "";
+        //SharedPreferences.Editor editor;
+        if(newValue == null){
+            multipref.setSummary(defValue);
+            return;
+        }
         CharSequence[] entries = multipref.getEntries();
         Set<String> selections = (Set<String>) newValue;
         String[] selected = selections.toArray(new String[selections.size()]);
         int[] help = new int[selected.length];
-        SharedPreferences.Editor editor = prefs.edit();
         if(selected.length == 0 ){
             multipref.setSummary(defValue);
             editor.putString(saveName, "NOT VALID");
@@ -136,12 +147,12 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             for (int i = 0; i < help.length; i++) {
                 int id = help[i];
                 if (i == help.length - 1) {
-                    res += entries[id - 1];
+                    res += entries[id];
                 } else {
-                    res += entries[id - 1] + ", ";
+                    res += entries[id] + ", ";
                 }
             }
-            //Log.i("HEIEHI", "" + selections.toString() + " " + res);
+            Log.i("HEIEHI", "" + selections.toString() + " " + res);
             if(saveIntSet){
                 editor.putStringSet(saveName, selections);
             }
@@ -150,7 +161,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
             }
             multipref.setSummary(res);
         }
-        editor.commit();
+        editor.apply();
     }
     public boolean showOrHidePref(boolean checked, Preference pref){
         if (checked) {
@@ -191,12 +202,22 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         return false;
     }
     public void initializeTemplatePrefs(){
+        defaultPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if(tempPref.isChecked()) {
             getPreferenceScreen().addPreference(tempRange);
         }if(precipPref.isChecked()) {
             getPreferenceScreen().addPreference(precipRange);
-        }if(windSpeedPref.isChecked()){
+        }if(windSpeedPref.isChecked()) {
             getPreferenceScreen().addPreference(windSpeedRange);
+        }
+        // If the previous activity was AlertSettingsOverview then there are already settings to be shown and defaults must be overridden.
+        if(activity.getUpdateMode()) {
+            if(windDirPref.isChecked()) {
+                getPreferenceScreen().addPreference(windDir);
+                prefsChanged(windDir, defaultPrefs.getStringSet(getString(R.string.winddir_select_key), null));
+            }
+            prefsChanged(weekdays, defaultPrefs.getStringSet(getString(R.string.weekdays_pref_key), null));
+            prefsChanged(checkIntrPref, defaultPrefs.getString(getString(R.string.checkintr_pref_key), null));
         }
     }
 }

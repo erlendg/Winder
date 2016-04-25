@@ -37,7 +37,7 @@ public class AlertSettingsRepo {
         Log.i(TAG, "close()");
     }
     // Check if an alert already is added for the location:
-    public boolean alertAlreadyExist(LocationDAO location){
+    public boolean alertAlreadyExist(Location location){
         boolean exist = false;
         Cursor cursor = null;
         try{
@@ -70,7 +70,7 @@ public class AlertSettingsRepo {
         return ok;
     }
     //Lagre varselinstillinger i database:
-    public long insertAlertSettings(AlertSettingsDAO alert){
+    public long insertAlertSettings(AlertSettings alert){
         Log.i(TAG, "insertAlertSettings()");
         long res = -1;
         try{
@@ -101,7 +101,7 @@ public class AlertSettingsRepo {
         close();
         return res;
     }
-    public long updateAlertSettings(AlertSettingsDAO alert){
+    public long updateAlertSettings(AlertSettings alert){
         Log.i(TAG, "insertAlertSettings()");
         long res = -1;
         try{
@@ -131,16 +131,16 @@ public class AlertSettingsRepo {
         close();
         return res;
     }
-    public ArrayList<AlertSettingsDAO> getAllAlertSettings(){
+    public ArrayList<AlertSettings> getAllAlertSettings(){
         Log.i(TAG, "getAllAlertSettings()");
-        ArrayList<AlertSettingsDAO> alertsettings = new ArrayList<>();
+        ArrayList<AlertSettings> alertsettings = new ArrayList<>();
         Cursor res = null;
         try{
             open();
             res = database.rawQuery("select * from " + table + " limit 10", null);
             res.moveToFirst();
             while(!res.isAfterLast()) {
-                AlertSettingsDAO alert = cursorToAlertSettings(res);
+                AlertSettings alert = cursorToAlertSettings(res);
                 // add to list
                 alertsettings.add(alert);
                 res.moveToNext();
@@ -151,17 +151,17 @@ public class AlertSettingsRepo {
         }
         return alertsettings;
     }
-    private AlertSettingsDAO cursorToAlertSettings(Cursor cursor) {
-        AlertSettingsDAO alert = new AlertSettingsDAO(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6),
+    private AlertSettings cursorToAlertSettings(Cursor cursor) {
+        AlertSettings alert = new AlertSettings(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6),
                 cursor.getString(7),cursor.getInt(8),cursor.getDouble(9),cursor.getInt(10),cursor.getInt(11),cursor.getInt(12),cursor.getInt(13),cursor.getInt(14),cursor.getInt(15), cursor.getInt(16), cursor.getString(17), null);
-        LocationDAO location = new LocationDAO();
+        Location location = new Location();
         location.setId(cursor.getInt(18));
         alert.setLocation(location);
         return alert;
     }
-    public AlertSettingsDAO getAlertSettingById(int id){
+    public AlertSettings getAlertSettingById(int id){
         Log.i(TAG, "getAlertSettingById: "+ id);
-        AlertSettingsDAO result = null;
+        AlertSettings result = null;
         Cursor cursor;
         boolean ok = false;
         try{
