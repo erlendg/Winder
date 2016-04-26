@@ -274,7 +274,7 @@ public class CompareAXService {
             public void run() {
                 DBService dbService = new DBService(forecastRepo);
                 dbService.addForecastList(list, alertSettingsObj.getId());
-                
+
             }
         });
         thread.start();
@@ -303,6 +303,7 @@ public class CompareAXService {
 
         }
 
+
         if(!forecastRepo.findIfForecastsExistsForAlertSettingsID(id)){
             //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
             if(!returnList.isEmpty()){
@@ -320,13 +321,13 @@ public class CompareAXService {
             }
         } else{
             if (!returnList.isEmpty()){
-                //Case 4: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
+                //Case 3: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
                 addNewForecastsToDB(returnList);
                 //generateNotification(returnList, id, context, cl, nm, 1);
                 Log.e(TAG, "CASE3");
                 return 3;
             }else{
-                //Case 3: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
+                //Case 4: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
                 forecastRepo.deleteForecastByAlertSettingsID(id);
                 generateNotification(id, locName, context, cl, nm, 2);
                 Log.e(TAG, "CASE4");
