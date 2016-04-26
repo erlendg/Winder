@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettings;
+import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.DBService;
 import com.eim.winder.db.Forecast;
 import com.eim.winder.db.ForecastRepo;
@@ -37,6 +38,7 @@ public class CompareAXService {
     String url;
     private NotificationCompat.Builder notification;
     private ForecastRepo forecastRepo;
+    private AlertSettingsRepo alertSettingsRepo;
     Context context;
 
     public CompareAXService(Context context, AlertSettings alertSettingsObj){
@@ -45,6 +47,8 @@ public class CompareAXService {
         this.forecast = new ForecastInfo();
         this.url = alertSettingsObj.getLocation().getXmlURL();
         this.forecastRepo = new ForecastRepo(context);
+        this.alertSettingsRepo = new AlertSettingsRepo(context);
+
 
         try {
             System.err.println("url: " +  url);
@@ -62,6 +66,7 @@ public class CompareAXService {
         this.forecast = new ForecastInfo();
         this.url = url;
         this.forecastRepo = new ForecastRepo(context);
+        this.alertSettingsRepo = new AlertSettingsRepo(context);
 
 
         try {
@@ -268,6 +273,11 @@ public class CompareAXService {
         return true;
 
     }
+
+    private void updateAlertSettingsEvent(int id, int hasEvents){
+            alertSettingsRepo.updateAlertsettingsHasEvents(id, hasEvents);
+    }
+
     private void addNewForecastsToDB(final ArrayList<Forecast> list){
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -303,6 +313,11 @@ public class CompareAXService {
 
         }
 
+        if(returnList.isEmpty()){
+            updateAlertSettingsEvent(id, 0);
+        } else {
+            updateAlertSettingsEvent(id, 1);
+        }
 
         if(!forecastRepo.findIfForecastsExistsForAlertSettingsID(id)){
             //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
