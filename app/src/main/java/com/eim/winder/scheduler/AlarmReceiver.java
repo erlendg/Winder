@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.eim.winder.activities.main.MainActivity;
 import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
+import com.eim.winder.db.DBService;
 import com.eim.winder.db.Location;
 import com.eim.winder.db.LocationRepo;
 import com.eim.winder.xml.CompareAXService;
@@ -34,11 +35,9 @@ public class AlarmReceiver extends BroadcastReceiver{
         //Finding the alertsettings-object  based on the Id contained in the received intent:
         AlertSettingsRepo alertdatasource = new AlertSettingsRepo(context);
         LocationRepo locationdatasource = new LocationRepo(context);
-        AlertSettings settings= alertdatasource.getAlertSettingById(id);
+        DBService dbService = new DBService(alertdatasource, locationdatasource);
 
-        //finner Location-navn basert på id:
-        Location loc  = locationdatasource.getLocationFromID((int)settings.getLocation().getId());
-        settings.setLocation(loc);
+        AlertSettings settings = dbService.getCompleteAlertSettingsById(id);
 
         CompareAXService compare = new CompareAXService(context, settings, url);
 

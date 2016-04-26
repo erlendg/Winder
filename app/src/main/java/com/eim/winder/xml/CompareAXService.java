@@ -274,13 +274,13 @@ public class CompareAXService {
             public void run() {
                 DBService dbService = new DBService(forecastRepo);
                 dbService.addForecastList(list, alertSettingsObj.getId());
+                
             }
         });
         thread.start();
 
         boolean ok = false;
     }
-
     public int findAllOccurences(int id, String locName, Context context, Class cl, NotificationManager nm){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
