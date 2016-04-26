@@ -63,7 +63,13 @@ public class DBService {
         return results;
     }
     public AlertSettings getCompleteAlertSettingsById(int id){
-        return null;
+        Log.i(TAG, "getCompleteAlertSettingsById()");
+        AlertSettings result= alertDataSource.getAlertSettingById(id);
+
+        //finner Location-navn basert på id:
+        Location loc  = locationDataSource.getLocationFromID((int)result.getLocation().getId());
+        result.setLocation(loc);
+        return result;
     }
     public boolean deleteAlertSettingAndForecasts(int alertID){
         forecastDataSource.deleteForecastByAlertSettingsID(alertID);
