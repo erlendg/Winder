@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.GridLayout;
 import android.widget.TextView;
@@ -208,6 +209,23 @@ public class AlertOverViewActivity extends AppCompatActivity {
         editor2.putString(getString(R.string.prefered_icon_key), asd.getIconName());
         editor.apply();
         editor2.apply();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.pull_in_left_anim, R.anim.push_out_right_anim);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+                onBackPressed();
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 
 }

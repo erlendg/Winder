@@ -20,16 +20,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/preferences_title"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginTop="@dimen/text_margin"
-            android:layout_marginRight="@dimen/text_margin"
-            android:text="@string/your_preferences"
-            android:textSize="18sp"
-            android:clickable="true"/>
 
         <android.support.v7.widget.GridLayout
             android:id="@+id/preferences_table"
@@ -78,7 +68,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/row2_column2"
-                android:text="fra"
+                android:text="@string/from"
                 android:padding="10dip"
                 android:gravity="center"/>
 
@@ -87,7 +77,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/row2_column3"
-                android:text="til"
+                android:text="@string/to"
                 android:gravity="center"
                 android:padding="10dip"/>
             </LinearLayout>
