@@ -62,6 +62,9 @@ public class DBService {
         }
         return results;
     }
+    public AlertSettings getCompleteAlertSettingsById(int id){
+        return null;
+    }
     public boolean deleteAlertSettingAndForecasts(int alertID){
         forecastDataSource.deleteForecastByAlertSettingsID(alertID);
         return alertDataSource.deleteAlertSettings(alertID);

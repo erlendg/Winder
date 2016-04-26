@@ -135,9 +135,10 @@ public class CompareAXService {
      * @param info
      * @return
      */
-    private String generateInfo(TabularInfo info){
+    private String[] generateInfo(TabularInfo info){
         String returnString = "";
-        returnString += fixDate(info.getFrom(), info.getTo());
+        String[] returnTable = new String[2];
+        returnTable[0] = fixDate(info.getFrom(), info.getTo());
         if(tempCheck){
             returnString += context.getResources().getString(R.string.generate_temperature)+ " " + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
 
@@ -226,13 +227,38 @@ public class CompareAXService {
             returnString += context.getResources().getString(R.string.generate_windspeed)+ " " + info.getWindSpeed() + "m/s \n";
         }
         Log.i(TAG, returnString);
-        return returnString.trim();
+        returnTable[1] = returnString.trim();
+        return  returnTable;
     }
 
     private String fixDate(String fromDate, String toDate){
         String result = "";
-
-        result += fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + "/" + fromDate.substring(0,4) + ": "+ fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
+        switch (checkWeekday(fromDate)){
+            case 1:
+                result += context.getResources().getString(R.string.weekdays_sunday);
+                break;
+            case 2:
+                result += context.getResources().getString(R.string.weekdays_monday);
+                break;
+            case 3:
+                result += context.getResources().getString(R.string.weekdays_tuesday);
+                break;
+            case 4:
+                result += context.getResources().getString(R.string.weekdays_wednesday);
+                break;
+            case 5:
+                result += context.getResources().getString(R.string.weekdays_thursday);
+                break;
+            case 6:
+                result += context.getResources().getString(R.string.weekdays_friday);
+                break;
+            case 7:
+                result += context.getResources().getString(R.string.weekdays_saturday);
+                break;
+            default:
+                break;
+        }       //"/" + fromDate.substring(5,7) + "/" + fromDate.substring(0,4)
+        result += ", " + fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + ": " + fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
 
         return result;
     }
@@ -242,7 +268,7 @@ public class CompareAXService {
         return true;
 
     }
-    public void addNewForecastsToDB(final ArrayList<Forecast> list){
+    private void addNewForecastsToDB(final ArrayList<Forecast> list){
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
@@ -260,7 +286,7 @@ public class CompareAXService {
         ArrayList<TabularInfo> list = forecast.getTabularList();
         ArrayList<Forecast> returnList = new ArrayList<>();
         Forecast temp;
-        String dateandinfo;
+        String[] dateandinfo;
         int result = -1;
         for (int i = 0; i<list.size(); i++){
             sendNotification = findOccurence(list.get(i));
@@ -269,8 +295,8 @@ public class CompareAXService {
                 dateandinfo = generateInfo(list.get(i));
                 temp = new Forecast();
                 temp.setAlertSettingId(alertSettingsObj.getId());
-                temp.setFormatedDate(dateandinfo.substring(0,25));
-                temp.setFormatedInfo(dateandinfo.substring(25));
+                temp.setFormatedDate(dateandinfo[0]);
+                temp.setFormatedInfo(dateandinfo[1]);
                 temp.setIcon(list.get(i).getSymbolNumber());
                 returnList.add(temp);
             }
@@ -353,7 +379,7 @@ public class CompareAXService {
 
         return true;
     }
-    public int checkWeekday(String date){
+    private int checkWeekday(String date){
         c = Calendar.getInstance();
 
         try {
@@ -370,7 +396,7 @@ public class CompareAXService {
     }
     //private int tempMin;
     //private int tempMax;
-    public int checkTemp(double value){
+    private int checkTemp(double value){
 
         if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) {
             //Log.d(TAG, "Temp returverdi = 0, innverdi = " + value);
@@ -386,7 +412,7 @@ public class CompareAXService {
     }
     //private double precipitationMin;
     //private double precipitationMax;
-    public int checkPrecipitation(double value) {
+    private int checkPrecipitation(double value) {
         if ((alertSettingsObj.getPrecipitationMin()) < (value) && (value < (alertSettingsObj.getPrecipitationMax()))){
             //Log.d(TAG, "Nedbør returverdi = 0, innverdi = " + value);
             precipitationCheck = true;
@@ -401,7 +427,7 @@ public class CompareAXService {
     }
     //private double windSpeedMin;
     //private double windSpeedMax;
-    public int checkWindSpeed(double value){
+    private int checkWindSpeed(double value){
         if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) {
             //Log.d(TAG, "Vindstyrke returverdi = 0, innverdi = " + value);
             windSpeedCheck = true;
@@ -416,7 +442,7 @@ public class CompareAXService {
     }
 
     //private String windDirection;
-    public int checkWindDirection(String a) {
+    private int checkWindDirection(String a) {
 
             
         if (alertSettingsObj.getWindDirection() == null){
@@ -491,7 +517,7 @@ public class CompareAXService {
         return 2;
     }
     //private boolean checkSun;
-    public int checkSymbolSun(String a) {
+    private int checkSymbolSun(String a) {
         //Log.d(TAG, "innhold i SunString: " + a);
 
         if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("clear sky")){
