@@ -55,6 +55,20 @@ public class AlertSettingsRepo {
         close();
         return exist;
     }
+    public boolean updateAlertsettingsHasEvents(int id, int hasEvents){
+        Log.i(TAG, "updateAlertsettingsHasEvents()" + id);
+        boolean ok = false;
+        try{
+            open();
+            ContentValues value = new ContentValues();
+            value.put(SQLiteDBHelper.A_HASEVENTS, hasEvents);
+            ok = database.update(table, value, "_id="+id, null) > 0;
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        close();
+        return ok;
+    }
     // Deletes an alertsetting based on its id:
     public boolean deleteAlertSettings(int id){
         Log.i(TAG, "deleteAlertSettings: "+ id);
@@ -93,6 +107,7 @@ public class AlertSettingsRepo {
             values.put(SQLiteDBHelper.A_SAT, alert.isSat());
             values.put(SQLiteDBHelper.A_SUN, alert.isSun());
             values.put(SQLiteDBHelper.A_ICON_NAME, alert.getIconName());
+            values.put(SQLiteDBHelper.A_HASEVENTS, alert.hasEvents());
             values.put(SQLiteDBHelper.A_LOC_ID, alert.getLocation().getId());
             res = database.insert(table, null, values);
         }catch (SQLException e){
@@ -124,6 +139,7 @@ public class AlertSettingsRepo {
             values.put(SQLiteDBHelper.A_SAT, alert.isSat());
             values.put(SQLiteDBHelper.A_SUN, alert.isSun());
             values.put(SQLiteDBHelper.A_ICON_NAME, alert.getIconName());
+            values.put(SQLiteDBHelper.A_HASEVENTS, alert.hasEvents());
             res = database.update(table, values, "_id="+alert.getId(), null);
         }catch (SQLException e){
             e.printStackTrace();
@@ -153,9 +169,9 @@ public class AlertSettingsRepo {
     }
     private AlertSettings cursorToAlertSettings(Cursor cursor) {
         AlertSettings alert = new AlertSettings(cursor.getInt(0), cursor.getInt(1), cursor.getInt(2), cursor.getDouble(3), cursor.getDouble(4), cursor.getDouble(5), cursor.getDouble(6),
-                cursor.getString(7),cursor.getInt(8),cursor.getDouble(9),cursor.getInt(10),cursor.getInt(11),cursor.getInt(12),cursor.getInt(13),cursor.getInt(14),cursor.getInt(15), cursor.getInt(16), cursor.getString(17), null);
+                cursor.getString(7),cursor.getInt(8),cursor.getDouble(9),cursor.getInt(10),cursor.getInt(11),cursor.getInt(12),cursor.getInt(13),cursor.getInt(14),cursor.getInt(15), cursor.getInt(16), cursor.getString(17), cursor.getInt(18), null);
         Location location = new Location();
-        location.setId(cursor.getInt(18));
+        location.setId(cursor.getInt(19));
         alert.setLocation(location);
         return alert;
     }
