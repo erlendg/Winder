@@ -25,8 +25,9 @@ public class AlertSettings implements Parcelable{
     private double checkInterval;
     private boolean mon, tue, wed, thu, fri, sat, sun;
     private String iconName;
+    private int hasEvents;
 
-    public AlertSettings(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, String iconName, Location location) {
+    public AlertSettings(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, String iconName, int hasEvents, Location location) {
         this.id = id;
         this.location = location;
         this.tempMin = tempMin;
@@ -46,6 +47,7 @@ public class AlertSettings implements Parcelable{
         this.sat = sat > 0;
         this.sun = sun > 0;
         this.iconName = iconName;
+        this.hasEvents = hasEvents;
     }
 
     public AlertSettings(){
@@ -64,6 +66,7 @@ public class AlertSettings implements Parcelable{
         this.fri = false;
         this.sat = false;
         this.sun = false;
+        this.hasEvents = 0;
     }
 
     public int getId() {
@@ -216,6 +219,13 @@ public class AlertSettings implements Parcelable{
 
     public void setIconName(String iconName) {
         this.iconName = iconName;
+    }
+
+    public void setHasEvents(int bol){
+        this.hasEvents = bol;
+    }
+    public int hasEvents(){
+        return hasEvents;
     }
 
     public String getWeekDaysSelected(Resources resources){

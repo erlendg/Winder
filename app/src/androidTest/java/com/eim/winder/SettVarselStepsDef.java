@@ -94,7 +94,7 @@ public class SettVarselStepsDef {
         at_brukeren_har_åpnet_appen();
         AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.getAllAlertSettings()).thenCallRealMethod();
-        asd = mainActivity.getActivity().getAlertSettingsDataSet();
+        asd = mainActivity.getActivity().getRecycleViewDataset();
         size = asd.size();
         id = asd.get(0).getId();
         deletedLocation = asd.get(0).getLocation().getName();
@@ -143,8 +143,8 @@ public class SettVarselStepsDef {
         brukeren_trykker_på_slett_knappen();
         MainActivity testActivity = Mockito.mock(MainActivity.class);
         asd.remove(0);
-        when(testActivity.getAlertSettingsDataSet()).thenReturn(asd);
-        assertTrue(mainActivity.getActivity().getAlertSettingsDataSet().size() == size - 1);
+        when(testActivity.getRecycleViewDataset()).thenReturn(asd);
+        assertTrue(mainActivity.getActivity().getRecycleViewDataset().size() == size - 1);
     }
 
     @Og("^brukeren returneres til hovedoversikten$")
