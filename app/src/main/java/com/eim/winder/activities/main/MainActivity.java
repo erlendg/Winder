@@ -195,11 +195,15 @@ public class MainActivity extends AppCompatActivity {
             //if the parsing is done, run findAllOccurences:
             if(div) {
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
                 compareResult = compare.findAllOccurences(temp.getId(), temp.getLocation().getName(), this, this.getClass(), mNotificationManager);
                        /* if (!listeTing.isEmpty()) {
                             compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
                         }*/
+                if(compareResult == 1 || compareResult ==3 )temp.setHasEvents(1);
+                else temp.setHasEvents(0);
+                //Si ifra til adapteren med arraylisten av alertsettings at det har skjedd en endring:
+                rvAdapter.notifyDataSetChanged();
+
             }
             Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
         }
