@@ -105,7 +105,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 rainButton.setSelected(false);
                 break;
             case R.id.template_rain:
-                rainButton.setSelected(!sunButton.isSelected());
+                rainButton.setSelected(!rainButton.isSelected());
                 snowButton.setSelected(false);
                 sunButton.setSelected(false);
                 hikingButton.setSelected(false);

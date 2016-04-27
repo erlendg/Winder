@@ -1,9 +1,14 @@
 package com.eim.winder.scheduler;
 
+
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,11 +20,14 @@ import com.eim.winder.db.Location;
 import com.eim.winder.db.LocationRepo;
 import com.eim.winder.xml.CompareAXService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Erlend on 04.04.2016.
  */
 public class AlarmReceiver extends BroadcastReceiver{
-    private final String TAG = "AlarmReceiver.class";
+    private final String TAG = "AlarmReceiver";
 
     @Override
     public void onReceive(Context context, Intent intent){
@@ -50,14 +58,57 @@ public class AlarmReceiver extends BroadcastReceiver{
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             //run the comparison logic:
             compareResult = compare.findAllOccurences(settings.getId(), settings.getLocation().getName(), context, MainActivity.class, mNotificationManager);
-            //send notificaton to the user based on the results received:
-            /*if (!listeTing.isEmpty()) {
-                compare.generateNotification(listeTing, settings.getId(), context, MainActivity.class, mNotificationManager);
-            }*/
+            //Update listview if the user is inside the MainActivity:
+            if(isForeground("com.eim.winder.activities.main.MainActivity", context)){
+               updateAlertSettingsIcon(compareResult, settings);
+            }
         }
         Toast.makeText(context, "Alertsetting " + url, Toast.LENGTH_SHORT).show();
 
         Log.e(TAG, "onReceive, id: " + id);
         //Toast.makeText(context, "sup? " + intent.getStringExtra("div"), Toast.LENGTH_LONG).show();
+    }
+    private boolean isForeground(String PackageAndClassName, Context context){
+        // Get the Activity Manager
+        ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
+        // Get a list of running tasks, we are only interested in the last one,
+        // As getRunningTasks(int num) is deprecated for SDK 23 and higher we need to check what build version the phone has
+       /*if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+            List< ActivityManager.AppTask > task = manager.getAppTasks();
+            // Get the info we need for comparison.
+            ComponentName componentInfo = task.get(0).getTaskInfo().topActivity;
+            Log.e(TAG, componentInfo.getClassName());
+            if(componentInfo.getClassName().equals(PackageAndClassName)) return true;
+            // If not then our app is not on the foreground.
+            return false;
+        } else {*/
+            List< ActivityManager.RunningTaskInfo > task = manager.getRunningTasks(1);
+            // Get the info we need for comparison.
+            ComponentName componentInfo = task.get(0).topActivity;
+            if(componentInfo.getClassName().equals(PackageAndClassName)) return true;
+            // If not then our app is not on the foreground.
+            return false;
+        //}
+    }
+
+    private void updateAlertSettingsIcon(int compareResult, AlertSettings settings){
+        Log.i(TAG, "MainActivity in foreground");
+        MainActivity activity = MainActivity.getInstace();
+        ArrayList<AlertSettings> alerts = activity.getRecycleViewDataset();
+        if(compareResult == 1 || compareResult == 3){
+            for (int i = 0; i < alerts.size(); i++){
+                if(alerts.get(i).getId() == settings.getId()) {
+                    activity.notifyAlertSettingsListChanged(i, 1);
+                    return;
+                }
+            }
+        }if(compareResult == 4){
+            for (int i = 0; i < alerts.size(); i++){
+                if(alerts.get(i).getId() == settings.getId()) {
+                    activity.notifyAlertSettingsListChanged(i, 0);
+                    return;
+                }
+            }
+        }
     }
 }
