@@ -6,7 +6,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
-import com.eim.winder.db.LocationDAO;
+import com.eim.winder.db.Location;
 
 /**
  * Created by Mari on 09.02.2016.
@@ -37,7 +37,7 @@ public class CustomTextChangedListener implements TextWatcher{
             Log.e(TAG, "Array size: " + alertsetActivity.searchLocations.size());
             // update the adapater
 
-            alertsetActivity.searchAdapter = new ArrayAdapter<LocationDAO>(alertsetActivity, android.R.layout.simple_dropdown_item_1line, alertsetActivity.searchLocations);
+            alertsetActivity.searchAdapter = new ArrayAdapter<Location>(alertsetActivity, android.R.layout.simple_dropdown_item_1line, alertsetActivity.searchLocations);
             Log.e(TAG, "Array size: " + alertsetActivity.searchLocations.size());
             alertsetActivity.searchView.setAdapter(alertsetActivity.searchAdapter);
             Log.e(TAG, "Array size: " + alertsetActivity.searchLocations.size());

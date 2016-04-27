@@ -9,10 +9,10 @@ import com.eim.winder.R;
 /**
  * Created by Mari on 03.02.2016.
  */
-public class AlertSettingsDAO implements Parcelable{
+public class AlertSettings implements Parcelable{
     public static int DEFAULT_TEMP = -274;
     public static int DEFAULT_WIND_AND_PRECIP = -1;
-    private LocationDAO location;
+    private Location location;
     private int id;
     private int tempMin;
     private int tempMax;
@@ -25,8 +25,9 @@ public class AlertSettingsDAO implements Parcelable{
     private double checkInterval;
     private boolean mon, tue, wed, thu, fri, sat, sun;
     private String iconName;
+    private int hasEvents;
 
-    public AlertSettingsDAO(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, String iconName, LocationDAO location) {
+    public AlertSettings(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, String iconName, int hasEvents, Location location) {
         this.id = id;
         this.location = location;
         this.tempMin = tempMin;
@@ -46,9 +47,10 @@ public class AlertSettingsDAO implements Parcelable{
         this.sat = sat > 0;
         this.sun = sun > 0;
         this.iconName = iconName;
+        this.hasEvents = hasEvents;
     }
 
-    public AlertSettingsDAO(){
+    public AlertSettings(){
         this.tempMin = DEFAULT_TEMP;
         this.tempMax = DEFAULT_TEMP;
         this.precipitationMin = DEFAULT_WIND_AND_PRECIP;
@@ -64,6 +66,7 @@ public class AlertSettingsDAO implements Parcelable{
         this.fri = false;
         this.sat = false;
         this.sun = false;
+        this.hasEvents = 0;
     }
 
     public int getId() {
@@ -106,11 +109,11 @@ public class AlertSettingsDAO implements Parcelable{
         this.precipitationMax = precipitationMax;
     }
 
-    public LocationDAO getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(LocationDAO location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -218,6 +221,13 @@ public class AlertSettingsDAO implements Parcelable{
         this.iconName = iconName;
     }
 
+    public void setHasEvents(int bol){
+        this.hasEvents = bol;
+    }
+    public int hasEvents(){
+        return hasEvents;
+    }
+
     public String getWeekDaysSelected(Resources resources){
         String res = "";
         if(mon)res+= resources.getString(R.string.monday)+ " ";
@@ -231,13 +241,13 @@ public class AlertSettingsDAO implements Parcelable{
     }
     //Parcel-methodes and constructor:
     
-    AlertSettingsDAO(Parcel in){
+    AlertSettings(Parcel in){
         readFromParcel(in);
     }
 
     private void readFromParcel(Parcel in) {
         id = in.readInt();
-        location = in.readParcelable(LocationDAO.class.getClassLoader());
+        location = in.readParcelable(Location.class.getClassLoader());
         tempMin = in.readInt();
         tempMax = in.readInt();
         precipitationMin = in.readDouble();
@@ -290,12 +300,12 @@ public class AlertSettingsDAO implements Parcelable{
     * */
     public static final Parcelable.Creator CREATOR =
             new Parcelable.Creator() {
-                public AlertSettingsDAO createFromParcel(Parcel in) {
-                    return new AlertSettingsDAO(in);
+                public AlertSettings createFromParcel(Parcel in) {
+                    return new AlertSettings(in);
                 }
 
-                public AlertSettingsDAO[] newArray(int size) {
-                    return new AlertSettingsDAO[size];
+                public AlertSettings[] newArray(int size) {
+                    return new AlertSettings[size];
                 }
             };
 }

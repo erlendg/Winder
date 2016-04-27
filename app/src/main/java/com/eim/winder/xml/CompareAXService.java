@@ -10,8 +10,10 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
-import com.eim.winder.db.ForecastDAO;
+import com.eim.winder.db.AlertSettings;
+import com.eim.winder.db.AlertSettingsRepo;
+import com.eim.winder.db.DBService;
+import com.eim.winder.db.Forecast;
 import com.eim.winder.db.ForecastRepo;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +28,7 @@ public class CompareAXService {
     private final String TAG = "CompareAXService";
 
     private HandleXML xmlHandlerObj;
-    private AlertSettingsDAO alertSettingsObj;
+    private AlertSettings alertSettingsObj;
     private ForecastInfo forecast;
     private boolean onCreateSuccess = false;
     private boolean sendNotification;
@@ -36,14 +38,17 @@ public class CompareAXService {
     String url;
     private NotificationCompat.Builder notification;
     private ForecastRepo forecastRepo;
+    private AlertSettingsRepo alertSettingsRepo;
     Context context;
 
-    public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj){
+    public CompareAXService(Context context, AlertSettings alertSettingsObj){
         this.context = context;
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = alertSettingsObj.getLocation().getXmlURL();
         this.forecastRepo = new ForecastRepo(context);
+        this.alertSettingsRepo = new AlertSettingsRepo(context);
+
 
         try {
             System.err.println("url: " +  url);
@@ -51,16 +56,17 @@ public class CompareAXService {
             onCreateSuccess =true;
         }
         catch (Exception e){
-            System.out.println("Error most likely due to empty LocationDAO for AlertSettingsDAO");
+            System.out.println("Error most likely due to empty Location for AlertSettings");
             onCreateSuccess = false;
         }
     }
-    public CompareAXService(Context context, AlertSettingsDAO alertSettingsObj, String url){
+    public CompareAXService(Context context, AlertSettings alertSettingsObj, String url){
         this.context = context;
         this.alertSettingsObj = alertSettingsObj;
         this.forecast = new ForecastInfo();
         this.url = url;
         this.forecastRepo = new ForecastRepo(context);
+        this.alertSettingsRepo = new AlertSettingsRepo(context);
 
 
         try {
@@ -69,7 +75,7 @@ public class CompareAXService {
             onCreateSuccess =true;
         }
         catch (Exception e){
-            System.out.println("Error most likely due to empty LocationDAO for AlertSettingsDAO");
+            System.out.println("Error most likely due to empty Location for AlertSettings");
             onCreateSuccess = false;
         }
     }
@@ -83,22 +89,23 @@ public class CompareAXService {
      *Generates and displays one notification if there has been an occurence for the specific alertsetting.
      *
      * @param i alertsettingID
+     * @param locName location name for the current alertSetting
      * @param context context of activity that called the method.
      * @param cl class of activity
      * @param nm notificationmanager injected from previously mentioned activity
      * @param type indicates which kind of notification should be issued.
      */
-    public void generateNotification(int i, Context context, Class cl, NotificationManager nm, int type){
+    public void generateNotification(int i, String locName, Context context, Class cl, NotificationManager nm, int type){
                 notification = new NotificationCompat.Builder(context);
                 notification.setSmallIcon(R.drawable.ic_stat_name);
                 notification.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
                 if (type == 1){
                     notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_success));
-                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!");
+                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + " " + locName);
                 }else if(type == 2){
                     notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_no_success));
-                    notification.setContentText(context.getResources().getString(R.string.notification_message_text) + i + "!!!!!");
+                    notification.setContentText(context.getResources().getString(R.string.notification_message_text)+ " " + locName);
                 }
 
                 // Creates an explicit intent for an Activity in your app
@@ -133,10 +140,11 @@ public class CompareAXService {
      * @param info
      * @return
      */
-    private String generateInfo(TabularInfo info){
+    private String[] generateInfo(TabularInfo info){
         String returnString = "";
-        returnString += fixDate(info.getFrom(), info.getTo());
-        if (tempCheck){
+        String[] returnTable = new String[2];
+        returnTable[0] = fixDate(info.getFrom(), info.getTo());
+        if(tempCheck){
             returnString += context.getResources().getString(R.string.generate_temperature)+ " " + info.getTemperatureValue() + "\u2103\n"; // grader celcius utf8-kode: "\u2103";
 
         }
@@ -224,13 +232,38 @@ public class CompareAXService {
             returnString += context.getResources().getString(R.string.generate_windspeed)+ " " + info.getWindSpeed() + "m/s \n";
         }
         Log.i(TAG, returnString);
-        return returnString.trim();
+        returnTable[1] = returnString.trim();
+        return  returnTable;
     }
 
     private String fixDate(String fromDate, String toDate){
         String result = "";
-
-        result += fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + "/" + fromDate.substring(0,4) + ": "+ fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
+        switch (checkWeekday(fromDate)){
+            case 1:
+                result += context.getResources().getString(R.string.weekdays_sunday);
+                break;
+            case 2:
+                result += context.getResources().getString(R.string.weekdays_monday);
+                break;
+            case 3:
+                result += context.getResources().getString(R.string.weekdays_tuesday);
+                break;
+            case 4:
+                result += context.getResources().getString(R.string.weekdays_wednesday);
+                break;
+            case 5:
+                result += context.getResources().getString(R.string.weekdays_thursday);
+                break;
+            case 6:
+                result += context.getResources().getString(R.string.weekdays_friday);
+                break;
+            case 7:
+                result += context.getResources().getString(R.string.weekdays_saturday);
+                break;
+            default:
+                break;
+        }       //"/" + fromDate.substring(5,7) + "/" + fromDate.substring(0,4)
+        result += ", " + fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + ": " + fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
 
         return result;
     }
@@ -240,50 +273,60 @@ public class CompareAXService {
         return true;
 
     }
-    public void addShitToDB(final ArrayList<ForecastDAO> list){
+
+    private void updateAlertSettingsEvent(int id, int hasEvents){
+            alertSettingsRepo.updateAlertsettingsHasEvents(id, hasEvents);
+    }
+
+    private void addNewForecastsToDB(final ArrayList<Forecast> list){
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
-                forecastRepo.insertForecastList(list, alertSettingsObj.getId());
+                DBService dbService = new DBService(forecastRepo);
+                dbService.addForecastList(list, alertSettingsObj.getId());
+
             }
         });
         thread.start();
 
         boolean ok = false;
-        //ok = forecastDSService.insertForecastList(list, alertSettingsObj.getId());
-        //return ok;
     }
-
-    public int findAllOccurences(int id, Context context, Class cl, NotificationManager nm){
+    public int findAllOccurences(int id, String locName, Context context, Class cl, NotificationManager nm){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
-        ArrayList<ForecastDAO> returnList = new ArrayList<>();
-        ForecastDAO temp;
-        String dateandinfo;
+        ArrayList<Forecast> returnList = new ArrayList<>();
+        Forecast temp;
+        String[] dateandinfo;
         int result = -1;
         for (int i = 0; i<list.size(); i++){
             sendNotification = findOccurence(list.get(i));
 
             if (sendNotification){
                 dateandinfo = generateInfo(list.get(i));
-                temp = new ForecastDAO();
+                temp = new Forecast();
                 temp.setAlertSettingId(alertSettingsObj.getId());
-                temp.setFormatedDate(dateandinfo.substring(0,25));
-                temp.setFormatedInfo(dateandinfo.substring(25));
+                temp.setFormatedDate(dateandinfo[0]);
+                temp.setFormatedInfo(dateandinfo[1]);
                 temp.setIcon(list.get(i).getSymbolNumber());
                 returnList.add(temp);
             }
 
         }
 
-        //// TODO: 19.04.2016 this is where code to handle the four different notification-scenarios is implemented:
+        if(returnList.isEmpty()){
+            updateAlertSettingsEvent(id, 0);
+        } else {
+            updateAlertSettingsEvent(id, 1);
+        }
 
         if(!forecastRepo.findIfForecastsExistsForAlertSettingsID(id)){
             //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
             if(!returnList.isEmpty()){
                 Log.e(TAG, "CASE1");
-                addShitToDB(returnList);
-                generateNotification(id, context, cl, nm, 1);
+
+                addNewForecastsToDB(returnList);
+                generateNotification(id, locName, context, cl, nm, 1);
+
                 return 1;
             } else{
                 //Case 2: No new Forecast-entries found from new XML, and no previous Forecast-entries are found in the DB
@@ -293,15 +336,15 @@ public class CompareAXService {
             }
         } else{
             if (!returnList.isEmpty()){
-                //Case 4: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
-                addShitToDB(returnList);
+                //Case 3: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
+                addNewForecastsToDB(returnList);
                 //generateNotification(returnList, id, context, cl, nm, 1);
                 Log.e(TAG, "CASE3");
                 return 3;
             }else{
-                //Case 3: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
+                //Case 4: No new Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
                 forecastRepo.deleteForecastByAlertSettingsID(id);
-                generateNotification(id, context, cl, nm, 2);
+                generateNotification(id, locName, context, cl, nm, 2);
                 Log.e(TAG, "CASE4");
                 return 4;
             }
@@ -352,7 +395,7 @@ public class CompareAXService {
 
         return true;
     }
-    public int checkWeekday(String date){
+    private int checkWeekday(String date){
         c = Calendar.getInstance();
 
         try {
@@ -369,7 +412,7 @@ public class CompareAXService {
     }
     //private int tempMin;
     //private int tempMax;
-    public int checkTemp(double value){
+    private int checkTemp(double value){
 
         if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) {
             //Log.d(TAG, "Temp returverdi = 0, innverdi = " + value);
@@ -385,7 +428,7 @@ public class CompareAXService {
     }
     //private double precipitationMin;
     //private double precipitationMax;
-    public int checkPrecipitation(double value) {
+    private int checkPrecipitation(double value) {
         if ((alertSettingsObj.getPrecipitationMin()) < (value) && (value < (alertSettingsObj.getPrecipitationMax()))){
             //Log.d(TAG, "Nedbør returverdi = 0, innverdi = " + value);
             precipitationCheck = true;
@@ -400,7 +443,7 @@ public class CompareAXService {
     }
     //private double windSpeedMin;
     //private double windSpeedMax;
-    public int checkWindSpeed(double value){
+    private int checkWindSpeed(double value){
         if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) {
             //Log.d(TAG, "Vindstyrke returverdi = 0, innverdi = " + value);
             windSpeedCheck = true;
@@ -415,7 +458,7 @@ public class CompareAXService {
     }
 
     //private String windDirection;
-    public int checkWindDirection(String a) {
+    private int checkWindDirection(String a) {
 
             
         if (alertSettingsObj.getWindDirection() == null){
@@ -490,7 +533,7 @@ public class CompareAXService {
         return 2;
     }
     //private boolean checkSun;
-    public int checkSymbolSun(String a) {
+    private int checkSymbolSun(String a) {
         //Log.d(TAG, "innhold i SunString: " + a);
 
         if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("clear sky")){

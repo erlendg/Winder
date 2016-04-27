@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 
 import java.util.ArrayList;
 
@@ -20,12 +20,12 @@ import java.util.ArrayList;
  */
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>{
     private static String TAG = "RVAdapter";
-    private ArrayList<AlertSettingsDAO> alertsettings;
+    private ArrayList<AlertSettings> alertsettings;
     private static OnItemClickListener listener;
     private Context context;
 
     //Constructor receives an object that implements the listener interface, along with items
-    RVAdapter(Context context, ArrayList<AlertSettingsDAO> alertsettings, OnItemClickListener listener){
+    RVAdapter(Context context, ArrayList<AlertSettings> alertsettings, OnItemClickListener listener){
         this.alertsettings = alertsettings;
         this.listener = listener;
         this.context = context;
@@ -33,12 +33,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
 
     // Interface that specifies listener’s behaviour
     public interface OnItemClickListener {
-        void onItemClick(AlertSettingsDAO item);
+        void onItemClick(AlertSettings item);
     }
     /*public void setOnItemClickListener(MyClickListener myClickListener) {
         this.myClickListener = myClickListener;
     }
-    public MyRecyclerViewAdapter(ArrayList<AlertSettingsDAO> alertsettings) {
+    public MyRecyclerViewAdapter(ArrayList<AlertSettings> alertsettings) {
         mDataset = myDataset;
     }*/
     //This method is called when the custom ViewHolder needs to be initialized.
@@ -59,10 +59,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
         holder.bind(alertsettings.get(position), listener);
         holder.locationName.setText(alertsettings.get(position).getLocation().getName());
-        holder.checkInterval.setText(""+alertsettings.get(position).getCheckInterval());
+        holder.checkInterval.setText("" + alertsettings.get(position).getCheckInterval());
         int resID = context.getResources().getIdentifier(alertsettings.get(position).getIconName(), "drawable", context.getPackageName());
-        holder.weatherIcon.setSelected(true);
         holder.weatherIcon.setImageResource(resID);
+        //If there is weather events then mark the item icon green (set selected)
+        if(alertsettings.get(position).hasEvents()>0){
+            holder.weatherIcon.setSelected(true);
+        }
         /*Drawable color = new ColorDrawable(context.getResources().getColor(R.color.colorAccent));
         Drawable image = holder.weatherIcon.getDrawable();
 
@@ -91,7 +94,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
             weatherIcon = (ImageButton)itemView.findViewById(R.id.weather_photo);
         }
         //Binds template_selected_shape listener to each item
-        public void bind(final AlertSettingsDAO item, final OnItemClickListener listener){
+        public void bind(final AlertSettings item, final OnItemClickListener listener){
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override public void onClick(View v){
                     listener.onItemClick(item);

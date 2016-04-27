@@ -15,7 +15,7 @@ import android.view.View;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
 import com.eim.winder.activities.main.MainActivity;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 
 import org.hamcrest.Description;
@@ -60,7 +60,7 @@ public class SettVarselStepsDef {
     private String deletedLocation = "";
     private int size = 0;
     private int id = 0;
-    private ArrayList<AlertSettingsDAO> asd;
+    private ArrayList<AlertSettings> asd;
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
@@ -94,7 +94,7 @@ public class SettVarselStepsDef {
         at_brukeren_har_åpnet_appen();
         AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         when(testService.getAllAlertSettings()).thenCallRealMethod();
-        asd = mainActivity.getActivity().getAlertSettingsDataSet();
+        asd = mainActivity.getActivity().getRecycleViewDataset();
         size = asd.size();
         id = asd.get(0).getId();
         deletedLocation = asd.get(0).getLocation().getName();
@@ -143,8 +143,8 @@ public class SettVarselStepsDef {
         brukeren_trykker_på_slett_knappen();
         MainActivity testActivity = Mockito.mock(MainActivity.class);
         asd.remove(0);
-        when(testActivity.getAlertSettingsDataSet()).thenReturn(asd);
-        assertTrue(mainActivity.getActivity().getAlertSettingsDataSet().size() == size - 1);
+        when(testActivity.getRecycleViewDataset()).thenReturn(asd);
+        assertTrue(mainActivity.getActivity().getRecycleViewDataset().size() == size - 1);
     }
 
     @Og("^brukeren returneres til hovedoversikten$")

@@ -10,7 +10,7 @@
     <string name="sol_varsel">Sunalert:</string>
     <string name="lagre_varsel_button">Save</string>
     <string name="from">From:</string>
-    <string name="til">To:</string>
+    <string name="to">To:</string>
     <string name="choose_location">Choose location for alerts</string>
     <string name="soek_hint">Search for location....</string>
     <string name="next">Next</string>

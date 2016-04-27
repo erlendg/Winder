@@ -18,9 +18,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.eim.winder.R;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
-import com.eim.winder.db.LocationDAO;
+import com.eim.winder.db.Location;
 import com.eim.winder.db.LocationRepo;
 import com.eim.winder.scheduler.AlarmReceiver;
 
@@ -36,8 +36,8 @@ public class AlertSettingsActivity extends AppCompatActivity {
     public LocationRepo datasource;
     public AlertSettingsRepo alertdatasource;
     public AutoCompleteTextView searchView;
-    public ArrayAdapter<LocationDAO> searchAdapter;
-    public ArrayList<LocationDAO> searchLocations;
+    public ArrayAdapter<Location> searchAdapter;
+    public ArrayList<Location> searchLocations;
     public NumberPicker tempMaxPicker;
     private NumberPicker tempMinPicker;
     private CheckBox checkSun;
@@ -49,7 +49,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
     private ArrayAdapter<String> windspeedAdapter;
     private Spinner checkintervalSpinner;
     private ArrayAdapter<String> checkintervalAdapter;
-    private LocationDAO locationSelected;
+    private Location locationSelected;
     private double interval;
 
     @Override
@@ -66,12 +66,12 @@ public class AlertSettingsActivity extends AppCompatActivity {
         // autocompletetextview is in location_layout.xml
         searchView = (AutoCompleteTextView) findViewById(R.id.search_view);
         //searchView.addTextChangedListener(new CustomTextChangedListener(this));
-        searchAdapter = new ArrayAdapter<LocationDAO>(this, android.R.layout.simple_dropdown_item_1line, searchLocations);
+        searchAdapter = new ArrayAdapter<Location>(this, android.R.layout.simple_dropdown_item_1line, searchLocations);
         searchView.setAdapter(searchAdapter);
         searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                locationSelected = (LocationDAO) arg0.getItemAtPosition(position);
+                locationSelected = (Location) arg0.getItemAtPosition(position);
                 Log.d("############", locationSelected.getId()+ " "+ locationSelected.toString());
             }
         });
@@ -119,14 +119,14 @@ public class AlertSettingsActivity extends AppCompatActivity {
         finish();
     }
     public void onSaveButtonClick(View v) {
-        AlertSettingsDAO asd = makeObjFromSettings();
+        AlertSettings asd = makeObjFromSettings();
         interval = asd.getCheckInterval();
         boolean ok = saveAlertSettings(asd);
         if(!ok){
             Toast.makeText(this, "Noe gikk galt..", Toast.LENGTH_LONG).show();
         }else {
             Toast.makeText(this, "Lagret!", Toast.LENGTH_LONG).show();
-            ArrayList<AlertSettingsDAO> test;
+            ArrayList<AlertSettings> test;
             test = alertdatasource.getAllAlertSettings();
             for(int i = 0; i < test.size(); i++){
                 Log.i("TEST",  "Indeks: " + i + " " + test.get(i).getCheckInterval() + " " + (int) test.get(i).getLocation().getId());
@@ -137,7 +137,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
 
     }
 
-    public boolean saveAlertSettings(AlertSettingsDAO asd){
+    public boolean saveAlertSettings(AlertSettings asd){
         Log.i(TAG, "saveAlertSettings()");
         asd.setLocation(locationSelected);
 
@@ -154,8 +154,8 @@ public class AlertSettingsActivity extends AppCompatActivity {
             return true;
         }
     }
-    public AlertSettingsDAO makeObjFromSettings(){
-        AlertSettingsDAO asd = new AlertSettingsDAO();
+    public AlertSettings makeObjFromSettings(){
+        AlertSettings asd = new AlertSettings();
         //Temperature:
         int tempMin = tempMinPicker.getValue();
         int tempMax = tempMaxPicker.getValue();
@@ -206,7 +206,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
     public String[] getSearchedItemsFromDb(String searchTerm) {
         Log.i(TAG, "getSearchedItemsFromDb()");
         // add items on the array:
-        List<LocationDAO> searchRes = datasource.readSearch(searchTerm);
+        List<Location> searchRes = datasource.readSearch(searchTerm);
         String[] res = new String[searchRes.size()];
         for (int i = 0; i < searchRes.size(); i++) {
             res[i] = searchRes.get(i).toString();

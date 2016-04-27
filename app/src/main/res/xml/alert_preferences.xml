@@ -59,13 +59,15 @@
         android:summary="@string/choose_weekdays_string"
         android:entries="@array/weekdays_array"
         android:icon="@android:drawable/ic_menu_my_calendar"
-        android:entryValues="@array/weekdays_values"/>
+        android:entryValues="@array/weekdays_values"
+        />
     <ListPreference
         android:key="@string/checkintr_pref_key"
         android:title="@string/preferences_interval"
         android:summary="@string/preferences_interval_description"
         android:entries="@array/checkinterval_array"
         android:entryValues="@array/checkinterval_values"
-        android:icon="@android:drawable/ic_lock_idle_alarm"/>
+        android:icon="@android:drawable/ic_lock_idle_alarm"
+        android:defaultValue="3"/>
 
 </PreferenceScreen>

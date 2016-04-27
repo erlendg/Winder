@@ -8,8 +8,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.eim.winder.activities.main.MainActivity;
-import com.eim.winder.db.AlertSettingsDAO;
+import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
+import com.eim.winder.db.DBService;
+import com.eim.winder.db.Location;
+import com.eim.winder.db.LocationRepo;
 import com.eim.winder.xml.CompareAXService;
 
 /**
@@ -31,7 +34,10 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         //Finding the alertsettings-object  based on the Id contained in the received intent:
         AlertSettingsRepo alertdatasource = new AlertSettingsRepo(context);
-        AlertSettingsDAO settings= alertdatasource.getAlertSettingById(id);
+        LocationRepo locationdatasource = new LocationRepo(context);
+        DBService dbService = new DBService(alertdatasource, locationdatasource);
+
+        AlertSettings settings = dbService.getCompleteAlertSettingsById(id);
 
         CompareAXService compare = new CompareAXService(context, settings, url);
 
@@ -43,7 +49,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             //creating the NotificationManager needed to display notifications:
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             //run the comparison logic:
-            compareResult = compare.findAllOccurences(settings.getId(), context, MainActivity.class, mNotificationManager);
+            compareResult = compare.findAllOccurences(settings.getId(), settings.getLocation().getName(), context, MainActivity.class, mNotificationManager);
             //send notificaton to the user based on the results received:
             /*if (!listeTing.isEmpty()) {
                 compare.generateNotification(listeTing, settings.getId(), context, MainActivity.class, mNotificationManager);
