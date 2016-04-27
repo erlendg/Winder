@@ -125,6 +125,7 @@ public class CompareAXService {
                 PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 notification.setContentIntent(resultPendingIntent);
+                notification.setAutoCancel(true);
 
                 /* MÅ OPPRETTES I KONTEKSTEN DER MAN BENYTTER KODEN:
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(cont.NOTIFICATION_SERVICE);

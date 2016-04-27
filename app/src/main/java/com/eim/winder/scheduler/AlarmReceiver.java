@@ -1,7 +1,7 @@
 package com.eim.winder.scheduler;
 
 
-import android.app.Activity;
+
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -16,7 +16,6 @@ import com.eim.winder.activities.main.MainActivity;
 import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.DBService;
-import com.eim.winder.db.Location;
 import com.eim.winder.db.LocationRepo;
 import com.eim.winder.xml.CompareAXService;
 
@@ -73,22 +72,30 @@ public class AlarmReceiver extends BroadcastReceiver{
         ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         // Get a list of running tasks, we are only interested in the last one,
         // As getRunningTasks(int num) is deprecated for SDK 23 and higher we need to check what build version the phone has
-       /*if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
             List< ActivityManager.AppTask > task = manager.getAppTasks();
             // Get the info we need for comparison.
-            ComponentName componentInfo = task.get(0).getTaskInfo().topActivity;
-            Log.e(TAG, componentInfo.getClassName());
-            if(componentInfo.getClassName().equals(PackageAndClassName)) return true;
+           if(task.size() != 0) {
+               ComponentName componentInfo = task.get(0).getTaskInfo().topActivity;
+               Log.e(TAG, componentInfo.getClassName());
+               if (componentInfo.getClassName().equals(PackageAndClassName)) return true;
+           }
             // If not then our app is not on the foreground.
             return false;
-        } else {*/
+        } else {
+        /**From: http://developer.android.com/reference/android/app/ActivityManager.html
+         * getRunningTasks(int) method was deprecated in API level 21.
+         * As of LOLLIPOP, this method is no longer available to third party applications: the introduction of document-centric recents means it can leak person information to the caller.
+         * For backwards compatibility, it will still return a small subset of its data: at least the caller's own tasks, and possibly some other tasks such as home that are known to not be sensitive.
+         * Unfortunately, there is no other methods that offers the same functionality, and therefore it is still used.
+         */
             List< ActivityManager.RunningTaskInfo > task = manager.getRunningTasks(1);
             // Get the info we need for comparison.
             ComponentName componentInfo = task.get(0).topActivity;
             if(componentInfo.getClassName().equals(PackageAndClassName)) return true;
             // If not then our app is not on the foreground.
             return false;
-        //}
+        }
     }
 
     private void updateAlertSettingsIcon(int compareResult, AlertSettings settings){
