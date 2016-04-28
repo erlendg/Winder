@@ -81,7 +81,7 @@
     <!-- CompareAXService-strings: -->
     <string name="notification_message_title_success">We have a match!</string>
     <string name="notification_message_title_no_success">No longer a match!</string>
-    <string name="notification_message_text">Area: </string>
+    <string name="notification_message_text">For </string>
     <string name="generate_temperature">Temperature: </string>
     <string name="generate_precipitatiion">Precipitation: </string>
     <string name="generate_clear">Clear weather!</string>

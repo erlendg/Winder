@@ -4,9 +4,11 @@ import android.app.ActivityOptions;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MAX_LOCATIONS = 10;
     private static final int RESULT_SETTINGS = 1;
 
+    private static MainActivity instance;
     private DBService dbService;
     private LocationRepo locationDataSource;
     private AlertSettingsRepo alertDataSource;
@@ -60,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -89,12 +93,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        instance = this;
+
     }
 
     private void buildRecyclerView(RecyclerView recyclerView, LinearLayoutManager llManager, ArrayList<AlertSettings> alertSettingsList){
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(llManager);
-        setRvAdapter( recyclerView, alertSettingsList);
+        setRvAdapter(recyclerView, alertSettingsList);
 
     }
     private void setRvAdapter(RecyclerView recyclerView, ArrayList<AlertSettings> alertSettingsList){
@@ -191,26 +197,25 @@ public class MainActivity extends AppCompatActivity {
     }
     public void doManualForecastRefresh(){
         Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
-        for (AlertSettings temp : alertSettingsList) {
+        for (int i = 0; i < alertSettingsList.size(); i++) {
             //create an instance of CompareAXService:
-            compare = new CompareAXService(this, temp);
+            compare = new CompareAXService(this, alertSettingsList.get(i));
             //run the xml-parser:
             div = compare.runHandleXML();
             int compareResult;
             //if the parsing is done, run findAllOccurences:
             if(div) {
                 NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                compareResult = compare.findAllOccurences(temp.getId(), temp.getLocation().getName(), this, this.getClass(), mNotificationManager);
+                compareResult = compare.findAllOccurences(alertSettingsList.get(i).getId(), alertSettingsList.get(i).getLocation().getName(), this, this.getClass(), mNotificationManager);
                        /* if (!listeTing.isEmpty()) {
                             compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
                         }*/
-                if(compareResult == 1 || compareResult ==3 )temp.setHasEvents(1);
-                else temp.setHasEvents(0);
+                if(compareResult == 1 || compareResult ==3 )notifyAlertSettingsListChanged(i, 1);
+                else notifyAlertSettingsListChanged(i, 0);
                 //Si ifra til adapteren med arraylisten av alertsettings at det har skjedd en endring:
-                rvAdapter.notifyDataSetChanged();
 
             }
-            Toast.makeText(this, "Alertsetting " + temp.getId(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Alertsetting " + alertSettingsList.get(i).getId(), Toast.LENGTH_SHORT).show();
         }
         Toast.makeText(this, "... done!", Toast.LENGTH_SHORT).show();
     }
@@ -229,6 +234,10 @@ public class MainActivity extends AppCompatActivity {
         res.updateConfiguration(config, res.getDisplayMetrics());
 
     }
+    public void notifyAlertSettingsListChanged(int alertListId, int colorID){
+        alertSettingsList.get(alertListId).setHasEvents(colorID);
+        rvAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -238,6 +247,22 @@ public class MainActivity extends AppCompatActivity {
 
     public int getNumOfLocations(){
         return alertSettingsList.size();
+    }
+    /*public static void updateMainActivtyList(int alertSettingsId, int eventNumber){
+        if(eventNumber == 1 || eventNumber == 3){
+            for (AlertSettings temp : alertSettingsList){
+                if(temp.getId() == alertSettingsId) temp.setHasEvents(1);
+            }
+            notifiAlertSettingsListChanged();
+        }if(eventNumber == 4){
+            for (AlertSettings temp : alertSettingsList){
+                if(temp.getId() == alertSettingsId) temp.setHasEvents(0);
+            }
+            notifiAlertSettingsListChanged();
+        }
+    }*/
+    public static MainActivity  getInstace(){
+        return instance;
     }
 /**
  * This method is moved to another place in the code:
@@ -277,5 +302,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
     */
+
 
 }

@@ -111,6 +111,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (dbService.deleteAlertSettingAndForecasts(alertSettings.getId())) {
                             finish();
+                            overridePendingTransition(R.anim.pull_in_left_anim, R.anim.push_out_right_anim);
                             cancelAlarm(alertSettings.getId());
                             Toast.makeText(AlertOverViewActivity.this, getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                         } else {

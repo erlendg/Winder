@@ -28,7 +28,7 @@
     <string name="next">Neste</string>
     <string name="no">Nei</string>
     <string name="no_settings_selected">Ingen instillinger valgt..</string>
-    <string name="notification_message_text">Område:</string>
+    <string name="notification_message_text">For</string>
     <string name="notification_message_title">Vi har en match!</string>
     <string name="on_next_button_click_warning">Fyll inn et korrekt stedsnavn!</string>
     <string name="saturday">Lørdag</string>
