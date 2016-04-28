@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/settings_header" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="prefUseMobileData"
+            android:summary="@string/pref_connection_summary"
+            android:title="@string/pref_use_mobile_data" >
+        </CheckBoxPreference>
+
+        <ListPreference
+            android:key="prefLanguage"
+            android:entries="@array/languageArray"
+            android:summary="%s"
+            android:entryValues="@array/languageArrayValues"
+            android:title="@string/pref_chose_language"
+            android:defaultValue="@string/pref_language_summary"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/info_header">
+        <Preference
+            android:persistent="false"
+            android:selectable="false"
+            android:enabled="true"
+            android:key="example_key"
+            android:title="@string/about_header"
+            android:summary="@string/about"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

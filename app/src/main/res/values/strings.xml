@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Winder</string>
     <string name="action_settings">Settings</string>
+    <string name="action_refresh">Refresh</string>
 
     <string name="temp_interval">Temperature:</string>
     <string name="nedboer_intervall">Precipitation:</string>
@@ -75,7 +76,6 @@
     <string name="prefered_icon_key">iconPref</string>
     <string name="prefered_icon_key_default">ic_custom</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- CompareAXService-strings: -->
@@ -120,7 +120,9 @@
     <string name="choose_winddirection_string">Choose wind direction</string>
     <string name="choose_weekdays_string">Choose which days you prefer the weather to occur</string>
     <string name="preferences_suncheck">Suncheck</string>
-    <string name="about">Winder is an Application provided by EIM Development. Thiss app is supposed to be a tool for users who are occupied by-  or depending on weather conditions in the activities you are planning to conduct. By defining your prefrences for weather  forecasting or by predefined custom options based on  different activities, you will receive a notification when your conditions is satisfied. To make this happen we have used weather forecast from Yr, delivered by the Norwegian Meteorological Institute and NRK</string>
+    <string name="info_header">Info</string>
+    <string name="about_header">About</string>
+    <string name="about">Winder is an Application provided by EIM Development. This app is supposed to be a tool for users who are occupied by-  or depending on weather conditions in the activities you are planning to conduct. By defining your prefrences for weather  forecasting or by predefined custom options based on  different activities, you will receive a notification when your conditions is satisfied. To make this happen we have used weather forecast from Yr, delivered by the Norwegian Meteorological Institute and NRK</string>
     <string name="notification_message_title">We have a match!</string>
     <string name="something_went_wrong_toast">Something went wrong..</string>
     <string name="saved_toast">Saved!</string>
@@ -142,4 +144,18 @@
     <string name="ENE">East-Northeast</string>
     <string name="NE">Northeast</string>
     <string name="NNE">North-Northeast</string>
+
+    <!--Strings for appsettings-->
+    <string name="settings_header">Settings</string>
+    <string name="connection_header">Connection settings</string>
+    <string name="pref_connection_summary">Use mobile data for weather-updates</string>
+    <string name="pref_use_mobile_data">MobileData</string>
+
+    <string name="language_header">Language</string>
+    <string name="pref_language_summary">Not selected</string>
+    <string name="pref_chose_language">Change language</string>
+    <string name="language_default">System Default</string>
+    <string name="language_norwegian">Norwegian</string>
+    <string name="language_english">English</string>
+
 </resources>

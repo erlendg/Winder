@@ -23,7 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent){
-        //TODO implement executable code
+
         /**
          * this is where the code to run CompareAXService is implemented.
          */
@@ -31,7 +31,6 @@ public class AlarmReceiver extends BroadcastReceiver{
         Integer id = intent.getIntExtra("id", -1);
         String url = intent.getStringExtra("url");
         int compareResult;
-
         //Finding the alertsettings-object  based on the Id contained in the received intent:
         AlertSettingsRepo alertdatasource = new AlertSettingsRepo(context);
         LocationRepo locationdatasource = new LocationRepo(context);

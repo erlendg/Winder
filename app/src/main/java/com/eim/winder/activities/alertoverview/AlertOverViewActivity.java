@@ -98,7 +98,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
             }
         });*/
         //Sets the onclick-listener to the preference-title field:
-        preferencesTitle = (TextView) findViewById(R.id.preferences_title);
+        //preferencesTitle = (TextView) findViewById(R.id.preferences_title);
         preferencesTable = (GridLayout) findViewById(R.id.preferences_table);
     }
     //Sets the onclick-listener to the preference-title field:

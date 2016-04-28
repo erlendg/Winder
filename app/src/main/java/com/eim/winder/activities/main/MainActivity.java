@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
+import com.eim.winder.activities.appsettings.UserSettingsActivity;
+import com.eim.winder.activities.appsettings.UserSettingsFragment;
 import com.eim.winder.activities.selectlocation.SelectLocationActivity;
 import com.eim.winder.db.DBService;
 import com.eim.winder.xml.CompareAXService;
@@ -36,6 +38,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int MAX_LOCATIONS = 10;
+    private static final int RESULT_SETTINGS = 1;
 
     private DBService dbService;
     private LocationRepo locationDataSource;
@@ -172,8 +175,10 @@ public class MainActivity extends AppCompatActivity {
 
             // action with ID action_settings was selected
             case R.id.action_settings:
-                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
-
+                //eText(this, "Settings selected", Toast.LENGTH_SHORT).show();
+                //getFragmentManager().beginTransaction().replace(R.id.settingsFragment, new UserSettingsFragment()).commit();
+                Intent i = new Intent(this, UserSettingsActivity.class);
+                startActivity(i);
                 break;
 
             default:

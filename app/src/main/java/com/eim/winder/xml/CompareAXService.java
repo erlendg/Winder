@@ -5,6 +5,11 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
@@ -267,7 +272,58 @@ public class CompareAXService {
 
         return result;
     }
+
+    /**isNetworkOnline checks currently available network-options.
+     *
+     *
+     * @return integer where 0 = no connection available, 1= wifi connection available, 2=mobiledata connection available
+     */
+    public int isNetworkOnline() {
+        int status=0;
+        try{
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            //NetworkInfo netInfo = cm.getNetworkInfo(0);
+            NetworkInfo netInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
+                status= 1;
+            }else {
+                //netInfo = cm.getNetworkInfo(1);
+                netInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+                if(netInfo!=null && netInfo.getState()==NetworkInfo.State.CONNECTED)
+                    status= 2;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+        Log.i(TAG, "Result from isNetworkOnline : " + status);
+        return status;
+
+    }
+
+    /**
+     * runHandleXML checks for internet-connections, and determines if a new xml-file should be fetched.
+     *
+     * @return true or false depending on successfully parsing the latest xml-file.
+     */
     public boolean runHandleXML(){
+        //todo: handle sharedpreferences for connection-types. Also handle lack of connection entirely.
+        int currentConnection = isNetworkOnline();
+        //if no connection is present, return false:
+        if (currentConnection==0){
+            return false;
+        }
+
+        //find settings for mobiledata as a connection:
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean useMobileData = sp.getBoolean("prefUseMobileData", false);
+        Log.i(TAG, "Currently prefUseMobileData is : " + useMobileData);
+
+        //if mobileconnection available, and useMobileData is false, return false
+        if (currentConnection==2 && !useMobileData){
+            return false;
+        }
+        //then just run stuff
         xmlHandlerObj.fetchXML();
         while(xmlHandlerObj.parsingComplete);
         return true;

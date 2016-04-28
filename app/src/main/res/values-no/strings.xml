@@ -121,4 +121,17 @@
     <string name="W">Vest</string>
     <string name="WNW">Vest-Nordvest</string>
     <string name="WSW">Vest-Sørvest</string>
+    <string name="action_refresh">Oppdater</string>
+    <string name="about_header">Om</string>
+    <string name="connection_header">Tilkoblingsinnstillinger</string>
+    <string name="info_header">Info</string>
+    <string name="language_default">Systemstandard</string>
+    <string name="language_english">Engelsk</string>
+    <string name="language_header">Språk</string>
+    <string name="language_norwegian">Norsk</string>
+    <string name="pref_chose_language">Endre språk</string>
+    <string name="pref_connection_summary">Bruk mobildata for varselsoppdateringer</string>
+    <string name="pref_language_summary">Ikke valgt</string>
+    <string name="pref_use_mobile_data">Mobildata</string>
+    <string name="settings_header">Innstillinger</string>
 </resources>

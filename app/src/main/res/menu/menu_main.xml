@@ -8,10 +8,11 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/ic_autorenew_white_24dp"
-        android:title="Refresh"/>
+        android:title="@string/action_refresh"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
+        android:icon="@drawable/ic_settings_thin"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        app:showAsAction="always" />
 </menu>
