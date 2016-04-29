@@ -57,7 +57,8 @@ public class AlarmReceiver extends BroadcastReceiver{
             //run the comparison logic:
             compareResult = compare.findAllOccurences(settings.getId(), settings.getLocation().getName(), context, MainActivity.class, mNotificationManager);
             //Update listview if the user is inside the MainActivity:
-            if(isForeground("com.eim.winder.activities.main.MainActivity", context)){
+            //isForeground("com.eim.winder.activities.main.MainActivity", context)
+            if(MainActivity.getIsActivityRunning()){
                updateAlertSettingsIcon(compareResult, settings);
             }
         }
@@ -66,13 +67,13 @@ public class AlarmReceiver extends BroadcastReceiver{
         Log.e(TAG, "onReceive, id: " + id);
         //Toast.makeText(context, "sup? " + intent.getStringExtra("div"), Toast.LENGTH_LONG).show();
     }
-    private boolean isForeground(String PackageAndClassName, Context context){
+    /*private boolean isForeground(String PackageAndClassName, Context context){
         // Get the Activity Manager
         ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         // Get a list of running tasks, we are only interested in the last one,
         // As getRunningTasks(int num) is deprecated for SDK 23 and higher we need to check what build version the phone has
-       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            List< ActivityManager.AppTask > task = manager.getAppTasks();
+       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+           List< ActivityManager.AppTask > task = manager.getAppTasks();
             // Get the info we need for comparison.
            if(task.size() != 0) {
                ComponentName componentInfo = task.get(0).getTaskInfo().topActivity;
@@ -87,7 +88,7 @@ public class AlarmReceiver extends BroadcastReceiver{
          * As of LOLLIPOP, this method is no longer available to third party applications: the introduction of document-centric recents means it can leak person information to the caller.
          * For backwards compatibility, it will still return a small subset of its data: at least the caller's own tasks, and possibly some other tasks such as home that are known to not be sensitive.
          * Unfortunately, there is no other methods that offers the same functionality, and therefore it is still used.
-         */
+
             List< ActivityManager.RunningTaskInfo > task = manager.getRunningTasks(1);
             // Get the info we need for comparison.
             ComponentName componentInfo = task.get(0).topActivity;
@@ -95,7 +96,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             // If not then our app is not on the foreground.
             return false;
         }
-    }
+    }*/
 
     private void updateAlertSettingsIcon(int compareResult, AlertSettings settings){
         Log.i(TAG, "MainActivity in foreground");

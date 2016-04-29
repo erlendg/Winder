@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int MAX_LOCATIONS = 10;
     private static final int RESULT_SETTINGS = 1;
+    private static boolean isActivityRunning = false;
 
     private static MainActivity instance;
     private DBService dbService;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        isActivityRunning = true;
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -148,6 +150,9 @@ public class MainActivity extends AppCompatActivity {
         setRvAdapter(recyclerView, alertSettingsList);
         //Feil måte å gjøre det på:
         //setApplicationLocale(getResources().getConfiguration().locale);
+        isActivityRunning = true;
+       // Log.wtf(TAG, "resume");
+
     }
 
     @Override
@@ -316,5 +321,14 @@ public class MainActivity extends AppCompatActivity {
     }
     */
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //Log.wtf(TAG, "pause");
+        isActivityRunning = false;
+    }
+    public static boolean getIsActivityRunning(){
+        return isActivityRunning;
+    }
 
 }
