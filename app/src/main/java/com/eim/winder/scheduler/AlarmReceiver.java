@@ -71,7 +71,7 @@ public class AlarmReceiver extends BroadcastReceiver{
         ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
         // Get a list of running tasks, we are only interested in the last one,
         // As getRunningTasks(int num) is deprecated for SDK 23 and higher we need to check what build version the phone has
-       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
+       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             List< ActivityManager.AppTask > task = manager.getAppTasks();
             // Get the info we need for comparison.
            if(task.size() != 0) {
