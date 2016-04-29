@@ -146,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         alertSettingsList = dbService.getAllAlertSettingsAndLocations();
         setRvAdapter(recyclerView, alertSettingsList);
+        //Feil måte å gjøre det på:
+        //setApplicationLocale(getResources().getConfiguration().locale);
     }
 
     @Override
@@ -222,11 +224,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void setApplicationLocale(Locale l) {
         //Setter den til norsk hvis det er satt på enheten ved oppstart:
-        if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")){
-            l = new Locale("no","NO");
-            //hvis ikke norsk så settes den til engelsk ved oppstart:
-        }else{
-            l = new Locale("en","en_US");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        String selectedLanguage = sp.getString("prefLanguage", "default");
+        Log.i(TAG, "Selected language from sharedPreferences: " + selectedLanguage);
+        if (selectedLanguage.equalsIgnoreCase("us")) {
+            l = new Locale("en", "en_US");
+        }
+        else if (selectedLanguage.equalsIgnoreCase("no")){
+            l = new Locale("no", "NO");
+        }
+        else{
+            if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")) {
+                l = new Locale("no", "NO");
+                //hvis ikke norsk så settes den til engelsk ved oppstart:
+            } else {
+                l = new Locale("en", "en_US");
+            }
         }
         Configuration config = new Configuration();
         config.locale = l;

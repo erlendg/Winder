@@ -20,4 +20,5 @@ public class UserSettingsActivity extends PreferenceActivity {
         //R.id.settingsFragment
         getFragmentManager().beginTransaction().replace(android.R.id.content, new UserSettingsFragment()).commit();
     }
+
 }

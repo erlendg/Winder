@@ -38,7 +38,8 @@
                 android:value=".activities.main.MainActivity"/>
         </activity>
         <activity android:name=".activities.appsettings.UserSettingsActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:configChanges="locale">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
