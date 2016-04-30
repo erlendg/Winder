@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
 import com.eim.winder.activities.appsettings.UserSettingsActivity;
-import com.eim.winder.activities.appsettings.UserSettingsFragment;
 import com.eim.winder.activities.selectlocation.SelectLocationActivity;
 import com.eim.winder.db.DBService;
 import com.eim.winder.xml.CompareAXService;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private static boolean isActivityRunning = false;
 
     private static MainActivity instance;
+    private static Locale systemDefaultLanguage;
     private DBService dbService;
     private LocationRepo locationDataSource;
     private AlertSettingsRepo alertDataSource;
@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_stat_name);
 
         //Set application language:
-        setApplicationLocale(getResources().getConfiguration().locale);
-        Log.e("Locale:", Locale.getDefault().getLanguage());
+        systemDefaultLanguage = Locale.getDefault();
+        setApplicationLocale(getResources().getConfiguration().locale, this);
 
         //Initiates the datasource:
         locationDataSource = new LocationRepo(this);
@@ -164,44 +164,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify template_selected_shape parent activity in AndroidManifest.xml.
-        /*
-        //Gammel Kode:
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-        */
         switch (item.getItemId()) {
-
             // action with ID action_refresh was selected
             case R.id.action_refresh:
-
                 doManualForecastRefresh();
                 break;
-
             // action with ID action_settings was selected
             case R.id.action_settings:
-                //eText(this, "Settings selected", Toast.LENGTH_SHORT).show();
-                //getFragmentManager().beginTransaction().replace(R.id.settingsFragment, new UserSettingsFragment()).commit();
                 Intent i = new Intent(this, UserSettingsActivity.class);
                 startActivity(i);
                 break;
-
             default:
                 break;
         }
-
         return true;
-
-
     }
+
     public void doManualForecastRefresh(){
         Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < alertSettingsList.size(); i++) {
@@ -227,18 +205,17 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "... done!", Toast.LENGTH_SHORT).show();
     }
 
-    public void setApplicationLocale(Locale l) {
+    public static void setApplicationLocale(Locale l, Context context) {
         //Setter den til norsk hvis det er satt på enheten ved oppstart:
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String selectedLanguage = sp.getString("prefLanguage", "default");
         Log.i(TAG, "Selected language from sharedPreferences: " + selectedLanguage);
-        if (selectedLanguage.equalsIgnoreCase("us")) {
+        if (selectedLanguage.equalsIgnoreCase("en")) {
             l = new Locale("en", "en_US");
-        }
-        else if (selectedLanguage.equalsIgnoreCase("no")){
+        } else if (selectedLanguage.equalsIgnoreCase("no")){
             l = new Locale("no", "NO");
-        }
-        else{
+        } else{
+            l = systemDefaultLanguage;
             if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")) {
                 l = new Locale("no", "NO");
                 //hvis ikke norsk så settes den til engelsk ved oppstart:
@@ -248,10 +225,10 @@ public class MainActivity extends AppCompatActivity {
         }
         Configuration config = new Configuration();
         config.locale = l;
-        Resources res = getBaseContext().getResources();
+        Resources res = context.getResources();
         res.updateConfiguration(config, res.getDisplayMetrics());
-
     }
+
     public void notifyAlertSettingsListChanged(int alertListId, int colorID){
         alertSettingsList.get(alertListId).setHasEvents(colorID);
         rvAdapter.notifyDataSetChanged();
