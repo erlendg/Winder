@@ -13,6 +13,8 @@ public class UserSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.appsettings_layout);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_stat_name);
         getFragmentManager().beginTransaction().replace(R.id.appSettingsFrame, new UserSettingsFragment()).commit();
     }
 }

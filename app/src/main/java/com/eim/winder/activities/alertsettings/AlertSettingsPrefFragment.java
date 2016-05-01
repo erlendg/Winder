@@ -131,7 +131,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         String[] selected = selections.toArray(new String[selections.size()]);
         if(selected.length == 0 ) {
             multipref.setSummary(defValue);
-            Log.i("HEIEHI", "lenght = 0");
+            //Log.i("HEIEHI", "lenght = 0");
             editor.putStringSet(saveName, null);
         }else{
             int[] help = new int[selected.length];
@@ -160,7 +160,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         int[] help = new int[selected.length];
         if(selected.length == 0 ){
             multipref.setSummary(defValue);
-            Log.i("HEIEHI", "lenght = 0");
+            //Log.i("HEIEHI", "lenght = 0");
             editor.putString(saveName, "NOT VALID");
         }else {
             for(int i = 0; i < selected.length; i++){

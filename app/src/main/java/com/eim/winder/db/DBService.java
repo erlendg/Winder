@@ -1,5 +1,6 @@
 package com.eim.winder.db;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.eim.winder.div.Locations;
@@ -17,6 +18,12 @@ public class DBService {
     private ForecastRepo forecastDataSource;
 
     public DBService(){}
+
+    public DBService(Context context){
+        this.locationDataSource = new LocationRepo(context);
+        this.alertDataSource = new AlertSettingsRepo(context);
+        this.forecastDataSource = new ForecastRepo(context);
+    }
 
     public DBService(AlertSettingsRepo alertDataSource, LocationRepo locationDataSource, ForecastRepo forecastDataSource) {
         this.alertDataSource = alertDataSource;
@@ -47,45 +54,49 @@ public class DBService {
     }
 
     public ArrayList<AlertSettings> getAllAlertSettingsAndLocations() {
-        Log.i(TAG, "getAlertSettingsAndLocation()");
         ArrayList<AlertSettings> results = alertDataSource.getAllAlertSettings();
         if(results != null && results.size() > 0){
-            Log.i(TAG, "getAlertSettingsDataSet() Data size: "+ results.size());
+            Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ results.size());
             //numOfLocations= results.size();
             for(int i = 0; i < results.size(); i++){
                 int id = (int) results.get(i).getLocation().getId();
-                Location loc =  locationDataSource.getLocationFromID(id);
+                Location loc =  locationDataSource.getLocationFromID(id, alertDataSource.getReadDB());
                 results.get(i).setLocation(loc);
             }
         }else {
+            Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ 0);
             results = Locations.getTestAlertList();
         }
+        locationDataSource.close();
         return results;
     }
     public AlertSettings getCompleteAlertSettingsById(int id){
         Log.i(TAG, "getCompleteAlertSettingsById()");
         AlertSettings result= alertDataSource.getAlertSettingById(id);
-
-        //finner Location-navn basert på id:
-        Location loc  = locationDataSource.getLocationFromID((int)result.getLocation().getId());
+        //Finds Location-name based på id:
+        Location loc  = locationDataSource.getLocationFromID((int)result.getLocation().getId(), alertDataSource.getReadDB());
         result.setLocation(loc);
+        alertDataSource.close();
         return result;
     }
     public boolean deleteAlertSettingAndForecasts(int alertID){
+        Log.i(TAG, "deleteAlertSettingAndForecasts("+ alertID +")");
         forecastDataSource.deleteForecastByAlertSettingsID(alertID);
         return alertDataSource.deleteAlertSettings(alertID);
     }
     public ArrayList<Location> getAllLocations(){
+        Log.i(TAG, "getAllLocations()");
         return locationDataSource.getAllLocations();
     }
 
     public long addAlertSettings(AlertSettings alertSettings){
+        Log.i(TAG, "addAlertSettings()");
         return alertDataSource.insertAlertSettings(alertSettings);
     }
 
     public boolean updateAlertSettings(AlertSettings alertSettings){
         long ok = alertDataSource.updateAlertSettings(alertSettings);
-        if((int) ok != 0){
+        if((int) ok != 0 && (int) ok != -1){
             Log.i(TAG, "updateAlertSettings() updated: "+ ok);
             return true;
         }else{

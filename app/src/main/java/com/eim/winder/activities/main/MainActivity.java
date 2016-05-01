@@ -30,8 +30,6 @@ import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettings;
-import com.eim.winder.db.AlertSettingsRepo;
-import com.eim.winder.db.LocationRepo;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -45,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private static MainActivity instance;
     private static Locale systemDefaultLanguage;
     private DBService dbService;
-    private LocationRepo locationDataSource;
-    private AlertSettingsRepo alertDataSource;
 
     private ArrayList<AlertSettings> alertSettingsList;
     private FloatingActionButton fab;
@@ -65,38 +61,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         isActivityRunning = true;
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_stat_name);
+        instance = this;
 
         //Set application language:
         systemDefaultLanguage = Locale.getDefault();
         setApplicationLocale(getResources().getConfiguration().locale, this);
 
         //Initiates the datasource:
-        locationDataSource = new LocationRepo(this);
-        alertDataSource = new AlertSettingsRepo(this);
-        dbService = new DBService(alertDataSource, locationDataSource);
+        dbService = new DBService(this);
+        buildViewComponents(dbService, this);
 
+    }
+    private void buildViewComponents(DBService dbService, Context context){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_stat_name);
         //Cardview:Initiates the list with locationalerts and the adapter that "listens" on the list:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         alertSettingsList = dbService.getAllAlertSettingsAndLocations();
-        llManager = new LinearLayoutManager(this);
+        llManager = new LinearLayoutManager(context);
         buildRecyclerView(recyclerView, llManager, alertSettingsList);
-
-        //Floating action button:
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSelectLocationActivity(view);
-            }
-        });
-
-        instance = this;
-
     }
 
     private void buildRecyclerView(RecyclerView recyclerView, LinearLayoutManager llManager, ArrayList<AlertSettings> alertSettingsList){
@@ -146,13 +131,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         //Updates the view in case of changes in the alertlist
         super.onResume();
-        alertSettingsList = dbService.getAllAlertSettingsAndLocations();
-        setRvAdapter(recyclerView, alertSettingsList);
-        //Feil måte å gjøre det på:
-        //setApplicationLocale(getResources().getConfiguration().locale);
-        isActivityRunning = true;
-       // Log.wtf(TAG, "resume");
-
+        if(!isActivityRunning) {
+            //Log.i(TAG, "onResume()");
+            alertSettingsList = dbService.getAllAlertSettingsAndLocations();
+            setRvAdapter(recyclerView, alertSettingsList);
+            isActivityRunning = true;
+        }
     }
 
     @Override
@@ -243,19 +227,7 @@ public class MainActivity extends AppCompatActivity {
     public int getNumOfLocations(){
         return alertSettingsList.size();
     }
-    /*public static void updateMainActivtyList(int alertSettingsId, int eventNumber){
-        if(eventNumber == 1 || eventNumber == 3){
-            for (AlertSettings temp : alertSettingsList){
-                if(temp.getId() == alertSettingsId) temp.setHasEvents(1);
-            }
-            notifiAlertSettingsListChanged();
-        }if(eventNumber == 4){
-            for (AlertSettings temp : alertSettingsList){
-                if(temp.getId() == alertSettingsId) temp.setHasEvents(0);
-            }
-            notifiAlertSettingsListChanged();
-        }
-    }*/
+
     public static MainActivity  getInstace(){
         return instance;
     }

@@ -30,7 +30,6 @@ public class AlarmReceiver extends BroadcastReceiver{
 
     @Override
     public void onReceive(Context context, Intent intent){
-
         /**
          * this is where the code to run CompareAXService is implemented.
          */
@@ -39,9 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver{
         String url = intent.getStringExtra("url");
         int compareResult;
         //Finding the alertsettings-object  based on the Id contained in the received intent:
-        AlertSettingsRepo alertdatasource = new AlertSettingsRepo(context);
-        LocationRepo locationdatasource = new LocationRepo(context);
-        DBService dbService = new DBService(alertdatasource, locationdatasource);
+        DBService dbService = new DBService(context);
 
         AlertSettings settings = dbService.getCompleteAlertSettingsById(id);
 
@@ -67,36 +64,6 @@ public class AlarmReceiver extends BroadcastReceiver{
         Log.e(TAG, "onReceive, id: " + id);
         //Toast.makeText(context, "sup? " + intent.getStringExtra("div"), Toast.LENGTH_LONG).show();
     }
-    /*private boolean isForeground(String PackageAndClassName, Context context){
-        // Get the Activity Manager
-        ActivityManager manager = (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);
-        // Get a list of running tasks, we are only interested in the last one,
-        // As getRunningTasks(int num) is deprecated for SDK 23 and higher we need to check what build version the phone has
-       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-           List< ActivityManager.AppTask > task = manager.getAppTasks();
-            // Get the info we need for comparison.
-           if(task.size() != 0) {
-               ComponentName componentInfo = task.get(0).getTaskInfo().topActivity;
-               Log.e(TAG, componentInfo.getClassName());
-               if (componentInfo.getClassName().equals(PackageAndClassName)) return true;
-           }
-            // If not then our app is not on the foreground.
-            return false;
-        } else {
-        /**From: http://developer.android.com/reference/android/app/ActivityManager.html
-         * getRunningTasks(int) method was deprecated in API level 21.
-         * As of LOLLIPOP, this method is no longer available to third party applications: the introduction of document-centric recents means it can leak person information to the caller.
-         * For backwards compatibility, it will still return a small subset of its data: at least the caller's own tasks, and possibly some other tasks such as home that are known to not be sensitive.
-         * Unfortunately, there is no other methods that offers the same functionality, and therefore it is still used.
-
-            List< ActivityManager.RunningTaskInfo > task = manager.getRunningTasks(1);
-            // Get the info we need for comparison.
-            ComponentName componentInfo = task.get(0).topActivity;
-            if(componentInfo.getClassName().equals(PackageAndClassName)) return true;
-            // If not then our app is not on the foreground.
-            return false;
-        }
-    }*/
 
     private void updateAlertSettingsIcon(int compareResult, AlertSettings settings){
         Log.i(TAG, "MainActivity in foreground");
