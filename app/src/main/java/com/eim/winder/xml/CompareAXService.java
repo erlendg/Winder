@@ -160,7 +160,7 @@ public class CompareAXService {
         if(precipitationCheck){
             returnString += context.getResources().getString(R.string.generate_precipitatiion)+ " " + info.getPrecipitationValue() + "mm" + "\n";
         }
-        if(windDirectionCheck){
+        if(windDirectionCheck || windSpeedCheck){
 
             String input = "";
             switch (info.getWindDirectionCode()){
@@ -536,48 +536,56 @@ public class CompareAXService {
                     case "NNW":
                         if (div[i].equalsIgnoreCase("NW") || div[i].equalsIgnoreCase("N")){
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                         }
                         break;
                     case  "WNW":
                         if (div[i].equalsIgnoreCase("W") || div[i].equalsIgnoreCase("NW")) {
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                     }
                         break;
                     case "WSW":
                         if (div[i].equalsIgnoreCase("W") || div[i].equalsIgnoreCase("SW")){
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                         }
                         break;
                     case "SSW":
                         if (div[i].equalsIgnoreCase("S") || div[i].equalsIgnoreCase("SW")){
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                         }
                         break;
                     case "SSE":
                         if (div[i].equalsIgnoreCase("S") || div[i].equalsIgnoreCase("SE")){
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                         }
                         break;
                     case "ESE":
                         if (div[i].equalsIgnoreCase("E") || div[i].equalsIgnoreCase("SE")){
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                         }
                         break;
                     case "NNE":
                         if (div[i].equalsIgnoreCase("N") || div[i].equalsIgnoreCase("NE")){
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                         }
                         break;
                     case "ENE":
                         if (div[i].equalsIgnoreCase("E") || div[i].equalsIgnoreCase("NE")){
                             Log.d(TAG, "Vindretning returverdi = 0, innverdi = " + a);
+                            windDirectionCheck = true;
                             return 0;
                         }
                         break;
