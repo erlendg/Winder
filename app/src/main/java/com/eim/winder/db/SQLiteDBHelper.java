@@ -18,7 +18,7 @@ public class SQLiteDBHelper extends SQLiteAssetHelper {
     public static final String L_TYPE = "type";
     public static final String L_MUNICIPALITY = "municipality";
     public static final String L_COUNTY = "county";
-    public static final String L_XMLURL = "xmlURL";
+    public static final String L_XMLURL = "xmlurl";
 
     //Variables for table alertsettings:
     public static final String TABLE_ALERTSETTINGS = "alertsettings";
@@ -39,9 +39,9 @@ public class SQLiteDBHelper extends SQLiteAssetHelper {
     public static final String A_FRI = "fri";
     public static final String A_SAT = "sat";
     public static final String A_SUN = "sun";
-    public static final String A_LOC_ID = "loc_id";
     public static final String A_ICON_NAME ="iconname";
     public static final String A_HASEVENTS ="hasevents";
+    public static final String A_LOC_ID = "loc_id";
 
     //Variables for table forecast:
     public static final String TABLE_FORECAST = "forecast";

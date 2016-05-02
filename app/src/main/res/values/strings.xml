@@ -120,7 +120,7 @@
     <string name="choose_winddirection_string">Choose wind direction</string>
     <string name="choose_weekdays_string">Choose which days you prefer the weather to occur</string>
     <string name="preferences_suncheck">Suncheck</string>
-    <string name="info_header">Info</string>
+    <string name="info_header">INFO</string>
     <string name="about_header">About</string>
     <string name="about">Winder is an Application provided by EIM Development. This app is supposed to be a tool for users who are occupied by-  or depending on weather conditions in the activities you are planning to conduct. By defining your prefrences for weather  forecasting or by predefined custom options based on  different activities, you will receive a notification when your conditions is satisfied. To make this happen we have used weather forecast from Yr, delivered by the Norwegian Meteorological Institute and NRK</string>
     <string name="notification_message_title">We have a match!</string>
@@ -146,16 +146,18 @@
     <string name="NNE">North-Northeast</string>
 
     <!--Strings for appsettings-->
-    <string name="settings_header">Settings</string>
+    <string name="settings_header">SETTINGS</string>
     <string name="connection_header">Connection settings</string>
     <string name="pref_connection_summary">Use mobile data for weather-updates</string>
-    <string name="pref_use_mobile_data">MobileData</string>
+    <string name="pref_use_mobile_data">Mobile data</string>
 
     <string name="language_header">Language</string>
     <string name="pref_language_summary">Not selected</string>
     <string name="pref_chose_language">Change language</string>
     <string name="language_default">System Default</string>
+    <string name="languagelist_default">default</string>
     <string name="language_norwegian">Norwegian</string>
     <string name="language_english">English</string>
+    <string name="language_pref_key">prefLanguage</string>
 
 </resources>

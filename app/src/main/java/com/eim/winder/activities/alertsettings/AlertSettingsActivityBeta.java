@@ -122,6 +122,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     public AlertSettings makeObjFromPreferences(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
         AlertSettings asd = new AlertSettings();
         asd.setLocation(locationSelected);
+        Log.i(TAG, "------------ Settings for alert ------------");
         //Temperature:
         if (defaultSharedPrefs.getBoolean(getString(R.string.temp_pref_key), false)) {
             int tempMin = sharedPrefs.getInt(getString(R.string.temp_pref_key_min), -50);
@@ -158,7 +159,6 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         //Weekdays:
         Set<String> weekdaysSet = defaultSharedPrefs.getStringSet(getString(R.string.weekdays_pref_key), null);
         if(weekdaysSet == null || weekdaysSet.size() == 0){
-            Log.e("dasdasdasd", "nooooooooo");
             asd.setMon(true); asd.setTue(true); asd.setWed(true); asd.setThu(true); asd.setFri(true); asd.setSat(true); asd.setSun(true);
         }else {
             for(String weekday : weekdaysSet){
@@ -169,8 +169,8 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
                 if(weekday.equals("4")) asd.setFri(true);
                 if(weekday.equals("5")) asd.setSat(true);
                 if(weekday.equals("6")) asd.setSun(true);
-                Log.i(TAG, "Weekdays: " + weekdaysSet.toString());
             }
+            Log.i(TAG, "Weekdays: " + weekdaysSet.toString());
         }
         //Check interval:
         String interval = sharedPrefs.getString(getString(R.string.checkintr_pref_key), "Every 6 hour");
@@ -185,6 +185,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         // Icon:
         String icon = sharedPrefs.getString(getString(R.string.prefered_icon_key),getString(R.string.prefered_icon_key_default));
         asd.setIconName(icon);
+        Log.i(TAG, "--------------------------------------------");
         return asd;
     }
 

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -16,135 +15,101 @@ public class ForecastRepo {
     private final String TAG = "ForecastRepo";
     private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
+    private Context context;
     private String table = SQLiteDBHelper.TABLE_FORECAST;
     private String[] allColumns = {SQLiteDBHelper.F_FORECAST_ID, SQLiteDBHelper.F_FORMATEDDATE, SQLiteDBHelper.F_FORMATEDINFO, SQLiteDBHelper.F_ICON, SQLiteDBHelper.F_ALERT_ID};
 
     public ForecastRepo(Context context){
-        this.dbHelper = new SQLiteDBHelper(context);
+        this.context = context;
+        dbHelper = new SQLiteDBHelper(context);
+    }
+    public ForecastRepo(Context context, SQLiteDBHelper sqLiteDBHelper){
+        this.context = context;
+        dbHelper = sqLiteDBHelper;
     }
 
-    public void open() throws SQLException{
-        Log.i(TAG, "open()");
-        database = dbHelper.getWritableDatabase();
+    public SQLiteDatabase getReadDB(){
+        Log.i(TAG, "getReadDB()");
+        return dbHelper.getReadableDatabase();
+    }
+
+    private SQLiteDatabase getWriteDB(){
+        Log.i(TAG, "getWriteDB()");
+        return dbHelper.getWritableDatabase();
     }
 
     public void close(){
         dbHelper.close();
         Log.i(TAG, "close()");
     }
-    private Forecast cursorToForecast(Cursor cursor){
-        Forecast forecast = new Forecast(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4));
-        return forecast;
+    private Forecast cursorToForecast(Cursor c){
+        return new Forecast(c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.F_FORECAST_ID)),
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.F_FORMATEDDATE)),
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.F_FORMATEDINFO)),
+                c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.F_ICON)),
+                c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.F_ALERT_ID)));
     }
     public Forecast getForecastByAlertSettingsID(int id){
-        Forecast result = null;
-        Cursor cursor;
-        boolean ok = false;
-        try{
-            open();
-            cursor = database.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id = " + id, null);
-            cursor.moveToFirst();
-            result = cursorToForecast(cursor);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        SQLiteDatabase db = getReadDB();
+        Cursor c = db.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id = " + id, null);
+        c.moveToFirst();
+        Forecast result = cursorToForecast(c);
+        c.close();
         close();
         return result;
     }
 
     public ArrayList<Forecast> getAllForecastsByAlertSettingsID(int id){
         ArrayList<Forecast> list = new ArrayList<>();
-        Cursor cursor = null;
         Forecast temp;
-        try{
-            open();
-            cursor = database.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id =" + id, null);
-            cursor.moveToFirst();
-            while(!cursor.isAfterLast()){
-                temp = cursorToForecast(cursor);
-                list.add(temp);
-                cursor.moveToNext();
-            }
-        }catch (SQLException e){
-            e.printStackTrace();
+        SQLiteDatabase db = getReadDB();
+        Cursor c = db.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id =" + id, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()){
+            temp = cursorToForecast(c);
+            list.add(temp);
+            c.moveToNext();
         }
+        c.close();
         close();
         return list;
     }
 
     public boolean findIfForecastsExistsForAlertSettingsID(int id){
         boolean result = true;
-        Cursor cursor = null;
-        try{
-            open();
-            cursor = database.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id =" + id, null);
-            if (cursor.getCount() == 0) result = false;
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
+        SQLiteDatabase db = getReadDB();
+        Cursor c = db.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id =" + id, null);
+        if (c.getCount() == 0) result = false;
+        Log.i(TAG,"findIfForecastsExistsForAlertSettingsID("+id+")");
+        c.close();
+        close();
         return result;
     }
 
-    public boolean deleteAllForecastsByAlertSettingsID(int id){
-        boolean ok = false;
-
-        return ok;
-    }
 
     public boolean deleteForecastByAlertSettingsID(int id){
-        boolean ok = false;
-        try{
-            open();
-            ok = database.delete(table, SQLiteDBHelper.F_ALERT_ID + " = " + id, null) > 0;
-            Log.i(TAG, "deleteForecastByAlertSettingsID " + ok);
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
+        SQLiteDatabase db = getWriteDB();
+        boolean ok = db.delete(table, SQLiteDBHelper.F_ALERT_ID + " = " + id, null) > 0;
+        Log.i(TAG, "deleteForecastByAlertSettingsID("+id+"): " + ok);
         close();
         return ok;
     }
-
-    /*public long insertForecast(Forecast forecast){
-
-        long res = -1;
-        try{
-            open();
-            ContentValues values = new ContentValues();
-            //values.put(SQLiteDBHelper.F_FORECAST_ID, forecast.getId());
-            values.put(SQLiteDBHelper.F_FORMATEDINFO, forecast.getFormatedInfo());
-            values.put(SQLiteDBHelper.F_ICON, forecast.getIcon());
-            values.put(SQLiteDBHelper.F_ALERTSETTINGS_ID, forecast.getAlertSettingId());
-            res = database.insert(table, null, values);
-        }
-        catch (SQLException e){
-            e.printStackTrace();
-        }
-        close();
-        return res;
-    }*/
 
     public boolean insertForecastList(ArrayList<Forecast> forecastList, int id){
         deleteForecastByAlertSettingsID(id);
-        long res = -1;
         boolean ok = true;
-        try{
-
-            open();
-            for (Forecast temp:forecastList) {
-                ContentValues values = new ContentValues();
-                values.put(SQLiteDBHelper.F_FORMATEDDATE, temp.getFormatedDate());
-                values.put(SQLiteDBHelper.F_FORMATEDINFO, temp.getFormatedInfo());
-                values.put(SQLiteDBHelper.F_ICON, temp.getIcon());
-                values.put(SQLiteDBHelper.F_ALERT_ID, temp.getAlertSettingId());
-                res = database.insert(table, null, values);
-                if (res == -1) {
-                    ok = false;
-                    break;
-                }
+        SQLiteDatabase db = getWriteDB();
+        for (Forecast temp:forecastList) {
+            ContentValues values = new ContentValues();
+            values.put(SQLiteDBHelper.F_FORMATEDDATE, temp.getFormatedDate());
+            values.put(SQLiteDBHelper.F_FORMATEDINFO, temp.getFormatedInfo());
+            values.put(SQLiteDBHelper.F_ICON, temp.getIcon());
+            values.put(SQLiteDBHelper.F_ALERT_ID, temp.getAlertSettingId());
+            long res = db.insert(table, null, values);
+            if (res == -1) {
+                ok = false;
+                break;
             }
-        }catch (SQLException e){
-            e.printStackTrace();
         }
         close();
         Log.i(TAG, "insertforecastList: " + ok);

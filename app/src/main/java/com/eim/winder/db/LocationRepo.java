@@ -13,20 +13,29 @@ import java.util.ArrayList;
  */
 public class LocationRepo {
     public final static String TAG = "LocationRepo";
-    private SQLiteDatabase database;
     private SQLiteDBHelper dbHelper;
+    private Context context;
     private String table = SQLiteDBHelper.TABLE_LOCATIONS;
-    private String[] allColumns = { SQLiteDBHelper.L_LOCATION_ID,SQLiteDBHelper.L_LOCATION_ID, SQLiteDBHelper.L_NAME,
+    private String[] allColumns = { SQLiteDBHelper.L_LOCATION_ID, SQLiteDBHelper.L_NAME,
             SQLiteDBHelper.L_TYPE, SQLiteDBHelper.L_MUNICIPALITY, SQLiteDBHelper.L_COUNTY, SQLiteDBHelper.L_XMLURL};
 
-    public LocationRepo(Context context) { //Dependency injection.
+    public LocationRepo(Context context) {
+        this.context = context;
         dbHelper = new SQLiteDBHelper(context);
     }
 
-    public void open()throws SQLException{
-        Log.i(TAG, "open()");
-            database = dbHelper.getWritableDatabase();
+    public LocationRepo(Context context, SQLiteDBHelper sqLiteDBHelper){
+        this.context = context;
+        dbHelper = sqLiteDBHelper;
+    }
 
+    private SQLiteDatabase getReadDB(){
+        //Log.i(TAG, "getReadDB()");
+        return dbHelper.getReadableDatabase();
+    }
+
+    private SQLiteDatabase getWriteDB(){
+        return dbHelper.getWritableDatabase();
     }
 
     public void close() {
@@ -35,66 +44,62 @@ public class LocationRepo {
     }
 
     public ArrayList<Location> getAllLocations() {
-        Log.i(TAG, "getAllLocations");
-        ArrayList<Location> locations = new ArrayList<Location>();
-        Cursor res = null;
-        try{
-            open();
-            res = database.rawQuery("select * from " + SQLiteDBHelper.TABLE_LOCATIONS + " ORDER BY " + SQLiteDBHelper.L_NAME + " ASC", null);
-            res.moveToFirst();
-            while (!res.isAfterLast()) {
-                Location location = cursorToLocation(res);
-                locations.add(location);
-                res.moveToNext();
-            }
-            res.close();
-            // make sure to close the cursor
-        }catch (SQLException e){
-            e.printStackTrace();
+        SQLiteDatabase db = getReadDB();
+        //Log.i(TAG, "getAllLocations");
+        ArrayList<Location> locations = new ArrayList();
+        Cursor c = db.query(table, null, null, null, null, null, SQLiteDBHelper.L_NAME + " ASC");
+        //res = database.rawQuery("select * from " + SQLiteDBHelper.TABLE_LOCATIONS + " ORDER BY " + SQLiteDBHelper.L_NAME + " ASC", null);
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            Location location = cursorToLocation(c);
+            locations.add(location);
+            c.moveToNext();
         }
+        // make sure to close the cursor
+        c.close();
         close();
         return locations;
     }
-    public String[] getArray(){
-        Log.i(TAG, "getArray()");
-        Cursor cursor = getFirstTenData();
-        cursor.moveToFirst();
-        ArrayList<String> names = new ArrayList<String>();
-        while(!cursor.isAfterLast()) {
-            names.add(cursor.getString(cursor.getColumnIndex("name")));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return names.toArray(new String[names.size()]);
-    }
+
     public Location getLocationFromID(int id){
-        Cursor cursor;
         Location location = null;
-        try{
-            open();
-            cursor = database.query(table,null,SQLiteDBHelper.L_LOCATION_ID + " = ?", new String[]{""+id}, null, null, null);
-            cursor.moveToFirst();
-            while(!cursor.isAfterLast()) {
-                location = cursorToLocation(cursor);
-                // add to list
-                cursor.moveToNext();
-            }
-            cursor.close();
-        }catch (SQLException e){
-            e.printStackTrace();
+        SQLiteDatabase db = getReadDB();
+        Cursor c = db.query(table, null, SQLiteDBHelper.L_LOCATION_ID + " = ?", new String[]{"" + id}, null, null, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) {
+            location = cursorToLocation(c);
+            // add to list
+            c.moveToNext();
         }
+        c.close();
         close();
         return location;
     }
-
-    private Location cursorToLocation(Cursor cursor) {
-        Location location = new Location(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+    public Location getLocationFromID(int id, SQLiteDatabase db){
+        Cursor c;
+        Location location = null;
+        c = db.query(table,null,SQLiteDBHelper.L_LOCATION_ID + " = ?", new String[]{""+id}, null, null, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) {
+            location = cursorToLocation(c);
+            c.moveToNext();
+        }
+        c.close();
         return location;
+    }
+
+    private Location cursorToLocation(Cursor c) {
+        return  new Location(c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.L_LOCATION_ID)),
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_NAME)),
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_TYPE)),
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_MUNICIPALITY)),
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_COUNTY)),
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_XMLURL)));
     }
     //Read records related to the search term:
     public ArrayList<Location> readSearch(String searchTerm) {
         Log.i(TAG, "readSearch()");
-        ArrayList<Location> recordsList = new ArrayList<Location>();
+        ArrayList<Location> recordsList = new ArrayList();
         // select query
         String sql = "";
         sql += "SELECT * FROM " + SQLiteDBHelper.TABLE_LOCATIONS;
@@ -103,41 +108,28 @@ public class LocationRepo {
         sql += " ORDER BY " + SQLiteDBHelper.L_NAME + " ASC";
        //sql += " LIMIT 0,20";
         // execute the query
-        try{
-            open();
-            Cursor cursor = database.rawQuery(sql, null);
-            // looping through all rows and adding to list
-            cursor.moveToFirst();
-            while(!cursor.isAfterLast()) {
-                Location location = cursorToLocation(cursor);
-                // add to list
-                recordsList.add(location);
-                cursor.moveToNext();
-            }
-            cursor.close();
-        }catch (SQLException e) {
-            e.printStackTrace();
+        SQLiteDatabase db = getReadDB();
+        Cursor c = db.rawQuery(sql, null);
+        // looping through all rows and adding to list
+        c.moveToFirst();
+        while(!c.isAfterLast()) {
+            Location location = cursorToLocation(c);
+            // add to list
+            recordsList.add(location);
+            c.moveToNext();
         }
+        c.close();
         close();
         // return the list of records
         return recordsList;
     }
 
-    public Cursor getFirstTenData() {
-        Log.i(TAG, "getFirstTenData()");
-        Cursor res = null;
-        try{
-            open();
-            res = database.rawQuery("select * from " + SQLiteDBHelper.TABLE_LOCATIONS + " limit 10", null);
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        return res;
-    }
     // Check if a location exists
     public boolean checkIfExists(String objectName){
         boolean recordExists = false;
-        Cursor cursor = database.rawQuery("SELECT " + SQLiteDBHelper.L_NAME + " FROM " + SQLiteDBHelper.TABLE_LOCATIONS + " WHERE " + SQLiteDBHelper.L_NAME + " = '" + objectName + "'", null);
+        SQLiteDatabase db = getReadDB();
+        Cursor cursor = db.query(table, new String[]{ SQLiteDBHelper.L_NAME},SQLiteDBHelper.L_NAME +"= ?",new String[]{objectName}, null,null, null);
+        //rawQuery("SELECT " + SQLiteDBHelper.L_NAME + " FROM " + SQLiteDBHelper.TABLE_LOCATIONS + " WHERE " + SQLiteDBHelper.L_NAME + " = '" + objectName + "'", null);
         if(cursor!=null) {
             if(cursor.getCount()>0) {
                 recordExists = true;

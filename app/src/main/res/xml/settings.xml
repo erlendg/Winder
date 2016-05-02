@@ -9,12 +9,12 @@
         </CheckBoxPreference>
 
         <ListPreference
-            android:key="prefLanguage"
+            android:key="@string/language_pref_key"
             android:entries="@array/languageArray"
             android:summary="%s"
             android:entryValues="@array/languageArrayValues"
-            android:title="@string/pref_chose_language"
-            android:defaultValue="@string/pref_language_summary"
+            android:title="@string/language_header"
+            android:defaultValue="@string/languagelist_default"
             />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/info_header">

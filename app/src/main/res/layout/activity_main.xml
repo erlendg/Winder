@@ -31,7 +31,8 @@
         android:layout_margin="@dimen/fab_margin"
         app:borderWidth="0dp"
         android:src="@android:drawable/ic_input_add"
-        android:tint="@color/colorWhite"/>
+        android:tint="@color/colorWhite"
+        android:onClick="startSelectLocationActivity"/>
 
     <!-- Her inkluderes layoutfilen content_main: -->
     <include layout="@layout/content_main" />

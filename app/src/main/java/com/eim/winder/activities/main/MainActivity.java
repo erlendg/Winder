@@ -24,15 +24,12 @@ import android.widget.Toast;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
 import com.eim.winder.activities.appsettings.UserSettingsActivity;
-import com.eim.winder.activities.appsettings.UserSettingsFragment;
 import com.eim.winder.activities.selectlocation.SelectLocationActivity;
 import com.eim.winder.db.DBService;
 import com.eim.winder.xml.CompareAXService;
 import com.eim.winder.xml.HandleXML;
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettings;
-import com.eim.winder.db.AlertSettingsRepo;
-import com.eim.winder.db.LocationRepo;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -44,9 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private static boolean isActivityRunning = false;
 
     private static MainActivity instance;
+    private static Locale systemDefaultLanguage;
     private DBService dbService;
-    private LocationRepo locationDataSource;
-    private AlertSettingsRepo alertDataSource;
 
     private ArrayList<AlertSettings> alertSettingsList;
     private FloatingActionButton fab;
@@ -65,38 +61,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         isActivityRunning = true;
+        instance = this;
 
+        //Set application language:
+        systemDefaultLanguage = Locale.getDefault();
+        setApplicationLocale(getResources().getConfiguration().locale, this);
+
+        //Initiates the datasource:
+        dbService = new DBService(this);
+        buildViewComponents(dbService, this);
+
+    }
+    private void buildViewComponents(DBService dbService, Context context){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_stat_name);
-
-        //Set application language:
-        setApplicationLocale(getResources().getConfiguration().locale);
-        Log.e("Locale:", Locale.getDefault().getLanguage());
-
-        //Initiates the datasource:
-        locationDataSource = new LocationRepo(this);
-        alertDataSource = new AlertSettingsRepo(this);
-        dbService = new DBService(alertDataSource, locationDataSource);
-
         //Cardview:Initiates the list with locationalerts and the adapter that "listens" on the list:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         alertSettingsList = dbService.getAllAlertSettingsAndLocations();
-        llManager = new LinearLayoutManager(this);
+        llManager = new LinearLayoutManager(context);
         buildRecyclerView(recyclerView, llManager, alertSettingsList);
-
-        //Floating action button:
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSelectLocationActivity(view);
-            }
-        });
-
-        instance = this;
-
     }
 
     private void buildRecyclerView(RecyclerView recyclerView, LinearLayoutManager llManager, ArrayList<AlertSettings> alertSettingsList){
@@ -146,13 +131,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         //Updates the view in case of changes in the alertlist
         super.onResume();
-        alertSettingsList = dbService.getAllAlertSettingsAndLocations();
-        setRvAdapter(recyclerView, alertSettingsList);
-        //Feil måte å gjøre det på:
-        //setApplicationLocale(getResources().getConfiguration().locale);
-        isActivityRunning = true;
-       // Log.wtf(TAG, "resume");
-
+        if(!isActivityRunning) {
+            //Log.i(TAG, "onResume()");
+            alertSettingsList = dbService.getAllAlertSettingsAndLocations();
+            setRvAdapter(recyclerView, alertSettingsList);
+            isActivityRunning = true;
+        }
     }
 
     @Override
@@ -164,44 +148,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify template_selected_shape parent activity in AndroidManifest.xml.
-        /*
-        //Gammel Kode:
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-        */
         switch (item.getItemId()) {
-
             // action with ID action_refresh was selected
             case R.id.action_refresh:
-
                 doManualForecastRefresh();
                 break;
-
             // action with ID action_settings was selected
             case R.id.action_settings:
-                //eText(this, "Settings selected", Toast.LENGTH_SHORT).show();
-                //getFragmentManager().beginTransaction().replace(R.id.settingsFragment, new UserSettingsFragment()).commit();
                 Intent i = new Intent(this, UserSettingsActivity.class);
                 startActivity(i);
                 break;
-
             default:
                 break;
         }
-
         return true;
-
-
     }
+
     public void doManualForecastRefresh(){
         Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < alertSettingsList.size(); i++) {
@@ -227,18 +189,17 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "... done!", Toast.LENGTH_SHORT).show();
     }
 
-    public void setApplicationLocale(Locale l) {
+    public static void setApplicationLocale(Locale l, Context context) {
         //Setter den til norsk hvis det er satt på enheten ved oppstart:
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String selectedLanguage = sp.getString("prefLanguage", "default");
         Log.i(TAG, "Selected language from sharedPreferences: " + selectedLanguage);
-        if (selectedLanguage.equalsIgnoreCase("us")) {
+        if (selectedLanguage.equalsIgnoreCase("en")) {
             l = new Locale("en", "en_US");
-        }
-        else if (selectedLanguage.equalsIgnoreCase("no")){
+        } else if (selectedLanguage.equalsIgnoreCase("no")){
             l = new Locale("no", "NO");
-        }
-        else{
+        } else{
+            l = systemDefaultLanguage;
             if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")) {
                 l = new Locale("no", "NO");
                 //hvis ikke norsk så settes den til engelsk ved oppstart:
@@ -248,10 +209,10 @@ public class MainActivity extends AppCompatActivity {
         }
         Configuration config = new Configuration();
         config.locale = l;
-        Resources res = getBaseContext().getResources();
+        Resources res = context.getResources();
         res.updateConfiguration(config, res.getDisplayMetrics());
-
     }
+
     public void notifyAlertSettingsListChanged(int alertListId, int colorID){
         alertSettingsList.get(alertListId).setHasEvents(colorID);
         rvAdapter.notifyDataSetChanged();
@@ -266,19 +227,7 @@ public class MainActivity extends AppCompatActivity {
     public int getNumOfLocations(){
         return alertSettingsList.size();
     }
-    /*public static void updateMainActivtyList(int alertSettingsId, int eventNumber){
-        if(eventNumber == 1 || eventNumber == 3){
-            for (AlertSettings temp : alertSettingsList){
-                if(temp.getId() == alertSettingsId) temp.setHasEvents(1);
-            }
-            notifiAlertSettingsListChanged();
-        }if(eventNumber == 4){
-            for (AlertSettings temp : alertSettingsList){
-                if(temp.getId() == alertSettingsId) temp.setHasEvents(0);
-            }
-            notifiAlertSettingsListChanged();
-        }
-    }*/
+
     public static MainActivity  getInstace(){
         return instance;
     }
