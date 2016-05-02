@@ -29,6 +29,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.when;
 
@@ -54,18 +55,24 @@ public class LeggTilNyttStedStepDef2 {
 
 
     }
+    @Test
     @Når("^brukeren trykker på legg-til-nytt-sted-knappen$")
     public void brukeren_trykker_på_legg_til_nytt_sted_knappen() {
         at_bruker_har_ti_steder_registrert();
         onView(withId(R.id.fab)).perform(click());
     }
+    @Test
     @Så("^skal forespørselen nektes$")
     public void skal_forespørselen_nektes(){
+        brukeren_trykker_på_legg_til_nytt_sted_knappen();
         onView(withId(R.id.search_view)).check(doesNotExist());
     }
-
+    @Test
     @Og("^brukeren skal få tilbakemelding om at han/hun allerede har maks antall steder registrert$")
     public void brukeren_skal_få_tilbakemelding_om_at_han_hun_allerede_har_maks_antall_steder_registrert() {
-        onView(withText(R.string.toast_more_then_ten_alerts)).inRoot(withDecorView(not(mainActivity.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        skal_forespørselen_nektes();
+        //onView(withText(R.string.toast_more_then_ten_alerts)).inRoot(withDecorView(not(mainActivity.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+        onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.toast_more_then_ten_alerts)))
+                .check(matches(isDisplayed()));
     }
 }
