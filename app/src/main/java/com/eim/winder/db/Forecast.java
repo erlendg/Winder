@@ -2,6 +2,7 @@ package com.eim.winder.db;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Created by Erlend on 08.04.2016.
@@ -109,5 +110,24 @@ public class Forecast implements Parcelable {
     @Override
     public String toString() {
         return formatedDate+ " " +formatedInfo;
+    }
+    public int getStrippedDate(String date){
+        String result = date.substring(date.length()-23,date.length()-15);
+
+        result = result.replace("/", "");
+        result = new StringBuilder(result).reverse().toString();
+        Log.i("FORECAST", "getStrippedDate result: " + result);
+        return Integer.parseInt(result);
+    }
+    public int compareTo(Forecast other){
+        if (getStrippedDate(this.getFormatedDate())<getStrippedDate(other.getFormatedDate())){
+            return -1;
+        }
+        else if (getStrippedDate(this.getFormatedDate())>getStrippedDate(other.getFormatedDate())){
+            return 1;
+        }
+        else {
+            return 0;
+        }
     }
 }

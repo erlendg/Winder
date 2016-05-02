@@ -45,8 +45,15 @@ public class EventListRVAdapter extends RecyclerView.Adapter<EventListRVAdapter.
     //The ViewHolder will receive the constructor in the custom bind method
     @Override
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
-        holder.eventDate.setText(forecastList.get(position).getFormatedDate());
+        //String date = forecastList.get(position).getFormatedDate();
+
+        holder.eventDate.setText(fixDate(forecastList.get(position).getFormatedDate()));
         holder.eventDescription.setText(forecastList.get(position).getFormatedInfo());
+    }
+    private String fixDate(String date){
+        int length = date.length();
+        date = date.substring(0, length-18) + date.substring( length-15, length);
+        return date;
     }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

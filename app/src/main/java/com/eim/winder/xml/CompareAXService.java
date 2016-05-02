@@ -44,6 +44,7 @@ public class CompareAXService {
     private NotificationCompat.Builder notification;
     private ForecastRepo forecastRepo;
     private AlertSettingsRepo alertSettingsRepo;
+    private DBService dbService;
     Context context;
 
     public CompareAXService(Context context, AlertSettings alertSettingsObj){
@@ -53,6 +54,7 @@ public class CompareAXService {
         this.url = alertSettingsObj.getLocation().getXmlURL();
         this.forecastRepo = new ForecastRepo(context);
         this.alertSettingsRepo = new AlertSettingsRepo(context);
+        DBService dbService = new DBService(alertSettingsRepo, forecastRepo);
 
 
         try {
@@ -72,7 +74,7 @@ public class CompareAXService {
         this.url = url;
         this.forecastRepo = new ForecastRepo(context);
         this.alertSettingsRepo = new AlertSettingsRepo(context);
-
+        DBService dbService = new DBService(alertSettingsRepo, forecastRepo);
 
         try {
             System.err.println("url: " +  url);
@@ -110,6 +112,9 @@ public class CompareAXService {
                     notification.setContentText(context.getResources().getString(R.string.notification_message_text) + " " + locName);
                 }else if(type == 2){
                     notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_no_success));
+                    notification.setContentText(context.getResources().getString(R.string.notification_message_text)+ " " + locName);
+                }else if (type == 3){
+                    notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_additional_events));
                     notification.setContentText(context.getResources().getString(R.string.notification_message_text)+ " " + locName);
                 }
 
@@ -268,8 +273,8 @@ public class CompareAXService {
                 break;
             default:
                 break;
-        }       //"/" + fromDate.substring(5,7) + "/" + fromDate.substring(0,4)
-        result += ", " + fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + ": " + fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
+        }       //"/" + fromDate.substring(5,7)
+        result += ", " + fromDate.substring(8,10) + "/" + fromDate.substring(5,7) + "/" + fromDate.substring(2,4) + ": " + fromDate.substring(11,13) + "." + fromDate.substring(14,16) + " - " + toDate.substring(11,13) + "." + toDate.substring(14,16) ;
 
         return result;
     }
@@ -348,10 +353,14 @@ public class CompareAXService {
 
         boolean ok = false;
     }
+
+
     public int findAllOccurences(int id, String locName, Context context, Class cl, NotificationManager nm){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
+
         ArrayList<Forecast> returnList = new ArrayList<>();
+
         Forecast temp;
         String[] dateandinfo;
         int result = -1;
@@ -394,8 +403,25 @@ public class CompareAXService {
         } else{
             if (!returnList.isEmpty()){
                 //Case 3: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
+                //Fetch old database-entries:
+                ArrayList<Forecast> oldList = forecastRepo.getAllForecastsByAlertSettingsID(id);
+                //here we need to figure out if the new set of entries are significantly different from the old set to determine if issuing a new notification is warranted:
+                if (returnList.get(0).compareTo(oldList.get(0)) == -1){
+                    //this means earlier events have been discovered
+                    generateNotification(id, locName, context, cl, nm, 3);
+                    addNewForecastsToDB(returnList);
+                    return 3;
+                }
+                else if (returnList.get(returnList.size()-1).compareTo(oldList.get(oldList.size()-1)) == 1){
+                    //this means later events have been discovered
+                    generateNotification(id, locName, context, cl, nm, 3);
+                    addNewForecastsToDB(returnList);
+                    return 3;
+                }
+                //TODO: fix date by date array comparison here:
+
+                //no new events discovered, no new notification:
                 addNewForecastsToDB(returnList);
-                //generateNotification(returnList, id, context, cl, nm, 1);
                 Log.e(TAG, "CASE3");
                 return 3;
             }else{

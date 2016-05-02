@@ -136,4 +136,5 @@
     <string name="about_header">Om</string>
     <string name="language_pref_key">prefLanguage</string>
     <string name="languagelist_default">default</string>
+    <string name="notification_message_title_additional_events">Ytterligere hendelser funnet!</string>
 </resources>
