@@ -20,7 +20,7 @@ public class AlertSettingsRepo {
             SQLiteDBHelper.A_WINDSPEEDMAX, SQLiteDBHelper.A_WINDIRECTION, SQLiteDBHelper.A_CHECKSUN, SQLiteDBHelper.A_CHECKINTERVAL,
             SQLiteDBHelper.A_MON, SQLiteDBHelper.A_TUE, SQLiteDBHelper.A_WED, SQLiteDBHelper.A_THU,
             SQLiteDBHelper.A_FRI, SQLiteDBHelper.A_SAT, SQLiteDBHelper.A_SUN, SQLiteDBHelper.A_ICON_NAME,
-            SQLiteDBHelper.A_HASEVENTS, SQLiteDBHelper.A_LOC_ID};
+            SQLiteDBHelper.A_HASEVENTS, SQLiteDBHelper.A_LASTUPDATE, SQLiteDBHelper.A_LOC_ID};
 
     public AlertSettingsRepo(Context context) {
         this.context = context;
@@ -99,6 +99,7 @@ public class AlertSettingsRepo {
         values.put(SQLiteDBHelper.A_SUN, alert.isSun());
         values.put(SQLiteDBHelper.A_ICON_NAME, alert.getIconName());
         values.put(SQLiteDBHelper.A_HASEVENTS, alert.hasEvents());
+        values.put(SQLiteDBHelper.A_LASTUPDATE, alert.getLastUpdate());
         values.put(SQLiteDBHelper.A_LOC_ID, alert.getLocation().getId());
         long res = db.insert(table, null, values);
         close();
@@ -126,6 +127,7 @@ public class AlertSettingsRepo {
         values.put(SQLiteDBHelper.A_SUN, alert.isSun());
         values.put(SQLiteDBHelper.A_ICON_NAME, alert.getIconName());
         values.put(SQLiteDBHelper.A_HASEVENTS, alert.hasEvents());
+        values.put(SQLiteDBHelper.A_LASTUPDATE, alert.getLastUpdate());
         long res = db.update(table, values, "_id=" + alert.getId(), null);
         close();
         return res;
@@ -171,7 +173,7 @@ public class AlertSettingsRepo {
                 c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_TUE)),c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_WED)),
                 c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_THU)), c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_FRI)),
                 c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_SAT)), c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_SUN)),
-                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.A_ICON_NAME)), c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_HASEVENTS)), null);
+                c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.A_ICON_NAME)), c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_HASEVENTS)), null, c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.A_LASTUPDATE)));
         Location location = new Location();
         location.setId(c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_LOC_ID)));
         alert.setLocation(location);

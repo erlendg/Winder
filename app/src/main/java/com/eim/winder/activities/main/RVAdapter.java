@@ -59,7 +59,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
     public void onBindViewHolder(WeatherViewHolder holder, int position) {
         holder.bind(alertsettings.get(position), listener);
         holder.locationName.setText(alertsettings.get(position).getLocation().getName());
-        holder.checkInterval.setText("" + alertsettings.get(position).getCheckInterval());
+        String lastUpdate = alertsettings.get(position).getLastUpdate();
+        if (lastUpdate != null) {
+            holder.checkInterval.setText("" + alertsettings.get(position).getLastUpdate());
+        }else {
+            holder.checkInterval.setText("not good");
+        }
         int resID = context.getResources().getIdentifier(alertsettings.get(position).getIconName(), "drawable", context.getPackageName());
         holder.weatherIcon.setImageResource(resID);
         //If there is weather events then mark the item icon green (set selected)

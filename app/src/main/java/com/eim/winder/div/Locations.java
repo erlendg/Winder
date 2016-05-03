@@ -26,9 +26,9 @@ public class Locations {
             loc3.setId(-3);
             loc3.setXmlURL("http://www.yr.no/place/Norway/Nord-Trøndelag/Stjørdal/Stjørdal/forecast.xml");
 
-            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 1, 1, 1, 1, 1, 1, 1, "ic_sun",0, loc));
-            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 6, 1, 1, 1, 1, 1, 1, "ic_sun",1, loc2));
-            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 0.5, 1, 1, 1, 1, 1, 1, 1, "ic_sun",0, loc3));
+            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 1, 1, 1, 1, 1, 1, 1, "ic_sun",0, loc, "1"));
+            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 2, 6, 1, 1, 1, 1, 1, 1, "ic_sun",1, loc2, "2"));
+            testAlerts.add(new AlertSettings(1, -10, -20, 9.0, 20.0, 6.0, 12.0, "SW", 1, 0.5, 1, 1, 1, 1, 1, 1, 1, "ic_sun",0, loc3, "3"));
             return testAlerts;
     }
     public static final String[][] locationsComplete = new String[][]{

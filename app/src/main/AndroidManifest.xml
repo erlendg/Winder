@@ -2,11 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.eim.winder">
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -61,7 +59,7 @@
                 android:value=".activities.main.MainActivity"/>
         </activity>
         <receiver android:name=".scheduler.AlarmReceiver"/>
-        <receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
+        <!--<receiver android:name="com.commonsware.cwac.wakeful.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
@@ -69,6 +67,12 @@
             <meta-data
                 android:name="com.commonsware.cwac.wakeful"
                 android:resource="@xml/wakeful"/>
+        </receiver>-->
+        <receiver android:name=".scheduler.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
         </receiver>
     </application>
 

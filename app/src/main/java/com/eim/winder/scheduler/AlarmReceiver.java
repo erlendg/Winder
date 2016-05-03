@@ -72,14 +72,14 @@ public class AlarmReceiver extends BroadcastReceiver{
         if(compareResult == 1 || compareResult == 3){
             for (int i = 0; i < alerts.size(); i++){
                 if(alerts.get(i).getId() == settings.getId()) {
-                    activity.notifyAlertSettingsListChanged(i, 1);
+                    activity.notifyAlertSettingsListChanged(i, 1, settings.getLastUpdate());
                     return;
                 }
             }
         }if(compareResult == 4){
             for (int i = 0; i < alerts.size(); i++){
                 if(alerts.get(i).getId() == settings.getId()) {
-                    activity.notifyAlertSettingsListChanged(i, 0);
+                    activity.notifyAlertSettingsListChanged(i, 0, settings.getLastUpdate());
                     return;
                 }
             }
