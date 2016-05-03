@@ -107,4 +107,7 @@ public class DBService {
     public boolean addForecastList(ArrayList<Forecast> forecasts, int alertId){
         return forecastDataSource.insertForecastList(forecasts, alertId);
     }
+    public Location getLocationFromId(int id){
+        return locationDataSource.getLocationFromID(id);
+    }
 }

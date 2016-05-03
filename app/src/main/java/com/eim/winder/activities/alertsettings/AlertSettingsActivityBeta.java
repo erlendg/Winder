@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -83,19 +84,19 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         updatePreferences();
         AlertSettings asd = makeObjFromPreferences(defaultSharedPrefs, sharedPrefs);
         if(!haveSelectedSomething){
-            Toast.makeText(this, getString(R.string.no_settings_selected), Toast.LENGTH_LONG).show();
+            Snackbar.make(v, getString(R.string.no_settings_selected), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             return;
         }
         if(asd.getWindDirection() != null) {
             if (asd.getWindDirection().equals("NOT VALID")) {
-                Toast.makeText(this, getString(R.string.wind_dir_not_chosen), Toast.LENGTH_LONG).show();
+                Snackbar.make(v, getString(R.string.wind_dir_not_chosen), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 return;
             }
         }
         boolean ok = saveAlertSettings(asd);
         clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
         if (!ok) {
-            Toast.makeText(this, getString(R.string.something_whent_wrong), Toast.LENGTH_LONG).show();
+            Snackbar.make(v, getString(R.string.something_whent_wrong), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
             Toast.makeText(this, R.string.saved_toast, Toast.LENGTH_LONG).show();
             //Finishes the Activity and return to MainActivity
@@ -219,6 +220,18 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     }
     public boolean getUpdateMode(){
         return updateMode;
+    }
+
+    @Override
+    protected void onDestroy() {
+        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
+        super.onBackPressed();
     }
 }
 

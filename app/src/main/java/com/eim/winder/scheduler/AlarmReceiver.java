@@ -67,7 +67,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
     private void updateAlertSettingsIcon(int compareResult, AlertSettings settings){
         Log.i(TAG, "MainActivity in foreground");
-        MainActivity activity = MainActivity.getInstace();
+        MainActivity activity = MainActivity.getInstance();
         ArrayList<AlertSettings> alerts = activity.getRecycleViewDataset();
         if(compareResult == 1 || compareResult == 3){
             for (int i = 0; i < alerts.size(); i++){

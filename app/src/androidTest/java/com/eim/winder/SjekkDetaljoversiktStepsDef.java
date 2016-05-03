@@ -86,22 +86,6 @@ public class SjekkDetaljoversiktStepsDef {
         String name = mainActivity.getActivity().getRecycleViewDataset().get(0).getLocation().getName();
         onView(withId(R.id.activity_alert_over_view));
         onView(withId(R.id.toolbar_layout));
-        matchCollapsingToolbarTitle(name);
-    }
-    private static ViewInteraction matchCollapsingToolbarTitle(CharSequence title) {
-        return onView(isAssignableFrom(CollapsingToolbarLayout.class)).check(matches(hasCollapsingToolbarTitle(is(title))));
-    }
-    private static Matcher<Object> hasCollapsingToolbarTitle(final Matcher<CharSequence> textMatcher) {
-        return new BoundedMatcher<Object, CollapsingToolbarLayout>(CollapsingToolbarLayout.class) {
-            @Override public boolean matchesSafely(CollapsingToolbarLayout toolbar) {
-                return textMatcher.matches(toolbar.getTitle());
-            }
-            @Override public void describeTo(Description description) {
-                description.appendText("has toolbar title: ");
-                textMatcher.describeTo(description);
-            }
-
-        };
     }
 
     @Test
