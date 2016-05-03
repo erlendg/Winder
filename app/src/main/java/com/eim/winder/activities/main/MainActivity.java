@@ -32,6 +32,9 @@ import com.eim.winder.R;
 import com.eim.winder.db.AlertSettings;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -165,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void doManualForecastRefresh(){
-        Toast.makeText(this, "Refreshing forecast...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Updating forecasts!", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < alertSettingsList.size(); i++) {
             //create an instance of CompareAXService:
             compare = new CompareAXService(this, alertSettingsList.get(i));
@@ -179,14 +182,17 @@ public class MainActivity extends AppCompatActivity {
                        /* if (!listeTing.isEmpty()) {
                             compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
                         }*/
-                if(compareResult == 1 || compareResult ==3 )notifyAlertSettingsListChanged(i, 1);
-                else notifyAlertSettingsListChanged(i, 0);
+                Calendar now = Calendar.getInstance();
+                Date date = now.getTime();
+                String lastUpdate = date.toString();
+                if(compareResult == 1 || compareResult ==3 )notifyAlertSettingsListChanged(i, 1, lastUpdate);
+                else notifyAlertSettingsListChanged(i, 0, lastUpdate);
                 //Si ifra til adapteren med arraylisten av alertsettings at det har skjedd en endring:
 
             }
-            Toast.makeText(this, "Alertsetting " + alertSettingsList.get(i).getId(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Alertsetting " + alertSettingsList.get(i).getId(), Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(this, "... done!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "All done!", Toast.LENGTH_SHORT).show();
     }
 
     public static void setApplicationLocale(Locale l, Context context) {
@@ -213,8 +219,10 @@ public class MainActivity extends AppCompatActivity {
         res.updateConfiguration(config, res.getDisplayMetrics());
     }
 
-    public void notifyAlertSettingsListChanged(int alertListId, int colorID){
-        alertSettingsList.get(alertListId).setHasEvents(colorID);
+    public void notifyAlertSettingsListChanged(int alertListId, int colorID, String lastUpdate){
+        AlertSettings div = alertSettingsList.get(alertListId);
+        div.setHasEvents(colorID);
+        div.setLastUpdate(lastUpdate);
         rvAdapter.notifyDataSetChanged();
     }
 
