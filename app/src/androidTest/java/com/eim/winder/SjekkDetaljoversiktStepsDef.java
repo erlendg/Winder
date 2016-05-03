@@ -39,8 +39,8 @@ import static org.hamcrest.Matchers.is;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class DetaljoversiktStepsDef {
-    private String TAG = "DetaljoversiktStepsDef";
+public class SjekkDetaljoversiktStepsDef {
+    private String TAG = "SjekkDetaljoversiktStepsDef";
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
@@ -83,7 +83,7 @@ public class DetaljoversiktStepsDef {
     public void skal_detaljoversikten_vises(){
         brukeren_trykker_på_stedet_for_detaljoversikt();
         Log.e(TAG, "Så skal detaljoversikten vises");
-        String name = mainActivity.getActivity().getAlertSettingsDataSet().get(0).getLocation().getName();
+        String name = mainActivity.getActivity().getRecycleViewDataset().get(0).getLocation().getName();
         onView(withId(R.id.activity_alert_over_view));
         onView(withId(R.id.toolbar_layout));
         matchCollapsingToolbarTitle(name);
@@ -109,7 +109,7 @@ public class DetaljoversiktStepsDef {
     public void brukeren_ser_alle_hendelser_for_stedet_i_oversikten() {
         skal_detaljoversikten_vises();
         Log.e(TAG, " Og brukeren ser alle hendelser for stedet i oversikten");
-        String name = mainActivity.getActivity().getAlertSettingsDataSet().get(0).getLocation().toString();
+        String name = mainActivity.getActivity().getRecycleViewDataset().get(0).getLocation().toString();
         onView(withId(R.id.preferences_table));
         onView(withId(R.id.row1_title)).check(matches(withText(name)));
 
