@@ -26,8 +26,9 @@ public class AlertSettings implements Parcelable{
     private boolean mon, tue, wed, thu, fri, sat, sun;
     private String iconName;
     private int hasEvents;
+    private String lastUpdate;
 
-    public AlertSettings(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, String iconName, int hasEvents, Location location) {
+    public AlertSettings(int id, int tempMin, int tempMax, double precipitationMin, double precipitationMax, double windSpeedMin, double windSpeedMax, String windDirection, int checkSun, double checkInterval, int mon, int tue, int wed, int thu, int fri, int sat, int sun, String iconName, int hasEvents, Location location, String lastUpdate) {
         this.id = id;
         this.location = location;
         this.tempMin = tempMin;
@@ -48,6 +49,7 @@ public class AlertSettings implements Parcelable{
         this.sun = sun > 0;
         this.iconName = iconName;
         this.hasEvents = hasEvents;
+        this.lastUpdate = lastUpdate;
     }
 
     public AlertSettings(){
@@ -67,6 +69,15 @@ public class AlertSettings implements Parcelable{
         this.sat = false;
         this.sun = false;
         this.hasEvents = 0;
+        this.lastUpdate = null;
+    }
+
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     public int getId() {
@@ -265,6 +276,7 @@ public class AlertSettings implements Parcelable{
         sat = in.readInt() > 0;
         sun = in.readInt() > 0;
         iconName = in.readString();
+        lastUpdate = in.readString();
     }
 
     @Override
@@ -293,6 +305,7 @@ public class AlertSettings implements Parcelable{
         dest.writeInt(sat ? 1 : 0);
         dest.writeInt(sun ? 1 : 0);
         dest.writeString(iconName);
+        dest.writeString(lastUpdate);
     }
     /*
     * This is needed for Android to be able to
