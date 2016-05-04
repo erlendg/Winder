@@ -18,6 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import cucumber.api.CucumberOptions;
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
 import cucumber.api.java.no.Så;
@@ -33,7 +34,7 @@ import static org.hamcrest.Matchers.is;
 /**
  * Created by Mari on 14.03.2016.
  */
-@RunWith(AndroidJUnit4.class)
+@CucumberOptions(monochrome = true,plugin = {"html:target/cucumber-html-report", "json:target/cucumber-json-report.json" })
 @LargeTest
 public class SjekkStedslisteStepsDef {
     private String TAG = "SjekkStedslisteStepsDef";
@@ -41,7 +42,7 @@ public class SjekkStedslisteStepsDef {
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
-    @Before
+
     @Gitt("^at appen er åpnet$")
     public void at_appen_er_åpnet() {
         Log.d(TAG, "Gitt at appen er åpen");
@@ -68,14 +69,14 @@ public class SjekkStedslisteStepsDef {
     }
 
 
-    @Test
+
     @Når("^brukeren går inn på hovedsiden$")
     public void brukeren_går_inn_på_hovedsiden() {
         Log.d(TAG, "Når brukeren går inn på hovedsiden");
         onView(withId(R.id.activity_main));
     }
 
-    @Test
+
     @Så("^skal det framvises en oversikt over brukerens registrerte steder$")
     public void skal_det_framvises_en_oversikt_over_brukerens_registrerte_steder(){
         Log.d(TAG, "Så skal det framvises en oversikt over brukerens registrerte steder");

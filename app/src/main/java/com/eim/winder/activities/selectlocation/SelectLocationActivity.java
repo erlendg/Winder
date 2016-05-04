@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.eim.winder.R;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
  */
 public class SelectLocationActivity extends AppCompatActivity {
     private final static String TAG = "SelectLocationActivity";
+    private static SelectLocationActivity instance;
     private LocationRepo locationDataSource;
     private DBService dbService;
     private ArrayList<Location> searchLocations;
@@ -47,7 +49,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_layout);
         getSupportActionBar().setTitle(R.string.choose_location);
-
+        instance = this;
         // instantiate datasource
         locationDataSource = new LocationRepo(this);
         dbService = new DBService(locationDataSource);
@@ -199,5 +201,11 @@ public class SelectLocationActivity extends AppCompatActivity {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
         super.finish();
+    }
+    public void setLocation(Location loc){
+        locationSelected = loc;
+    }
+    public static SelectLocationActivity getInstance(){
+        return instance;
     }
 }

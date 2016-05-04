@@ -1,6 +1,7 @@
 package com.eim.winder.activities.appsettings;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import com.eim.winder.R;
 
@@ -16,5 +17,6 @@ public class UserSettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_stat_name);
         getFragmentManager().beginTransaction().replace(R.id.appSettingsFrame, new UserSettingsFragment()).commit();
+        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
     }
 }

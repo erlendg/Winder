@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
         return alertSettingsList.size();
     }
 
-    public static MainActivity  getInstace(){
+    public static MainActivity  getInstance(){
         return instance;
     }
 /**

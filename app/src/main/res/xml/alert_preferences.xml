@@ -27,6 +27,7 @@
         android:key="@string/precip_range_key" />
 
     <CheckBoxPreference
+        android:id="@+id/windSpeedPref"
         android:key="@string/windspeed_pref_key"
         android:title="@string/preferences_windspeed"
         android:summary="@string/preferences_windspeed_description"
@@ -37,6 +38,7 @@
         android:key="@string/windspeed_range_key" />
 
     <CheckBoxPreference
+        android:id="@+id/windDirPref"
         android:key="@string/winddir_pref_key"
         android:title="@string/preferences_winddir"
         android:icon="@drawable/vindretning"
@@ -48,6 +50,7 @@
         android:entries="@array/windDirection_array"
         android:entryValues="@array/windDirection_values"/>
     <CheckBoxPreference
+        android:id="@+id/sunnyPref"
         android:key="@string/sunny_pref_key"
         android:title="@string/preferences_suncheck"
         android:icon="@drawable/sol"
