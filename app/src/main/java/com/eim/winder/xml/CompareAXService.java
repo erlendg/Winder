@@ -358,7 +358,7 @@ public class CompareAXService {
 
         //find settings for mobiledata as a connection:
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean useMobileData = sp.getBoolean("prefUseMobileData", false);
+        boolean useMobileData = sp.getBoolean("prefUseMobileData", true);
         Log.i(TAG, "Currently prefUseMobileData is : " + useMobileData);
 
         //if mobileconnection available, and useMobileData is false, return false
