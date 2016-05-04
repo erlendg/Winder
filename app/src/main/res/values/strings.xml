@@ -17,7 +17,8 @@
     <string name="next">Next</string>
     <string name="cancel">Cancel</string>
     <string name="toast_more_then_ten_alerts">Warning! Alertlist is fully populated, delet one to make room</string>
-    <string name="yr_credits">Weather data by yr.no</string>
+    <string name="yr_credits">Weather data provided by yr.no</string>
+    <string name="last_update">Last updated:</string>
 
     <string name="settings_for_alert">Choose preferences for alert</string>
     <!-- AlertOverViewActivity-->

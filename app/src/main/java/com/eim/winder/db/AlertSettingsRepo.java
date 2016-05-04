@@ -68,6 +68,15 @@ public class AlertSettingsRepo {
         close();
         return ok;
     }
+    public boolean updateAlertsettingsNewLastUpdate(int id, String lastUpdate){
+        Log.i(TAG, "updateAlertsettingsNewLastUpdate(" + id+ ")");
+        SQLiteDatabase db = getWriteDB();
+        ContentValues value = new ContentValues();
+        value.put(SQLiteDBHelper.A_LASTUPDATE, lastUpdate);
+        boolean ok = db.update(table, value, "_id="+id, null) > 0;
+        close();
+        return ok;
+    }
     // Deletes an alertsetting based on its id:
     public boolean deleteAlertSettings(int id){
         SQLiteDatabase db = getWriteDB();
