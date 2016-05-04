@@ -98,7 +98,7 @@
     <string name="windspeed_pref_key_min">minWindSpeed</string>
     <string name="windspeed_range_key">windSpeedRange</string>
     <string name="weekdays_pref_key">weekdays</string>
-    <string name="yr_credits">Værdata fra yr.no</string>
+    <string name="yr_credits">Værdata hentet fra yr.no</string>
     <string name="deleted">Stettet</string>
     <string name="something_whent_wrong">Noe gikk galt..</string>
     <string name="delete_message">Ønsker du å slette stedet for værvarsling?</string>
@@ -137,4 +137,5 @@
     <string name="language_pref_key">prefLanguage</string>
     <string name="languagelist_default">default</string>
     <string name="notification_message_title_additional_events">Ytterligere hendelser funnet!</string>
+    <string name="last_update">Forrige oppdatering:</string>
 </resources>

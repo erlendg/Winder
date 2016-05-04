@@ -63,7 +63,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.WeatherViewHolder>
         if (lastUpdate != null) {
             holder.checkInterval.setText("" + alertsettings.get(position).getLastUpdate());
         }else {
-            holder.checkInterval.setText("not good");
+            holder.checkInterval.setText("Not found");
         }
         int resID = context.getResources().getIdentifier(alertsettings.get(position).getIconName(), "drawable", context.getPackageName());
         holder.weatherIcon.setImageResource(resID);

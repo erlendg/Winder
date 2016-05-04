@@ -182,9 +182,7 @@ public class MainActivity extends AppCompatActivity {
                        /* if (!listeTing.isEmpty()) {
                             compare.generateNotification(listeTing, temp.getId(), this, this.getClass(), mNotificationManager);
                         }*/
-                Calendar now = Calendar.getInstance();
-                Date date = now.getTime();
-                String lastUpdate = date.toString();
+                String lastUpdate = compare.getTimeAndStoreIt(getResources().getConfiguration().locale);
                 if(compareResult == 1 || compareResult ==3 )notifyAlertSettingsListChanged(i, 1, lastUpdate);
                 else notifyAlertSettingsListChanged(i, 0, lastUpdate);
                 //Si ifra til adapteren med arraylisten av alertsettings at det har skjedd en endring:

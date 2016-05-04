@@ -21,6 +21,7 @@ import com.eim.winder.xml.CompareAXService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Erlend on 04.04.2016.
@@ -55,6 +56,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             compareResult = compare.findAllOccurences(settings.getId(), settings.getLocation().getName(), context, MainActivity.class, mNotificationManager);
             //Update listview if the user is inside the MainActivity:
             //isForeground("com.eim.winder.activities.main.MainActivity", context)
+            String lastUpdate = compare.getTimeAndStoreIt(context.getResources().getConfiguration().locale);
             if(MainActivity.getIsActivityRunning()){
                updateAlertSettingsIcon(compareResult, settings);
             }

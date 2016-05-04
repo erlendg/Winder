@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Erlend on 19.02.2016.
@@ -279,6 +280,41 @@ public class CompareAXService {
         return result;
     }
 
+    /**
+     * fixDate(String date)  converts the date to our preferred format for display
+     * @param date
+     * @return
+     */
+    private String fixDate(Date date, Locale current){
+        SimpleDateFormat formatter;
+        if (current.getCountry().equalsIgnoreCase("no")){
+            formatter = new SimpleDateFormat("EEEE dd/MM HH:mm", current);
+
+        }else{
+            formatter = new SimpleDateFormat("EEEE MMM dd hh:mm aa", current);
+        }
+
+        String result = formatter.format(date);
+
+
+
+        return result;
+    }
+    private int checkWeekday(String date){
+        c = Calendar.getInstance();
+
+        try {
+            d = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(date);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("div datofeil");
+        }
+
+        c.setTime(d);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        return dayOfWeek;
+    }
     /**isNetworkOnline checks currently available network-options.
      *
      *
@@ -313,7 +349,7 @@ public class CompareAXService {
      * @return true or false depending on successfully parsing the latest xml-file.
      */
     public boolean runHandleXML(){
-        //todo: handle sharedpreferences for connection-types. Also handle lack of connection entirely.
+
         int currentConnection = isNetworkOnline();
         //if no connection is present, return false:
         if (currentConnection==0){
@@ -474,25 +510,23 @@ public class CompareAXService {
                 break;
         }
 
-        Log.e(TAG, "resultat fra checkWeekday: " + checkWeekday(div.getFrom()) );
+        Log.e(TAG, "resultat fra checkWeekday: " + checkWeekday(div.getFrom()));
 
         return true;
     }
-    private int checkWeekday(String date){
-        c = Calendar.getInstance();
+    public String getTimeAndStoreIt(Locale current){
+        Calendar now = Calendar.getInstance(current);
+        Date date = now.getTime();
 
-        try {
-            d = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss").parse(date);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            System.out.println("div datofeil");
-        }
-
-        c.setTime(d);
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        return dayOfWeek;
+        /*String lastUpdate = date.toString();
+        lastUpdate = fixDate(lastUpdate);*/
+        String lastUpdate = fixDate(date, current);
+        //String lastUpdate = date.getDay() + "/" + date.getMonth()+": " + date.getHours() +"." + date.getMinutes();
+        alertSettingsObj.setLastUpdate(lastUpdate);
+        alertSettingsRepo.updateAlertsettingsNewLastUpdate(alertSettingsObj.getId(), lastUpdate);
+        return lastUpdate;
     }
+
     //private int tempMin;
     //private int tempMax;
     private int checkTemp(double value){
