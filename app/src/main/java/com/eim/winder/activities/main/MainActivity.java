@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.eim.winder.activities.alertoverview.AlertOverViewActivity;
@@ -72,19 +78,20 @@ public class MainActivity extends AppCompatActivity {
 
         //Initiates the datasource:
         dbService = new DBService(this);
-        buildViewComponents(dbService, this);
+        buildViewComponents(this);
 
     }
-    private void buildViewComponents(DBService dbService, Context context){
+    private void buildViewComponents( Context context){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_stat_name);
         //Cardview:Initiates the list with locationalerts and the adapter that "listens" on the list:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        alertSettingsList = dbService.getAllAlertSettingsAndLocations();
+        alertSettingsList = getLocationsAndAlertData();
         llManager = new LinearLayoutManager(context);
         buildRecyclerView(recyclerView, llManager, alertSettingsList);
+
     }
 
     private void buildRecyclerView(RecyclerView recyclerView, LinearLayoutManager llManager, ArrayList<AlertSettings> alertSettingsList){
@@ -102,6 +109,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(rvAdapter);
+    }
+    public ArrayList<AlertSettings> getLocationsAndAlertData(){
+        alertSettingsList = dbService.getAllAlertSettingsAndLocations();
+        LinearLayout emptyListReplacer = (LinearLayout) findViewById(R.id.empty_list_replacer);
+        emptyListReplacer.setVisibility(View.VISIBLE);
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.main_activity_content);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        if(alertSettingsList.isEmpty()){
+            emptyListReplacer = (LinearLayout) findViewById(R.id.empty_list_replacer);
+            emptyListReplacer.setVisibility(View.VISIBLE);
+            layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            setFabAnimation(fab);
+        }else {
+            emptyListReplacer = (LinearLayout) findViewById(R.id.empty_list_replacer);
+            emptyListReplacer.setVisibility(View.GONE);
+            layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorRecycleViewBackground));
+            fab.clearAnimation();
+        }
+        return alertSettingsList;
+    }
+    private void setFabAnimation(FloatingActionButton fab){
+        final Animation animation = new AlphaAnimation(1.0f, 0.3f); // Change alpha from fully visible to invisible
+        animation.setDuration(700); // duration - half a second
+        animation.setInterpolator(new LinearInterpolator()); // do not alter animation rate
+        animation.setRepeatCount(Animation.INFINITE); // Repeat animation infinitely
+        animation.setRepeatMode(Animation.REVERSE); // Reverse animation at the end so the button will fade back in
+        fab.startAnimation(animation);
+
     }
 
     public void startSelectLocationActivity(View v){
@@ -136,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if(!isActivityRunning) {
             //Log.i(TAG, "onResume()");
-            alertSettingsList = dbService.getAllAlertSettingsAndLocations();
+            alertSettingsList = getLocationsAndAlertData();
             setRvAdapter(recyclerView, alertSettingsList);
             isActivityRunning = true;
         }

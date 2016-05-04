@@ -4,6 +4,7 @@ package com.eim.winder.activities.alertoverview;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class SettingsFragment extends Fragment {
         TextView weekdays = (TextView) v.findViewById(R.id.row8_column2);
         weekdays.setText(alertSettings.getWeekDaysSelected(getResources()));
         removeDefaultValues(v, activity.getAlertSettings());
+        setCheckInterval(alertSettings.getCheckInterval(), v);
         return v;
     }
 
@@ -93,6 +95,32 @@ public class SettingsFragment extends Fragment {
         }else{
             sunCheck.setText(getString(R.string.yes));
         }
+    }
+    private void setCheckInterval(double checkIntr, View v){
+        TextView checkText = (TextView) v.findViewById(R.id.row9_column2);
+        String[] intrStringArray = getResources().getStringArray(R.array.checkinterval_array);
+        if(checkIntr == 1.0){
+            checkText.setText(intrStringArray[0]);
+            return;
+        }if(checkIntr == 2.0){
+            checkText.setText(intrStringArray[1]);
+            return;
+        }if(checkIntr == 4.0){
+            checkText.setText(intrStringArray[2]);
+            return;
+        }if(checkIntr == 6.0){
+            checkText.setText(intrStringArray[3]);
+            return;
+        }if(checkIntr == 12.0){
+            checkText.setText(intrStringArray[4]);
+            return;
+        }if(checkIntr == 24.0){
+            checkText.setText(intrStringArray[5]);
+            return;
+        }else {
+            checkText.setText(intrStringArray[6]);
+        }
+
     }
 
 }

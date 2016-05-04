@@ -60,7 +60,6 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:id="@+id/weather_check_interval"
-
                             android:text="@string/last_update"/>
                         <TextView
                             android:layout_width="wrap_content"

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettings;
@@ -41,14 +42,15 @@ public class EventListFragment extends Fragment {
         alertSettings = ((AlertOverViewActivity) getActivity()).getAlertSettings();
         forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettings.getId());
         eventList = (RecyclerView) v.findViewById(R.id.event_listview);
-        if(forecastList != null || forecastList.size() == 0) {
+        if(forecastList != null) {
             listAdapter = new EventListRVAdapter(forecastList);
             llmanager = new LinearLayoutManager(getContext());
             eventList.setLayoutManager(llmanager);
-            /*RecyclerView.ItemDecoration itemDecoration = new
-                    DividerItemDecoration(getContext(), R.drawable.table_lines);
-            eventList.addItemDecoration(itemDecoration);*/
             eventList.setAdapter(listAdapter);
+            if (forecastList.isEmpty()) {
+                TextView emptyListText = (TextView) v.findViewById(R.id.empty_event_list);
+                emptyListText.setVisibility(View.VISIBLE);
+            }
         }
         return v;
     }

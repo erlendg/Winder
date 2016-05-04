@@ -18,7 +18,8 @@
     <string name="cancel">Cancel</string>
     <string name="toast_more_then_ten_alerts">Warning! Alertlist is fully populated, delet one to make room</string>
     <string name="yr_credits">Weather data provided by yr.no</string>
-    <string name="last_update">Last updated:</string>
+    <string name="last_update">Last update:</string>
+    <string name="empty_list_text">Winder finds a matching weather for you</string>
 
     <string name="settings_for_alert">Choose preferences for alert</string>
     <!-- AlertOverViewActivity-->
@@ -40,6 +41,7 @@
     <string name="deleted">Deleted</string>
     <string name="something_whent_wrong">Something went wrong..</string>
     <string name="delete_message">Do you want to delete de alert?</string>
+    <string name="empty_event_list_text">No weather events found </string>
 
 
     <!-- AlertSettings Preference strings: -->
@@ -77,7 +79,7 @@
     <string name="prefered_icon_key">iconPref</string>
     <string name="prefered_icon_key_default">ic_custom</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="templates_title">Choose weather template:</string>
 
     <!-- CompareAXService-strings: -->
     <string name="notification_message_title_success">We have a match!</string>
@@ -161,5 +163,6 @@
     <string name="language_norwegian">Norwegian</string>
     <string name="language_english">English</string>
     <string name="language_pref_key">prefLanguage</string>
+    <string name="no_last_update">Not found</string>
 
 </resources>
