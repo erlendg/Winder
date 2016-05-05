@@ -437,24 +437,33 @@ public class CompareAXService {
                 return 2;
             }
         } else{
-            if (!returnList.isEmpty()){
+            if (!returnList.isEmpty()) {
                 //Case 3: New Forecast-entries found from new XML, and previous Forecast-entries are found in the DB
                 //Fetch old database-entries:
                 ArrayList<Forecast> oldList = forecastRepo.getAllForecastsByAlertSettingsID(id);
                 //here we need to figure out if the new set of entries are significantly different from the old set to determine if issuing a new notification is warranted:
-                if (returnList.get(0).compareTo(oldList.get(0)) == -1){
-                    //this means earlier events have been discovered
+                int stuff = findIfNewEvents(oldList, returnList);
+                if (stuff == 1){
+                        //this means the entire new list occurs after the old list
+                        generateNotification(id, locName, context, cl, nm, 3);
+                        addNewForecastsToDB(returnList);
+                        return 3;
+                }else if (stuff== 2){
+                        //this means earlier events have been discovered
+                        generateNotification(id, locName, context, cl, nm, 3);
+                        addNewForecastsToDB(returnList);
+                        return 3;
+                }else if (stuff == 3){
+                        //this means later events have been discovered
+                        generateNotification(id, locName, context, cl, nm, 3);
+                        addNewForecastsToDB(returnList);
+                        return 3;
+                }else if (stuff == 4){
+                    //this means new events have been found inbetween
                     generateNotification(id, locName, context, cl, nm, 3);
                     addNewForecastsToDB(returnList);
                     return 3;
                 }
-                else if (returnList.get(returnList.size()-1).compareTo(oldList.get(oldList.size()-1)) == 1){
-                    //this means later events have been discovered
-                    generateNotification(id, locName, context, cl, nm, 3);
-                    addNewForecastsToDB(returnList);
-                    return 3;
-                }
-                //TODO: fix date by date array comparison here:
 
                 //no new events discovered, no new notification:
                 addNewForecastsToDB(returnList);
@@ -468,6 +477,34 @@ public class CompareAXService {
                 return 4;
             }
         }
+    }
+
+    private int findIfNewEvents(ArrayList<Forecast> oldList, ArrayList<Forecast> newList){
+        int result = -1;
+        if (newList.get(0).compareTo(oldList.get(oldList.size()-1))== 1){
+            result = 1;
+        }else if (newList.get(0).compareTo(oldList.get(0)) == -1){
+            result = 2;
+        }else if (newList.get(newList.size()-1).compareTo(oldList.get(oldList.size()-1)) == 1){
+            result = 3;
+        }else if(compareForecastLists(oldList, newList)){
+            result = 4;
+        }
+
+        return result;
+    }
+    private boolean compareForecastLists(ArrayList<Forecast> oldList, ArrayList<Forecast> newList){
+
+        for(Forecast temp : newList){
+
+            for (Forecast temp2 : oldList){
+                if (temp2.getStrippedDate(temp2.getFormatedDate())!=temp.getStrippedDate(temp.getFormatedDate())){
+                    return true;
+                }
+            }
+
+        }
+        return false;
     }
 
     private boolean findOccurence(TabularInfo div){

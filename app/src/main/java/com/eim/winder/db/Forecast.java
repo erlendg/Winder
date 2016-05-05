@@ -116,7 +116,7 @@ public class Forecast implements Parcelable {
 
         result = result.replace("/", "");
         result = new StringBuilder(result).reverse().toString();
-        Log.i("FORECAST", "getStrippedDate result: " + result);
+        //Log.i("FORECAST", "getStrippedDate result: " + result);
         return Integer.parseInt(result);
     }
     public int compareTo(Forecast other){
