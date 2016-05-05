@@ -7,6 +7,7 @@
 
     Scenario: Bruker sjekker detaljoversikten
       Gitt at brukeren har åpnet appen
+      Og har registrerte steder i listen
       Når brukeren trykker på stedet for detaljoversikt
       Så skal detaljoversikten vises
       Og brukeren ser alle hendelser for stedet i oversikten

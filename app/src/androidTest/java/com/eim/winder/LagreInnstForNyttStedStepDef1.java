@@ -75,7 +75,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class LagreInnstForNyttStedStepDefs1{
+public class LagreInnstForNyttStedStepDef1 {
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);

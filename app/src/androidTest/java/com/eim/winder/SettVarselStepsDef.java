@@ -67,21 +67,26 @@ public class SettVarselStepsDef extends ActivityTestCase {
     private static final String TAG = "SlettVarselStepsDef";
     private String deletedLocation = "";
     private int size = 0;
-    private int id = 0;
     private ArrayList<AlertSettings> asd;
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
+    /**
+     * Test requires the alert list to contain at least one item, with unique name
+     */
     @Test
-    public void test1_at_brukeren_har_åpnet_appen(){
-       at_brukeren_har_åpnet_appen();
+    public void slett_varsel_scenario(){
+        at_brukeren_har_åpnet_appen();
+        har_registrerte_steder_i_listen();
+        har_trykket_på_stedet_for_detaljoversikt();
+        brukeren_trykker_på_slett_knappen();
+        brukeren_returneres_til_hovedoversikten();
+        stedet_er_slettet_fra_listen_med_registrerte_steder();
     }
 
     @Gitt("^at brukeren har åpnet appen$")
     public void at_brukeren_har_åpnet_appen(){
-        Log.v(TAG, "Gitt at brukeren har åpnet appen");
-        //String title = mainActivity.getActivity().getResources().getString(R.string.app_name);
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
     }
@@ -103,20 +108,19 @@ public class SettVarselStepsDef extends ActivityTestCase {
         };
     }
 
-    @Test
-    public void test2_har_registrerte_steder_i_listen(){
-        har_registrerte_steder_i_listen();
-    }
     @Og("^har registrerte steder i listen$")
     public void har_registrerte_steder_i_listen() {
         //AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         //when(testService.getAllAlertSettings()).thenCallRealMethod();
-        asd = mainActivity.getActivity().getRecycleViewDataset();
-        size = asd.size();
-        id = asd.get(0).getId();
-        deletedLocation = asd.get(0).getLocation().getName();
-        Log.v(TAG, "size:" + size+ " " + deletedLocation);
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
+        RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
+        size = view.getChildCount();
         assertTrue(size != 0);
+
+
+        asd = mainActivity.getActivity().getRecycleViewDataset();
+        deletedLocation = asd.get(0).getLocation().getName();
+
         onView(withId(R.id.recycler_view)).check(ViewAssertions.matches(withListSize(size)));
     }
 
@@ -136,24 +140,14 @@ public class SettVarselStepsDef extends ActivityTestCase {
             }
         };
     }
-    @Test
-    public void test3_har_trykket_på_stedet_for_detaljoversikt(){
-        har_trykket_på_stedet_for_detaljoversikt();
-    }
 
     @Og("^har trykket på stedet for detaljoversikt$")
     public void har_trykket_på_stedet_for_detaljoversikt(){
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
-    @Test
-    public void test4_brukeren_trykker_på_slett_knappen(){
-        brukeren_trykker_på_slett_knappen();
-    }
-
     @Når("^brukeren trykker på slett-knappen$")
     public void brukeren_trykker_på_slett_knappen(){
-        har_trykket_på_stedet_for_detaljoversikt();
         //AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
         //when(testService.deleteAlertSettings(id)).thenReturn(true);
         //AlertOverViewActivity testActivity = Mockito.mock(AlertOverViewActivity.class);
@@ -165,42 +159,23 @@ public class SettVarselStepsDef extends ActivityTestCase {
         onView(withText(android.R.string.yes)).perform(click());
     }
 
-    @Test
-    public void test5_skal_stedet_slettes(){
-        skal_stedet_slettes();
-    }
-
     @Så("^skal stedet slettes$")
     public void skal_stedet_slettes() {
-       //MainActivity testActivity = Mockito.mock(MainActivity.class);
-        //asd.remove(0);
-        //when(mainActivity.getActivity().getRecycleViewDataset()).thenReturn(asd);
-        har_registrerte_steder_i_listen();
-        brukeren_trykker_på_slett_knappen();
         Log.v(TAG, "size:" + size);
-        assertTrue(mainActivity.getActivity().getRecycleViewDataset().size() == size - 1);
+        RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
+        int newsize = view.getChildCount();
+        assertTrue(size == newsize - 1);
     }
 
-    @Test
-    public void test6_brukeren_returneres_til_hovedoversikten(){
-        brukeren_returneres_til_hovedoversikten();
-    }
     @Og("^brukeren returneres til hovedoversikten$")
     public void brukeren_returneres_til_hovedoversikten() {
-        //skal_stedet_slettes();
-        at_brukeren_har_åpnet_appen();
+        CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
+        matchToolbarTitle(title);
 
-    }
-    @Test
-    public void test7_stedet_er_slettet_fra_listen_med_registrerte_steder(){
-        stedet_er_slettet_fra_listen_med_registrerte_steder();
     }
 
     @Og("^stedet er slettet fra listen med registrerte steder$")
     public void stedet_er_slettet_fra_listen_med_registrerte_steder()  {
-        har_registrerte_steder_i_listen();
-        brukeren_trykker_på_slett_knappen();
         onView(withText(deletedLocation)).check(doesNotExist());
-
     }
 }

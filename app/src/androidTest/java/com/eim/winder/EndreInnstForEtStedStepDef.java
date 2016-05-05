@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.is;
  * Created by Mari on 04.05.2016.
  */
 @RunWith(AndroidJUnit4.class)
-public class EndreInnstForEtStedStepDefs {
+public class EndreInnstForEtStedStepDef {
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);

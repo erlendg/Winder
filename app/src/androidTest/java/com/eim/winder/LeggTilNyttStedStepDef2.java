@@ -44,7 +44,17 @@ public class LeggTilNyttStedStepDef2 {
     private ArrayList<AlertSettings> asd;
     private int size;
 
+    /**
+     * Test requires that 10 alerts is registered in the list for the test to succeed.
+     */
+
     @Test
+    public void legg_til_nytt_sted_scenario2(){
+        at_bruker_har_ti_steder_registrert();
+        brukeren_trykker_på_legg_til_nytt_sted_knappen();
+        skal_forespørselen_nektes();
+        brukeren_skal_få_tilbakemelding_om_at_han_hun_allerede_har_maks_antall_steder_registrert();
+    }
     @Gitt("^at bruker har ti steder registrert$")
     public void at_bruker_har_ti_steder_registrert(){
         AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
@@ -55,23 +65,19 @@ public class LeggTilNyttStedStepDef2 {
 
 
     }
-    @Test
+
     @Når("^brukeren trykker på legg-til-nytt-sted-knappen$")
     public void brukeren_trykker_på_legg_til_nytt_sted_knappen() {
-        at_bruker_har_ti_steder_registrert();
         onView(withId(R.id.fab)).perform(click());
     }
-    @Test
+
     @Så("^skal forespørselen nektes$")
     public void skal_forespørselen_nektes(){
-        brukeren_trykker_på_legg_til_nytt_sted_knappen();
         onView(withId(R.id.search_view)).check(doesNotExist());
     }
-    @Test
+
     @Og("^brukeren skal få tilbakemelding om at han/hun allerede har maks antall steder registrert$")
     public void brukeren_skal_få_tilbakemelding_om_at_han_hun_allerede_har_maks_antall_steder_registrert() {
-        skal_forespørselen_nektes();
-        //onView(withText(R.string.toast_more_then_ten_alerts)).inRoot(withDecorView(not(mainActivity.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
         onView(allOf(withId(android.support.design.R.id.snackbar_text), withText(R.string.toast_more_then_ten_alerts)))
                 .check(matches(isDisplayed()));
     }

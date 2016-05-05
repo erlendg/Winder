@@ -3,10 +3,12 @@ package com.eim.winder;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
@@ -28,8 +30,10 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.is;
@@ -46,6 +50,15 @@ public class SjekkDetaljoversiktStepsDef {
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @Test
+    public void sjekk_detaljoversikt_scenario(){
+        at_brukeren_har_åpnet_appen();
+        har_registrerte_steder_i_listen();
+        brukeren_trykker_på_stedet_for_detaljoversikt();
+        skal_detaljoversikten_vises();
+        brukeren_ser_alle_hendelser_for_stedet_i_oversikten();
+    }
+
+
     @Gitt("^at brukeren har åpnet appen$")
     public void at_brukeren_har_åpnet_appen() {
         Log.e(TAG, "Gitt at brukeren har åpnet appen");
@@ -68,34 +81,37 @@ public class SjekkDetaljoversiktStepsDef {
 
         };
     }
+    @Og("^har registrerte steder i listen$")
+    public void har_registrerte_steder_i_listen() {
+        //AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
+        //when(testService.getAllAlertSettings()).thenCallRealMethod();
+        onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
+        RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
+        int size = view.getChildCount();
+        assertTrue(size != 0);
+    }
 
-    @Test
+
     @Når("^brukeren trykker på stedet for detaljoversikt$")
     public void brukeren_trykker_på_stedet_for_detaljoversikt(){
         // clicks on first element in the list:
-        at_brukeren_har_åpnet_appen();
         Log.e(TAG, "Når brukeren trykker på stedet for detaljoversikt");
        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
-    @Test
+
     @Så("^skal detaljoversikten vises$")
     public void skal_detaljoversikten_vises(){
-        brukeren_trykker_på_stedet_for_detaljoversikt();
         Log.e(TAG, "Så skal detaljoversikten vises");
         String name = mainActivity.getActivity().getRecycleViewDataset().get(0).getLocation().getName();
-        onView(withId(R.id.activity_alert_over_view));
-        onView(withId(R.id.toolbar_layout));
+        onView(withId(R.id.activity_alert_over_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.toolbar_layout)).check(matches(isDisplayed()));
     }
 
-    @Test
+
     @Og("^brukeren ser alle hendelser for stedet i oversikten$")
     public void brukeren_ser_alle_hendelser_for_stedet_i_oversikten() {
-        skal_detaljoversikten_vises();
         Log.e(TAG, " Og brukeren ser alle hendelser for stedet i oversikten");
-        String name = mainActivity.getActivity().getRecycleViewDataset().get(0).getLocation().toString();
-        onView(withId(R.id.preferences_table));
-        onView(withId(R.id.row1_title)).check(matches(withText(name)));
-
+        onView(withText(R.string.eventlist)).check(matches(isDisplayed()));
     }
 }

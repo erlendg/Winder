@@ -27,6 +27,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.is;
@@ -34,7 +35,7 @@ import static org.hamcrest.Matchers.is;
 /**
  * Created by Mari on 14.03.2016.
  */
-@CucumberOptions(monochrome = true,plugin = {"html:target/cucumber-html-report", "json:target/cucumber-json-report.json" })
+@RunWith(AndroidJUnit4.class)
 @LargeTest
 public class SjekkStedslisteStepsDef {
     private String TAG = "SjekkStedslisteStepsDef";
@@ -42,7 +43,13 @@ public class SjekkStedslisteStepsDef {
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
+    @Test
+    public void sjekk_stedsliste_scenario(){
+        at_appen_er_åpnet();
+        brukeren_går_inn_på_hovedsiden();
+        skal_det_framvises_en_oversikt_over_brukerens_registrerte_steder();
 
+    }
     @Gitt("^at appen er åpnet$")
     public void at_appen_er_åpnet() {
         Log.d(TAG, "Gitt at appen er åpen");
@@ -80,8 +87,6 @@ public class SjekkStedslisteStepsDef {
     @Så("^skal det framvises en oversikt over brukerens registrerte steder$")
     public void skal_det_framvises_en_oversikt_over_brukerens_registrerte_steder(){
         Log.d(TAG, "Så skal det framvises en oversikt over brukerens registrerte steder");
-        String lableText =   mainActivity.getActivity().getResources().getString(R.string.check_interval);
-        onView(withId(R.id.recycler_view)).check(matches(hasDescendant(withText(lableText))));
-        onView(withId(R.id.fab));
+        onView(withId(R.id.fab)).check(matches(isDisplayed()));
     }
 }

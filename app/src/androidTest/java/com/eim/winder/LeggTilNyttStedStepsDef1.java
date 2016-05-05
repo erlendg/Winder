@@ -44,7 +44,18 @@ public class LeggTilNyttStedStepsDef1 {
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
+    /**
+     * Test requires that less then 10 alerts is registered in the list for the test to succeed.
+     */
+
     @Test
+    public void legg_til_nytt_sted_scenario1(){
+        at_bruker_har_mindre_enn_ti_steder_registrert();
+        brukeren_trykker_på_legg_til_nytt_sted_knappen();
+        skal_forespørselen_aksepteres();
+        brukeren_sendes_til_en_ny_stedsinnstillings_side();
+    }
+
     @Gitt("^at bruker har mindre enn ti steder registrert$")
     public void at_bruker_har_mindre_enn_ti_steder_registrert(){
         // Express the Regexp above with the code you wish you had
@@ -54,26 +65,23 @@ public class LeggTilNyttStedStepsDef1 {
         size = asd.size();
         assertTrue(size < 10);
     }
-    @Test
+
     @Når("^brukeren trykker på legg-til-nytt-sted-knappen$")
     public void brukeren_trykker_på_legg_til_nytt_sted_knappen() {
-        at_bruker_har_mindre_enn_ti_steder_registrert();
         onView(withId(R.id.fab)).perform(click());
     }
 
-    @Test
+
     @Så("^skal forespørselen aksepteres$")
     public void skal_forespørselen_aksepteres() {
-        brukeren_trykker_på_legg_til_nytt_sted_knappen();
         //onView(withText(R.string.toast_more_then_ten_alerts)).inRoot(withDecorView(not(is(mainActivity.getActivity().getWindow().getDecorView())))).check(doesNotExist());
         onView(withText(R.string.toast_more_then_ten_alerts))
                 .inRoot(withDecorView(not(mainActivity.getActivity().getWindow().getDecorView())))
                 .check(doesNotExist());
     }
-    @Test
+
     @Og("^brukeren sendes til en ny stedsinnstillings-side$")
     public void brukeren_sendes_til_en_ny_stedsinnstillings_side(){
-        skal_forespørselen_aksepteres();
         onView(withId(R.id.search_view)).check(matches(isDisplayed()));
     }
 
