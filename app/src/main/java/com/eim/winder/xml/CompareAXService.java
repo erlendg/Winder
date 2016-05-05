@@ -6,8 +6,11 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.ContextCompat;
@@ -48,6 +51,10 @@ public class CompareAXService {
     private DBService dbService;
     Context context;
 
+    public CompareAXService(){
+
+    }
+
     public CompareAXService(Context context, AlertSettings alertSettingsObj){
         this.context = context;
         this.alertSettingsObj = alertSettingsObj;
@@ -68,6 +75,7 @@ public class CompareAXService {
             onCreateSuccess = false;
         }
     }
+
     public CompareAXService(Context context, AlertSettings alertSettingsObj, String url){
         this.context = context;
         this.alertSettingsObj = alertSettingsObj;
@@ -101,12 +109,16 @@ public class CompareAXService {
      * @param context context of activity that called the method.
      * @param cl class of activity
      * @param nm notificationmanager injected from previously mentioned activity
-     * @param type indicates which kind of notification should be issued.
+     * @param type indicates which kind of notification should be issued
      */
     public void generateNotification(int i, String locName, Context context, Class cl, NotificationManager nm, int type){
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notification = new NotificationCompat.Builder(context);
                 notification.setSmallIcon(R.drawable.ic_stat_name);
                 notification.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+                notification.setSound(alarmSound);
+                notification.setVibrate(new long[]{1000, 1000, 1000, 1000});
+                notification.setLights(Color.BLUE, 3000, 3000);
 
                 if (type == 1){
                     notification.setContentTitle(context.getResources().getString(R.string.notification_message_title_success));
@@ -147,10 +159,10 @@ public class CompareAXService {
 
     }
 
-    /**
+    /**generateInfo prepares the date- and info-parameter to be stored in Forecast.
      *
      * @param info
-     * @return
+     * @return String[2] where index[1] is the date, and index[2] is the info
      */
     private String[] generateInfo(TabularInfo info){
         String returnString = "";
@@ -248,6 +260,12 @@ public class CompareAXService {
         return  returnTable;
     }
 
+    /**fixDate takes two date-strings and returns a time-period.
+     *
+     * @param fromDate
+     * @param toDate
+     * @return String containing the formated date
+     */
     private String fixDate(String fromDate, String toDate){
         String result = "";
         switch (checkWeekday(fromDate)){
@@ -283,7 +301,7 @@ public class CompareAXService {
     /**
      * fixDate(String date)  converts the date to our preferred format for display
      * @param date
-     * @return
+     * @return String containing the formated date
      */
     private String fixDate(Date date, Locale current){
         SimpleDateFormat formatter;
@@ -300,6 +318,12 @@ public class CompareAXService {
 
         return result;
     }
+
+    /**checkWeekday determines weekday of a specific date.
+     *
+     * @param date date to be checked for weekday, yr.no specified format
+     * @return integer 1-7, where 1 = sunday
+     */
     private int checkWeekday(String date){
         c = Calendar.getInstance();
 
@@ -316,7 +340,6 @@ public class CompareAXService {
         return dayOfWeek;
     }
     /**isNetworkOnline checks currently available network-options.
-     *
      *
      * @return integer where 0 = no connection available, 1= wifi connection available, 2=mobiledata connection available
      */
@@ -372,10 +395,19 @@ public class CompareAXService {
 
     }
 
+    /** updateAlertSettingsEvent updates this AlertSettings' hasEvents parameter
+     *
+     * @param id of the AlertSetting
+     * @param hasEvents value of the current hasEvents-state
+     */
     private void updateAlertSettingsEvent(int id, int hasEvents){
             alertSettingsRepo.updateAlertsettingsHasEvents(id, hasEvents);
     }
 
+    /** addNewForecastsToDB stores a complete list of Forecast-objects to the database
+     *
+     * @param list of Forecast-objects
+     */
     private void addNewForecastsToDB(final ArrayList<Forecast> list){
         Thread thread = new Thread(new Runnable(){
             @Override
@@ -390,20 +422,29 @@ public class CompareAXService {
         boolean ok = false;
     }
 
-
+    /** findAllOccurences uses the data collected from the xml-source and
+     *
+     * @param id id of alertsettings-object
+     * @param locName name of location
+     * @param context context of the activity
+     * @param cl class of the activity
+     * @param nm NotificationManager for issuing notifications to the user
+     * @return integer based on the outcome of the method, 1-4 currently.
+     */
     public int findAllOccurences(int id, String locName, Context context, Class cl, NotificationManager nm){
 
         ArrayList<TabularInfo> list = forecast.getTabularList();
-
         ArrayList<Forecast> returnList = new ArrayList<>();
-
         Forecast temp;
         String[] dateandinfo;
         int result = -1;
+
+        //goes through the list of new forecast-data to look for matches based on the AlertSettingsobjects parameters
         for (int i = 0; i<list.size(); i++){
             sendNotification = findOccurence(list.get(i));
 
             if (sendNotification){
+                //gather the required information and adds it to the Forecast-list
                 dateandinfo = generateInfo(list.get(i));
                 temp = new Forecast();
                 temp.setAlertSettingId(alertSettingsObj.getId());
@@ -414,13 +455,14 @@ public class CompareAXService {
             }
 
         }
-
+        //for the dynamic event-display, update hasEvents for AlertSettings
         if(returnList.isEmpty()){
             updateAlertSettingsEvent(id, 0);
         } else {
             updateAlertSettingsEvent(id, 1);
         }
 
+        //this is where we determine which notification we want to issue to the user, based on the int return value:
         if(!forecastRepo.findIfForecastsExistsForAlertSettingsID(id)){
             //Case 1: New Forecast-entries found from new XML, but no previous Forecast-entries are found in the database(DB)
             if(!returnList.isEmpty()){
@@ -479,34 +521,11 @@ public class CompareAXService {
         }
     }
 
-    private int findIfNewEvents(ArrayList<Forecast> oldList, ArrayList<Forecast> newList){
-        int result = -1;
-        if (newList.get(0).compareTo(oldList.get(oldList.size()-1))== 1){
-            result = 1;
-        }else if (newList.get(0).compareTo(oldList.get(0)) == -1){
-            result = 2;
-        }else if (newList.get(newList.size()-1).compareTo(oldList.get(oldList.size()-1)) == 1){
-            result = 3;
-        }else if(compareForecastLists(oldList, newList)){
-            result = 4;
-        }
-
-        return result;
-    }
-    private boolean compareForecastLists(ArrayList<Forecast> oldList, ArrayList<Forecast> newList){
-
-        for(Forecast temp : newList){
-
-            for (Forecast temp2 : oldList){
-                if (temp2.getStrippedDate(temp2.getFormatedDate())!=temp.getStrippedDate(temp.getFormatedDate())){
-                    return true;
-                }
-            }
-
-        }
-        return false;
-    }
-
+    /** findOccurence takes a TabularInfo object and determines if it matches the AlertSettings parameters
+     *
+     * @param div TabularInfo object containing fresh weather-data
+     * @return boolean where true = match, false = no match
+     */
     private boolean findOccurence(TabularInfo div){
 
         if(checkPrecipitation(div.getPrecipitationValue())==2) return false;
@@ -551,6 +570,55 @@ public class CompareAXService {
 
         return true;
     }
+
+    /**findIfNewEvents compares two lists of Forecast-objects to determine if a new notification to the user is needed
+     *
+     * @param oldList list of old Forecast-objects fetched from the database
+     * @param newList list of new Forecast-objects generated from XML
+     * @return int based on the outcome of the control-structure, 1 - 4, -1 if no new events
+     */
+    public int findIfNewEvents(ArrayList<Forecast> oldList, ArrayList<Forecast> newList){
+        int result = -1;
+        if (newList.get(0).compareTo(oldList.get(oldList.size()-1))== 1){
+            result = 1;
+        }else if (newList.get(0).compareTo(oldList.get(0)) == -1){
+            result = 2;
+        }else if (newList.get(newList.size()-1).compareTo(oldList.get(oldList.size()-1)) == 1){
+            result = 3;
+        }else if(compareForecastLists(oldList, newList)){
+            result = 4;
+        }
+
+        return result;
+    }
+
+    /**
+     * This method takes two ArrayLists and checks for Forecast-dates present in newList that are NOT present in oldList
+     * @param oldList list of the previous Forecast-entries
+     * @param newList list of the newly generated Forecast-entries
+     * @return boolean based on the outcome, true if new events, false if not
+     */
+    //todo: this needs to be implemented properly
+    private boolean compareForecastLists(ArrayList<Forecast> oldList, ArrayList<Forecast> newList){
+        int[] oldInt = new int[31];
+        int[] newInt = new int[31];
+        boolean ok = false;
+        /*for(Forecast temp : newList){
+            for (Forecast temp2 : oldList){
+                if (temp2.getStrippedDate(temp2.getFormatedDate())!=temp.getStrippedDate(temp.getFormatedDate())){
+                    ok = true;
+                }
+            }
+
+        }*/
+        return ok;
+    }
+
+    /**getTimeAndStoreIt is used for updating the last time an AlertSetting had its Forecast-set updated
+     *
+     * @param current Locale based on the users preferred language
+     * @return String containing the current system time, formated.
+     */
     public String getTimeAndStoreIt(Locale current){
         Calendar now = Calendar.getInstance(current);
         Date date = now.getTime();
@@ -564,8 +632,11 @@ public class CompareAXService {
         return lastUpdate;
     }
 
-    //private int tempMin;
-    //private int tempMax;
+    /**checkTemp compares the value from a TabularInfo-object and the user-specified value stored in AlertSetting
+     *
+     * @param value temperature value
+     * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
+     */
     private int checkTemp(double value){
 
         if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) {
@@ -580,8 +651,11 @@ public class CompareAXService {
         //Log.d(TAG, "Temp returverdi = 2, innverdi = " + value);
         return 2;
     }
-    //private double precipitationMin;
-    //private double precipitationMax;
+    /**checkPrecipitation compares the value from a TabularInfo-object and the user-specified value stored in AlertSetting
+     *
+     * @param value precipitation value
+     * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
+     */
     private int checkPrecipitation(double value) {
         if ((alertSettingsObj.getPrecipitationMin()) < (value) && (value < (alertSettingsObj.getPrecipitationMax()))){
             //Log.d(TAG, "Nedbør returverdi = 0, innverdi = " + value);
@@ -595,8 +669,11 @@ public class CompareAXService {
         //Log.d(TAG, "Nedbør returverdi = 2, innverdi = " + value);
         return 2;
     }
-    //private double windSpeedMin;
-    //private double windSpeedMax;
+    /**checkWindSpeec compares the value from a TabularInfo-object and the user-specified value stored in AlertSetting
+     *
+     * @param value windpeed value
+     * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
+     */
     private int checkWindSpeed(double value){
         if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) {
             //Log.d(TAG, "Vindstyrke returverdi = 0, innverdi = " + value);
@@ -611,7 +688,11 @@ public class CompareAXService {
         return 2;
     }
 
-    //private String windDirection;
+    /**checkWindDirection compares the value from a TabularInfo-object and the user-specified value stored in AlertSetting
+     *
+     * @param a temperature value
+     * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
+     */
     private int checkWindDirection(String a) {
 
             
@@ -628,6 +709,9 @@ public class CompareAXService {
                 windDirectionCheck = true;
                 return 0;
             }
+            /**This switch is required due to the winddirection-resolution provided by yr.no and our choice to lower it for our users.
+             * By our definition, adjacent wind-directions are ok, ex: North is set by user, North, North-NorthEast and North-NorthWest are accepted as equivalent.
+             */
             if (a.equalsIgnoreCase("NNW") || a.equalsIgnoreCase("WNW") || a.equalsIgnoreCase("WSW") || a.equalsIgnoreCase("SSW") || a.equalsIgnoreCase("SSE") || a.equalsIgnoreCase("ESE") || a.equalsIgnoreCase("NNE") || a.equalsIgnoreCase("ENE")){
                 switch (a){
                     case "NNW":
@@ -694,7 +778,11 @@ public class CompareAXService {
         Log.d(TAG, "Vindretning returverdi = 2, innverdi = " + a);
         return 2;
     }
-    //private boolean checkSun;
+    /**checkSymbolSun compares the value from a TabularInfo-object and the user-specified value stored in AlertSetting
+     *
+     * @param a weatherIcon value
+     * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
+     */
     private int checkSymbolSun(String a) {
         //Log.d(TAG, "innhold i SunString: " + a);
 
@@ -710,13 +798,6 @@ public class CompareAXService {
             //Log.d(TAG, "Sol returverdi = 2, innverdi = " + a);
             return 2;
 
-        //return 0;
+
     }
-    //private double checkInterval;
-
-    //private boolean mon, tue, wed, thu, fri, sat, sun;
-
-
-
-
 }

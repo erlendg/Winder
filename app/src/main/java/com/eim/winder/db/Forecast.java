@@ -17,6 +17,11 @@ public class Forecast implements Parcelable {
     public Forecast() {
 
     }
+    public Forecast(String inDate){
+        //"Onsdag, 11/05/16: 20.00 - 02.00"
+        String formatedDate = "xxxxxx, " + inDate + ": 20.00 - 02.00";
+        this.formatedDate = formatedDate;
+    }
 
     public Forecast(int id, String formatedDate, String formatedInfo, int icon, int alertSettingId){
         this.id = id;
@@ -112,10 +117,11 @@ public class Forecast implements Parcelable {
         return formatedDate+ " " +formatedInfo;
     }
     public int getStrippedDate(String date){
+        //Log.i("FORECAST", "before getStrippedDate: " + date);
         String result = date.substring(date.length()-23,date.length()-15);
 
-        result = result.replace("/", "");
-        result = new StringBuilder(result).reverse().toString();
+        String[] list = result.split("/");
+        result = list[2] + list[1] + list[0];
         //Log.i("FORECAST", "getStrippedDate result: " + result);
         return Integer.parseInt(result);
     }
