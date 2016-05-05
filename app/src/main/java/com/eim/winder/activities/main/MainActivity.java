@@ -119,12 +119,12 @@ public class MainActivity extends AppCompatActivity {
         if(alertSettingsList.isEmpty()){
             emptyListReplacer = (LinearLayout) findViewById(R.id.empty_list_replacer);
             emptyListReplacer.setVisibility(View.VISIBLE);
-            layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            //layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorEmptyList));
             setFabAnimation(fab);
         }else {
             emptyListReplacer = (LinearLayout) findViewById(R.id.empty_list_replacer);
             emptyListReplacer.setVisibility(View.GONE);
-            layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorRecycleViewBackground));
+            //layout.setBackgroundColor(ContextCompat.getColor(this, R.color.colorRecycleViewBackground));
             fab.clearAnimation();
         }
         return alertSettingsList;

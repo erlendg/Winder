@@ -164,5 +164,6 @@
     <string name="language_english">English</string>
     <string name="language_pref_key">prefLanguage</string>
     <string name="no_last_update">Not found</string>
+    <string name="get_started">Press + to get started</string>
 
 </resources>

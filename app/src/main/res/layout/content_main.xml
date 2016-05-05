@@ -32,23 +32,27 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:id="@+id/empty_list_replacer"
-        android:visibility="gone">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher"
-            android:background="@color/colorPrimary"/>
+        android:visibility="visible">
 
         <TextView
             android:layout_margin="@dimen/text_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:gravity="center"
-            android:textColor="@color/colorWhite"
             android:text="@string/empty_list_text"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/get_started"
+            android:elevation="2dp"
+            />
+
+
 
     </LinearLayout>
 

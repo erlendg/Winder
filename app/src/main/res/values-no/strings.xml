@@ -140,5 +140,6 @@
     <string name="templates_title">Velg predefinerte værinnstillinger:</string>
     <string name="empty_list_text">Winder finner et matchende vær for deg</string>
     <string name="empty_event_list_text">Ingen værhendelser funnet</string>
-    <string name="no_last_update"> </string>
+    <string name="no_last_update">Ingen enda</string>
+    <string name="get_started">Trykk på + for å komme i gang</string>
 </resources>

@@ -60,6 +60,9 @@ public class MottaAutomatiskVarselStepDef {
     public void setUp(){
         mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
     }
+    /**
+     * Test requires a 1min delay for the alert to occur.
+     */
 
     @Test
     public void motta_automatisk_varsel(){
@@ -95,32 +98,13 @@ public class MottaAutomatiskVarselStepDef {
         mDevice.openNotification();
         mDevice.wait(Until.hasObject(By.pkg("com.eim.winder")), 1000);
 
-        UiSelector notificationStackScroller = new UiSelector().packageName("com.android.systemui")
-                                                              .className("android.view.ViewGroup")
-                                                              .resourceId(
-                                                                      "com.android.systemui:id/notification_stack_scroller");
-        UiObject notificationStackScrollerUiObject = mDevice.findObject(notificationStackScroller);
-        assertTrue(notificationStackScrollerUiObject.exists());
-
-        /*
-         * access top notification in the center through parent
-         */
-        UiObject notiSelectorUiObject = null;
-        try {
-            notiSelectorUiObject = notificationStackScrollerUiObject.getChild(new UiSelector().index(0));
-            notiSelectorUiObject.click();
-        } catch (UiObjectNotFoundException e) {
-            e.printStackTrace();
-        }
-        assertTrue(notiSelectorUiObject.exists());
-
-
     }
     private void legg_til_sikre_inst_for_varsel(ActivityTestRule mainActivity){
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
         int size = view.getChildCount();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
+        //need to set location manually because Espresso cannot handle clicks on AutoCompleteTextView's
         int loc_id = 326;
         SelectLocationActivity activity = SelectLocationActivity.getInstance();
         DBService db = new DBService(activity.getApplicationContext());
@@ -129,9 +113,6 @@ public class MottaAutomatiskVarselStepDef {
         onView(withText(R.string.preferences_temperature)).perform(click());
         onView(withId(R.id.saveButton)).perform(click());
         onView(withId(R.id.recycler_view)).check(matches(withListSize(size + 1)));
-
-
-        //onView(withId(R.id.action_refresh)).perform(click());
 
     }
     public static Matcher<View> withListSize (final int size) {
