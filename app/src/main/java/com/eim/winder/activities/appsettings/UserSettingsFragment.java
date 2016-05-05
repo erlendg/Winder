@@ -46,13 +46,12 @@ public class UserSettingsFragment extends PreferenceFragment {
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         Locale l;
         if (pref == languagePref) {
-            //Log.i("NewValue", newValue.toString());
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(getString(R.string.language_pref_key), newValue.toString());
             editor.apply();
             String selectedLanguage = prefs.getString(getString(R.string.language_pref_key), "default");
             l = getResources().getConfiguration().locale;
-            Log.i("NewValue", newValue.toString() + ", " + selectedLanguage);
+            //Log.i("NewValue", newValue.toString() + ", " + selectedLanguage);
             MainActivity.setApplicationLocale(l, getActivity().getApplicationContext());
             setPreferenceScreen(null);
             initiateViewComponents();

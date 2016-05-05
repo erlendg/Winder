@@ -68,13 +68,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Set application language:
+        systemDefaultLanguage = Locale.getDefault();
+        setApplicationLocale(systemDefaultLanguage, this);
         setContentView(R.layout.activity_main);
         isActivityRunning = true;
         instance = this;
 
-        //Set application language:
-        systemDefaultLanguage = Locale.getDefault();
-        setApplicationLocale(getResources().getConfiguration().locale, this);
+
 
         //Initiates the datasource:
         dbService = new DBService(this);
@@ -238,7 +239,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (selectedLanguage.equalsIgnoreCase("no")){
             l = new Locale("no", "NO");
         } else{
-            l = systemDefaultLanguage;
+            if (selectedLanguage.equalsIgnoreCase("default")) {
+                l = systemDefaultLanguage;
+            }
             if (l.getLanguage().equals("no") || l.getLanguage().equals("nb") || l.getLanguage().equals("nn") || l.getLanguage().equals("nb-no")) {
                 l = new Locale("no", "NO");
                 //hvis ikke norsk så settes den til engelsk ved oppstart:

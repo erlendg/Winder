@@ -63,7 +63,7 @@
     <string name="wind_dir_not_chosen">"Vennligst velg foretrukne vindretninger"</string>
     <string name="yes">Ja</string>
     <string name="your_preferences">Dine innstillinger:</string>
-    <string name="about">Winder er en applikasjon som er levert av EIM Development. Appen er et hjelpemiddel for deg som er opptatt- eller  avhengig av værforhold i aktiviteter du foretar deg eller planlegger å gjennomføre. Ved å legge inn ønsket varsel selv,  eller ved predefinerte forhåndsinstillinger tilpasset din  aktivitet, vil du motta en notification når dine varselønsker intreffer. Vi har benyttet værvarsel fra Yr levert av Meteorologisk institutt og NRK</string>
+    <string name="about">Winder er en applikasjon som er levert av EIM Development. Appen er et hjelpemiddel for deg som er opptatt- eller  avhengig av værforhold i aktiviteter du foretar deg eller planlegger å gjennomføre. Ved å legge inn ønsket varsel selv,  eller ved predefinerte forhåndsinstillinger tilpasset din  aktivitet, vil du motta en notification når dine varselønsker inntreffer. Værvarselet er hentet fra Yr levert av Meteorologisk institutt og NRK</string>
     <string name="action_settings">Innstillinger</string>
     <string name="choose_weekdays_string">Velg hvilke dager du er interessert i varsel for</string>
     <string name="choose_winddirection_string">Velg vindretning</string>
