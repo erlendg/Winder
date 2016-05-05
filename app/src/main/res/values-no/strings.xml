@@ -20,7 +20,6 @@
     <string name="generate_temperature">Temperatur:</string>
     <string name="generate_winddirection">Vindretning:</string>
     <string name="generate_windspeed">Vindstyrke:</string>
-    <string name="hello_blank_fragment">Hei blankt fragment</string>
     <string name="lagre_varsel_button">Lagre</string>
     <string name="monday">Mandag</string>
     <string name="name_of_prefs_saved">prefValuesSaved</string>
@@ -137,5 +136,9 @@
     <string name="language_pref_key">prefLanguage</string>
     <string name="languagelist_default">default</string>
     <string name="notification_message_title_additional_events">Ytterligere hendelser funnet!</string>
-    <string name="last_update">Forrige oppdatering:</string>
+    <string name="last_update">Sist oppdatert:</string>
+    <string name="templates_title">Velg predefinerte værinnstillinger:</string>
+    <string name="empty_list_text">Winder finner et matchende vær for deg</string>
+    <string name="empty_event_list_text">Ingen værhendelser funnet</string>
+    <string name="no_last_update"> </string>
 </resources>

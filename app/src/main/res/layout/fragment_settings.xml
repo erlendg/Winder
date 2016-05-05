@@ -309,7 +309,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/row9_column2"
-                android:text='@{""+alertsettings.checkInterval}'
                 android:gravity="center"
                 android:padding="10dip"/>
             </LinearLayout>

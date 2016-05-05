@@ -41,6 +41,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     private ImageButton windButton;
     private ImageButton hikingButton;
     private ImageButton rainButton;
+    private ImageButton cutomButton;
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
 
@@ -72,42 +73,57 @@ public class SelectLocationActivity extends AppCompatActivity {
         windButton = (ImageButton) findViewById(R.id.template_wind);
         hikingButton = (ImageButton) findViewById(R.id.template_hiking);
         rainButton = (ImageButton) findViewById(R.id.template_rain);
+        cutomButton = (ImageButton) findViewById(R.id.template_custom);
+        cutomButton.setSelected(true);
     }
     public void onTemplateButtonClick(View view)
     {
         switch(view.getId()) {
             case R.id.template_sun:
-                sunButton.setSelected(!sunButton.isSelected());
+                sunButton.setSelected(true);
                 snowButton.setSelected(false);
                 windButton.setSelected(false);
                 hikingButton.setSelected(false);
                 rainButton.setSelected(false);
+                cutomButton.setSelected(false);
                 break;
 
             case R.id.template_snow:
-                snowButton.setSelected(!snowButton.isSelected());
+                snowButton.setSelected(true);
                 sunButton.setSelected(false);
                 windButton.setSelected(false);
                 hikingButton.setSelected(false);
                 rainButton.setSelected(false);
+                cutomButton.setSelected(false);
                 break;
 
             case R.id.template_wind:
-                windButton.setSelected(!windButton.isSelected());
+                windButton.setSelected(true);
                 snowButton.setSelected(false);
                 sunButton.setSelected(false);
                 hikingButton.setSelected(false);
                 rainButton.setSelected(false);
+                cutomButton.setSelected(false);
                 break;
             case R.id.template_hiking:
-                hikingButton.setSelected(!hikingButton.isSelected());
+                hikingButton.setSelected(true);
                 snowButton.setSelected(false);
                 sunButton.setSelected(false);
                 windButton.setSelected(false);
                 rainButton.setSelected(false);
+                cutomButton.setSelected(false);
                 break;
             case R.id.template_rain:
-                rainButton.setSelected(!rainButton.isSelected());
+                rainButton.setSelected(true);
+                snowButton.setSelected(false);
+                sunButton.setSelected(false);
+                hikingButton.setSelected(false);
+                windButton.setSelected(false);
+                cutomButton.setSelected(false);
+                break;
+            case R.id.template_custom:
+                cutomButton.setSelected(true);
+                rainButton.setSelected(false);
                 snowButton.setSelected(false);
                 sunButton.setSelected(false);
                 hikingButton.setSelected(false);
@@ -205,6 +221,11 @@ public class SelectLocationActivity extends AppCompatActivity {
     public void setLocation(Location loc){
         locationSelected = loc;
     }
+
+    /**
+     * For testing only.
+     * @return
+     */
     public static SelectLocationActivity getInstance(){
         return instance;
     }

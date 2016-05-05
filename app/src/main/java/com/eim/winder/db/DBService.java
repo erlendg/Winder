@@ -55,18 +55,18 @@ public class DBService {
 
     public ArrayList<AlertSettings> getAllAlertSettingsAndLocations() {
         ArrayList<AlertSettings> results = alertDataSource.getAllAlertSettings();
+        Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ results.size());
         if(results != null && results.size() > 0){
-            Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ results.size());
             //numOfLocations= results.size();
             for(int i = 0; i < results.size(); i++){
                 int id = (int) results.get(i).getLocation().getId();
                 Location loc =  locationDataSource.getLocationFromID(id, alertDataSource.getReadDB());
                 results.get(i).setLocation(loc);
             }
-        }else {
-            Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ 0);
-            results = Locations.getTestAlertList();
-        }
+        }/*else {
+           Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ 0);
+           results = Locations.getTestAlertList();
+        }*/
         locationDataSource.close();
         return results;
     }
