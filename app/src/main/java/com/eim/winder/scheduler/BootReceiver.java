@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Erlend on 03.05.2016.
+ *
+ * BootReceiver re-schedules all alarms after a OS reboot, by listening for the systemwide reboot broadcasts issued by the OS.
  */
 public class BootReceiver extends BroadcastReceiver {
     private final String TAG = "BootReceiver";

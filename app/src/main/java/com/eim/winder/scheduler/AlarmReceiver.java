@@ -25,6 +25,8 @@ import java.util.Locale;
 
 /**
  * Created by Erlend on 04.04.2016.
+ *
+ * AlarmReceiver receives and handles the scheduled alarms, by listening for systemwide broadcasts issued by AlarmManager.
  */
 public class AlarmReceiver extends BroadcastReceiver{
     private final String TAG = "AlarmReceiver";

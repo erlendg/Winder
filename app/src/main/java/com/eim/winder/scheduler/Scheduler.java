@@ -16,6 +16,8 @@ import java.util.GregorianCalendar;
 
 /**
  * Created by Erlend on 04.04.2016.
+ *
+ * Static class for alarm scheduling.
  */
 public class Scheduler {
     private static final String TAG = "Scheduler";
@@ -38,7 +40,7 @@ public class Scheduler {
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, toDo);
 
-        Toast.makeText(context, "Alarm scheduled for " + id + "!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Alarm scheduled for " + id + "!", Toast.LENGTH_SHORT).show();
     }
 
     public static void cancelAlarm(Context context, AlarmManager alarmManager, int id){
