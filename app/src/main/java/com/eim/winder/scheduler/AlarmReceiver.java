@@ -47,6 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         //run the xml-parser:
         boolean div = compare.runHandleXML();
+        Locale language = context.getResources().getConfiguration().locale;
 
         //if the parsing is done, run findAllOccurences:
         if(div) {
@@ -56,14 +57,14 @@ public class AlarmReceiver extends BroadcastReceiver{
             compareResult = compare.findAllOccurences(settings.getId(), settings.getLocation().getName(), context, MainActivity.class, mNotificationManager);
             //Update listview if the user is inside the MainActivity:
             //isForeground("com.eim.winder.activities.main.MainActivity", context)
-            String lastUpdate = compare.getTimeAndStoreIt(context.getResources().getConfiguration().locale);
+            String lastUpdate = compare.getTimeAndStoreIt(language);
             if(MainActivity.getIsActivityRunning()){
                updateAlertSettingsIcon(compareResult, settings);
             }
         }
         Toast.makeText(context, "Alertsetting " + url, Toast.LENGTH_SHORT).show();
 
-        Log.e(TAG, "onReceive, id: " + id);
+        Log.e(TAG, "onReceive, id: " + id + " " + language.getLanguage());
         //Toast.makeText(context, "sup? " + intent.getStringExtra("div"), Toast.LENGTH_LONG).show();
     }
 
