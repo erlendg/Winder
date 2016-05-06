@@ -117,7 +117,7 @@ public class CompareAXService {
                 notification.setSmallIcon(R.drawable.ic_stat_name);
                 notification.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
                 notification.setSound(alarmSound);
-                notification.setVibrate(new long[]{1000, 1000, 1000, 1000});
+                //notification.setVibrate(new long[]{1000, 1000, 1000, 1000});
                 notification.setLights(Color.BLUE, 3000, 3000);
 
                 if (type == 1){

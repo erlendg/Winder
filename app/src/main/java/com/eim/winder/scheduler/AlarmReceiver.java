@@ -61,7 +61,7 @@ public class AlarmReceiver extends BroadcastReceiver{
                updateAlertSettingsIcon(compareResult, settings);
             }
         }
-        Toast.makeText(context, "Alertsetting " + url, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Alertsetting " + url, Toast.LENGTH_SHORT).show();
 
         Log.e(TAG, "onReceive, id: " + id);
         //Toast.makeText(context, "sup? " + intent.getStringExtra("div"), Toast.LENGTH_LONG).show();
