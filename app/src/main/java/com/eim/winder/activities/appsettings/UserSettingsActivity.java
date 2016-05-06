@@ -3,6 +3,8 @@ package com.eim.winder.activities.appsettings;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
 import com.eim.winder.R;
 
 /**
@@ -13,6 +15,7 @@ public class UserSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Log.e("heihei", ""+getResources().getConfiguration().locale.getLanguage());
         setContentView(R.layout.appsettings_layout);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_stat_name);

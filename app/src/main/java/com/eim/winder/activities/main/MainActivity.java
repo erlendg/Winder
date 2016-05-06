@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         //Updates the view in case of changes in the alertlist
         super.onResume();
+        Locale l = getResources().getConfiguration().locale;
+        Log.i(TAG, l.getLanguage());
         if(!isActivityRunning) {
             //Log.i(TAG, "onResume()");
             alertSettingsList = getLocationsAndAlertData();

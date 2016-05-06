@@ -51,7 +51,7 @@ public class UserSettingsFragment extends PreferenceFragment {
             editor.apply();
             String selectedLanguage = prefs.getString(getString(R.string.language_pref_key), "default");
             l = getResources().getConfiguration().locale;
-            //Log.i("NewValue", newValue.toString() + ", " + selectedLanguage);
+            Log.i("NewValue", newValue.toString() + ", " + selectedLanguage);
             MainActivity.setApplicationLocale(l, getActivity().getApplicationContext());
             setPreferenceScreen(null);
             initiateViewComponents();

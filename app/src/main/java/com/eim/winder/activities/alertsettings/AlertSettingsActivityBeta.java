@@ -62,12 +62,19 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     public void clearPreferencesSaved(Context context,String sharedPrefsName ) {
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs = getSharedPreferences(sharedPrefsName, context.MODE_PRIVATE);
+        String selectedLanguage = defaultSharedPrefs.getString(getString(R.string.language_pref_key), "default");
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
         SharedPreferences.Editor editor2 = sharedPrefs.edit();
         editor.clear();
-        editor.apply();
+        editor.commit();
         editor2.clear();
-        editor2.apply();
+        editor2.commit();
+
+        //Puts locale back in shared preferences.
+        editor.putString(getString(R.string.language_pref_key), selectedLanguage);
+        editor.apply();
+
+
     }
 
 
