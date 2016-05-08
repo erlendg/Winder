@@ -18,6 +18,12 @@ import java.text.DecimalFormatSymbols;
 
 /**
  * Created by Mari on 05.04.2016.
+ * NOTE:
+ * One custom class for each rangebar preference.
+ * This is due to the the method onCreateView which is called every time an item on the PreferenceScreen
+ * changes, the default PreferenceScreen object such as CheckBoxPreference saves there value by default but
+ * these custom preferences needs to restore there values for every click on the PreferenceScreen
+ * If not everything wil be reset if the user clicks on other preferences on the screen.
  */
 public class CustomPrecipRangePreference extends Preference{
     private static final double DEFAULT_MIN_VALUE= 0.0;
@@ -32,6 +38,14 @@ public class CustomPrecipRangePreference extends Preference{
         super(context, attrs);
         this.setLayoutResource(R.layout.precippref_layout);
     }
+
+    /**
+     * Creates the custom precipitation range bar preference
+     * sets the RangeSeekBar view component if it already have been initialized and there are
+     * stored values in sharedPreferences.
+     * @param parent
+     * @return the created view component
+     */
     @Override
     protected View onCreateView(ViewGroup parent) {
         View v = super.onCreateView(parent);
@@ -45,6 +59,10 @@ public class CustomPrecipRangePreference extends Preference{
         return v;
     }
 
+    /**
+     * Binds the view and an onChangeListener so if the preferences changes, new values wil be stored.
+     * @param view the view of the Preference
+     */
     @Override
     public void onBindView(View view) {
         super.onBindView(view);
@@ -58,6 +76,7 @@ public class CustomPrecipRangePreference extends Preference{
                 SharedPreferences.Editor editor = prefs.edit();
                 putDouble(editor, MIN_PRECIP, min);
                 putDouble(editor, MAX_PRECIP, max);
+                //Uses commit so no changes gets overridden:
                 editor.commit();
                 rsb.setSelectedMinValue(getDouble(prefs, MIN_PRECIP, DEFAULT_MIN_VALUE));
                 rsb.setSelectedMaxValue(getDouble(prefs, MAX_PRECIP, DEFAULT_MAX_VALUE));
@@ -66,7 +85,13 @@ public class CustomPrecipRangePreference extends Preference{
         });
     }
 
-    //Help-methods to store double-values in SharedPreferences (no default method)
+    /**
+     * Help-methods to store double-values in SharedPreferences (no default method for this)
+     * @param edit
+     * @param key
+     * @param value
+     * @return
+     */
     public static SharedPreferences.Editor putDouble(final SharedPreferences.Editor edit, final String key, final double value) {
         return edit.putLong(key, Double.doubleToRawLongBits(value));
     }
@@ -78,7 +103,6 @@ public class CustomPrecipRangePreference extends Preference{
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(dfs);
-        double num = Double.parseDouble(df.format(res));
-        return num;
+        return Double.parseDouble(df.format(res));
     }
 }

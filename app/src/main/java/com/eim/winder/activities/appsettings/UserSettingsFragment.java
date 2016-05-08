@@ -21,11 +21,21 @@ public class UserSettingsFragment extends PreferenceFragment {
     private Preference.OnPreferenceChangeListener changeListener;
     private SharedPreferences prefs;
 
+    /**
+     * Creates the inflated view inside UserSettingsActivity
+     * and initiates view components.
+     * @param savedInstanceState
+     */
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initiateViewComponents();
     }
+
+    /**
+     * Adds xml-layout file, finds and initiates preference references and sets an onPreferenceChangedListener
+     */
     private void initiateViewComponents(){
         addPreferencesFromResource(R.xml.settings);
         languagePref = (ListPreference) findPreference(getString(R.string.language_pref_key));
@@ -33,6 +43,9 @@ public class UserSettingsFragment extends PreferenceFragment {
         languagePref.setOnPreferenceChangeListener(changeListener);
     }
 
+    /**
+     * Sets the onChangedListener
+     */
     public void setPrefsChangedListener() {
         changeListener = new Preference.OnPreferenceChangeListener() {
             @Override
@@ -42,6 +55,13 @@ public class UserSettingsFragment extends PreferenceFragment {
         };
     }
 
+    /**
+     * Stores values inside sharedPreferences before the default SharedPreferences has noticed changes,
+     * stores the new values and loads the view again so the language selection is visually present to the user.
+     * @param pref preference that was changed
+     * @param newValue the new value
+     * @return boolean, true if the preference was changed
+     */
     public boolean prefsChanged(Preference pref, Object newValue) {
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         Locale l;

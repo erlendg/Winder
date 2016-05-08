@@ -47,12 +47,16 @@ public class AlertOverViewActivity extends AppCompatActivity {
     private ForecastRepo forecastDataSource;
     private DBService dbService;
     private CollapsingToolbarLayout collapsingToolbar;
-    private TextView preferencesTitle;
-    private GridLayout preferencesTable;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewPagerAdapter;
 
+    /**
+     * Creates the detailed view of the AlertSettings (AlertOverViewActivity)
+     * initiates the view, database service (DBService), databinding of an AlertSettings object in xml file,
+     * toolbar, view components and tabs.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
         //Enables back-button:
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //Initiates the tabs which inflates the EventListFragment and SettingsFragment trough ViewPagerAdapter:
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.tab_viewpager);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -84,24 +89,15 @@ public class AlertOverViewActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-
-        //Sets the toolbar name to the location name (doesn't work in xml)
+        //Sets the toolbar name to the location name:
         collapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
         collapsingToolbar.setTitle(alertSettings.getLocation().getName());
-        // Sets the action of the blue floating action button:
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_edit);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-        //Sets the onclick-listener to the preference-title field:
-        //preferencesTitle = (TextView) findViewById(R.id.preferences_title);
-        preferencesTable = (GridLayout) findViewById(R.id.preferences_table);
     }
-    //Sets the onclick-listener to the preference-title field:
+
+    /**
+     * Deletes the selected AlertSettings object from database
+     * @param v the view of the delete button: activity_alert_over_view.xml
+     */
     public void onDeleteButtonClick(View v){
         new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.delete_message))
@@ -122,10 +118,13 @@ public class AlertOverViewActivity extends AppCompatActivity {
                 .setNegativeButton(android.R.string.no, null).show();
     }
 
+    /**
+     * For the inflated fragment classes only.
+     * @return AlertSettings object.
+     */
     public AlertSettings getAlertSettings(){
         return alertSettings;
     }
-
 
     /**
      * Method to cancel a currently scheduler AlarmManager alarm based on the original Intent's id.
@@ -139,6 +138,11 @@ public class AlertOverViewActivity extends AppCompatActivity {
         alarmManager.cancel(toDo);
 
     }
+
+    /**
+     * Starts AlertSettingsActivity if the user wishes to edit the weather settings for the Alert (AlertSettings)
+     * @param v view of the edit button:
+     */
     public void onEditAlertButtonClick(View v){
         Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
         intent.putExtra("Location", alertSettings.getLocation());
@@ -149,27 +153,36 @@ public class AlertOverViewActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    /**
+     * Populates DefaultSharedPreferences and SharedPreferences for the edit AlertSettings view:
+     * @param asd the AlertSettings object
+     */
     public void makePreferencesFromObject(AlertSettings asd){
         SharedPreferences defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences sharedPrefs = getSharedPreferences(getString(R.string.name_of_prefs_saved), this.MODE_PRIVATE);
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
         SharedPreferences.Editor editor2 = sharedPrefs.edit();
         ArrayList<String> dayElements = new ArrayList<>();
+        //Temperature:
         if(asd.getTempMin() != asd.DEFAULT_TEMP ){
             editor.putBoolean(getString(R.string.temp_pref_key), true);
             editor2.putInt(getString(R.string.temp_pref_key_max), asd.getTempMax());
             editor2.putInt(getString(R.string.temp_pref_key_min), asd.getTempMin());
+            //Precipitation:
         }if(asd.getPrecipitationMin() != asd.DEFAULT_WIND_AND_PRECIP ){
             editor.putBoolean(getString(R.string.precip_pref_key), true);
             CustomPrecipRangePreference.putDouble(editor2, getString(R.string.precip_pref_key_min), asd.getPrecipitationMin());
             CustomPrecipRangePreference.putDouble(editor2, getString(R.string.precip_pref_key_max), asd.getPrecipitationMax());
+            // Wind Speed:
         }if(asd.getWindSpeedMin() != asd.DEFAULT_WIND_AND_PRECIP ){
             editor.putBoolean(getString(R.string.windspeed_pref_key), true);
             editor2.putInt(getString(R.string.windspeed_pref_key_min), (int) asd.getWindSpeedMin());
             editor2.putInt(getString(R.string.windspeed_pref_key_max), (int) asd.getWindSpeedMax());
         }
+        //Sun:
         if(asd.isCheckSun()) editor.putBoolean(getString(R.string.sunny_pref_key), true);
-
+        //Weekdays:
         if(asd.isMon()) dayElements.add("0");
         if(asd.isTue()) dayElements.add("1");
         if(asd.isWed()) dayElements.add("2");
@@ -182,12 +195,14 @@ public class AlertOverViewActivity extends AppCompatActivity {
             Set<String> days = new HashSet<>(Arrays.asList(saveElements));
             editor.putStringSet(getString(R.string.weekdays_pref_key), days);
         }
+        // Wind direction:
         if(asd.getWindDirection()!= null){
             editor.putBoolean(getString(R.string.winddir_pref_key), true);
             editor2.putString(getString(R.string.winddir_select_key), asd.getWindDirection());
             String[] windArray = getResources().getStringArray(R.array.windDirection_array);
             String[] winddir = asd.getWindDirection().split(", ");
             ArrayList<String> result = new ArrayList<>();
+            // Since it is stored as a string it needs to be split and then stored inside a new string set for the Preferences:
             for(int i = 0; i < winddir.length; i++){
              for(int j = 0; j <windArray.length; j++){
                  //Log.i("INDEX", "winddir i: "+i+ " windarray j: " + j +" winddirl" + winddir.length);
@@ -199,6 +214,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
             Set<String> days = new HashSet<>(Arrays.asList(saveElements));
             editor.putStringSet(getString(R.string.winddir_select_key), days);
         }
+        //Check interval:
         String[] checkintr = getResources().getStringArray(R.array.windDirection_array);
         if(asd.getCheckInterval() == 1.0)editor.putString(getString(R.string.checkintr_pref_key), ""+0);
         if(asd.getCheckInterval() == 2.0)editor.putString(getString(R.string.checkintr_pref_key), ""+1);
@@ -211,11 +227,21 @@ public class AlertOverViewActivity extends AppCompatActivity {
         editor.apply();
         editor2.apply();
     }
+
+    /**
+     * Sets a right to left animation if back button is pressed.
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.pull_in_left_anim, R.anim.push_out_right_anim);
     }
+
+    /**
+     * Builds the menu back/homescreen arrow symbol
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

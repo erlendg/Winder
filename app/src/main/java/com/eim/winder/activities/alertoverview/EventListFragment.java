@@ -33,7 +33,13 @@ public class EventListFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    /**
+     * Inflates the weather event list inside AlertOverViewActivity
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return view with the forecast list
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -42,11 +48,13 @@ public class EventListFragment extends Fragment {
         alertSettings = ((AlertOverViewActivity) getActivity()).getAlertSettings();
         forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettings.getId());
         eventList = (RecyclerView) v.findViewById(R.id.event_listview);
+        //Populates the weather/forecast event list:
         if(forecastList != null) {
             listAdapter = new EventListRVAdapter(forecastList);
             llmanager = new LinearLayoutManager(getContext());
             eventList.setLayoutManager(llmanager);
             eventList.setAdapter(listAdapter);
+            //If there is no forecasts (or weather events found) the display a message:
             if (forecastList.isEmpty()) {
                 TextView emptyListText = (TextView) v.findViewById(R.id.empty_event_list);
                 emptyListText.setVisibility(View.VISIBLE);

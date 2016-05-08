@@ -21,28 +21,25 @@ import com.eim.winder.db.AlertSettings;
  */
 public class SettingsFragment extends Fragment {
     private static String TAG = "SettingsFragment";
-    private LinearLayout fromToLayout;
-    private LinearLayout tempLayout;
-    private LinearLayout precipLayout;
-    private LinearLayout windLayout;
-    private LinearLayout windDirLayout;
-    private LinearLayout sunLayout;
-    private TextView sunCheck;
-    private AlertOverViewActivity activity;
-    private AlertSettings alertSettings;
 
 
     public SettingsFragment() {
         // Required empty public constructor
     }
 
-
+    /**
+     * Inflates the weather settings for the selected AlertSettings and removes default unused values.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         FragmentSettingsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
-        activity = (AlertOverViewActivity) getActivity();
-        alertSettings = activity.getAlertSettings();
+        AlertOverViewActivity activity = (AlertOverViewActivity) getActivity();
+        AlertSettings alertSettings = activity.getAlertSettings();
         binding.setAlertsettings(alertSettings);
         binding.setLocation(alertSettings.getLocation());
         View v = binding.getRoot();
@@ -54,19 +51,19 @@ public class SettingsFragment extends Fragment {
     }
 
     /**
-     * Removes defaultvalues from settingsview, so only set preferences is shown
-     * @param view
-     * @param asd
+     * Removes default values from the settings view, so only set preferences is shown
+     * @param view that displayed the settings table fragment_settings.xml
+     * @param asd the AlertSettings object
      */
     public void removeDefaultValues(View view, AlertSettings asd){
         //Log.d(TAG, "prøver å oppdatere...");
-        fromToLayout = (LinearLayout) view.findViewById(R.id.row2_fromTo);
-        tempLayout = (LinearLayout) view.findViewById(R.id.row3_temp);
-        precipLayout = (LinearLayout) view.findViewById(R.id.row4_precip);
-        windLayout = (LinearLayout) view.findViewById(R.id.row5_wind);
-        windDirLayout = (LinearLayout)view.findViewById(R.id.row6_windDir);
-        sunLayout = (LinearLayout)view.findViewById(R.id.row7_sun);
-        sunCheck = (TextView) view.findViewById(R.id.row7_column2);
+        LinearLayout fromToLayout = (LinearLayout) view.findViewById(R.id.row2_fromTo);
+        LinearLayout tempLayout = (LinearLayout) view.findViewById(R.id.row3_temp);
+        LinearLayout precipLayout = (LinearLayout) view.findViewById(R.id.row4_precip);
+        LinearLayout windLayout = (LinearLayout) view.findViewById(R.id.row5_wind);
+        LinearLayout windDirLayout = (LinearLayout) view.findViewById(R.id.row6_windDir);
+        LinearLayout sunLayout = (LinearLayout) view.findViewById(R.id.row7_sun);
+        TextView sunCheck = (TextView) view.findViewById(R.id.row7_column2);
         if(asd.getTempMin() == asd.DEFAULT_TEMP && asd.getPrecipitationMin() == asd.DEFAULT_WIND_AND_PRECIP && asd.getWindSpeedMin() == asd.DEFAULT_WIND_AND_PRECIP ){
             fromToLayout.setVisibility(View.GONE);
             tempLayout.setVisibility(View.GONE);
@@ -85,7 +82,6 @@ public class SettingsFragment extends Fragment {
                 windLayout.setVisibility(View.GONE);
                 //Log.d(TAG, "prøver å oppdatere vind");
             }
-
         }
         if (asd.getWindDirection() == null) {
             windDirLayout.setVisibility(View.GONE);
@@ -96,6 +92,13 @@ public class SettingsFragment extends Fragment {
             sunCheck.setText(getString(R.string.yes));
         }
     }
+
+    /**
+     * Manually sets the field "check interval" from AlertSettings so the user sees string value and not a default
+     * double value.
+     * @param checkIntr number of the check interval
+     * @param v the view of the components that needs to be updated
+     */
     private void setCheckInterval(double checkIntr, View v){
         TextView checkText = (TextView) v.findViewById(R.id.row9_column2);
         String[] intrStringArray = getResources().getStringArray(R.array.checkinterval_array);

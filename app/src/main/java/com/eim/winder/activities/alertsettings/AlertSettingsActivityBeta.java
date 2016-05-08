@@ -39,6 +39,15 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     private boolean updateMode;
     Bundle bundle;
 
+    /**
+     * Creates the AlertSettingsActivity content view: alertprefsettings_layout.xml,
+     * sets toolbar title, inflate the preferenceFragment containing the settings view,
+     * fetches the selected Location form the bundle extras form the previous activity,
+     * sets the updateMode value (if the previous activity is the AlertOverViewActivity)
+     * and
+     * @param savedInstanceState
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,13 +65,17 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
 
     /**
      * Deletes or clears all saved preferences from context based on preference name.
+     * Only holds on the app settings preferences (Mobile data and language) the rest
+     * needs to be cleared before next initialization of the view.
      * @param context
-     * @param sharedPrefsName
+     * @param sharedPrefsName Needs name of the shared preference which is not the default to clear it.
      */
     public void clearPreferencesSaved(Context context,String sharedPrefsName ) {
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs = getSharedPreferences(sharedPrefsName, context.MODE_PRIVATE);
+        //Needs to still be saved
         String selectedLanguage = defaultSharedPrefs.getString(getString(R.string.language_pref_key), "default");
+        boolean useMobileData = defaultSharedPrefs.getBoolean("prefUseMobileData", true);
         SharedPreferences.Editor editor = defaultSharedPrefs.edit();
         SharedPreferences.Editor editor2 = sharedPrefs.edit();
         editor.clear();
@@ -70,36 +83,52 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         editor2.clear();
         editor2.commit();
 
-        //Puts locale back in shared preferences.
+        //Puts locale and network settings back in shared preferences.
         editor.putString(getString(R.string.language_pref_key), selectedLanguage);
+        editor.putBoolean(getString(R.string.mobile_network_pref_key), useMobileData);
         editor.apply();
-
 
     }
 
-
+    /**
+     * If canceled, go back to MainActivity.
+     * @param v the view of the cancel button
+     */
     public void onCancelButtonClick(View v) {
         clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved) );
         finish();
     }
 
+    /**
+     * Update the reference to shared preferences.
+     */
     private void updatePreferences(){
         sharedPrefs = getSharedPreferences(getResources().getString(R.string.name_of_prefs_saved), getApplicationContext().MODE_PRIVATE);
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
+
+    /**
+     * Gets called when the user clicks on the save button
+     * @param v the view of the save button
+     */
     public void onSaveButtonClick(View v) {
         updatePreferences();
+        //Makes an object out of the SharedPreferences settings:
         AlertSettings asd = makeObjFromPreferences(defaultSharedPrefs, sharedPrefs);
+        //If the user did not select something then tell him:
         if(!haveSelectedSomething){
             Snackbar.make(v, getString(R.string.no_settings_selected), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             return;
         }
+        //If the user has checked the wind direction but has not selected witch wind directions he prefers
+        //then tell him:
         if(asd.getWindDirection() != null) {
             if (asd.getWindDirection().equals("NOT VALID")) {
                 Snackbar.make(v, getString(R.string.wind_dir_not_chosen), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 return;
             }
         }
+        //Save the generated object to database:
         boolean ok = saveAlertSettings(asd);
         clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
         if (!ok) {
@@ -111,6 +140,11 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves the generated object to the database.
+     * @param asd the AlertSettings object that needs to be saved.
+     * @return true if saved successfully.
+     */
     public boolean saveAlertSettings(AlertSettings asd) {
         Log.i(TAG, "saveAlertSettings()");
         if(updateMode){
@@ -127,6 +161,12 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Makes an object form the DefaultSharedPreferences and the custom SharedPreferences (for temperature, precipitation, and wind speed)
+     * @param defaultSharedPrefs the default
+     * @param sharedPrefs the custom
+     * @return an AlertSettings Object
+     */
     public AlertSettings makeObjFromPreferences(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
         AlertSettings asd = new AlertSettings();
         asd.setLocation(locationSelected);
@@ -199,8 +239,6 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
 
     @Override
     public void finish() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
         super.finish();
     }
 
@@ -225,10 +263,22 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
 
         //Toast.makeText(this, "Alarm scheduled for Id: " + id + "!", Toast.LENGTH_LONG).show();
     }
+
+    /**
+     * For the AlertSettingsPrefFragment.java, if updatemode is true then the previous
+     * activity was AlertOverViewActivity and the user whish to update an already existing
+     * AlertSettings object in the database. Therefore it needs to initiate the value with the old
+     * object values
+     * @return boolean
+     */
     public boolean getUpdateMode(){
         return updateMode;
     }
 
+    /**
+     * If the app gets destroyed or the backbutton gets pressed then the Preferences for the AlertSettings-screen
+     * needs to be cleared.
+     */
     @Override
     protected void onDestroy() {
         clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));

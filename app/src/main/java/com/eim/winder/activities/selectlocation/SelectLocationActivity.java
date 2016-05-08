@@ -1,6 +1,5 @@
 package com.eim.winder.activities.selectlocation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.eim.winder.R;
@@ -30,7 +28,6 @@ import java.util.ArrayList;
 public class SelectLocationActivity extends AppCompatActivity {
     private final static String TAG = "SelectLocationActivity";
     private static SelectLocationActivity instance;
-    private LocationRepo locationDataSource;
     private DBService dbService;
     private ArrayList<Location> searchLocations;
     private AutoCompleteTextView searchView;
@@ -41,10 +38,16 @@ public class SelectLocationActivity extends AppCompatActivity {
     private ImageButton windButton;
     private ImageButton hikingButton;
     private ImageButton rainButton;
-    private ImageButton cutomButton;
+    private ImageButton customButton;
     SharedPreferences defaultSharedPrefs;
     SharedPreferences sharedPrefs;
 
+    /**
+     * Creates the SelectLocationActivity view. initiate the database service DBService, sets content view
+     * builds the AutoCompleteTextView based on all the selectable Locations in the database.
+     * Also initiates the template buttons.
+     * @param savedInstanceState Activity bundle
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +55,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.choose_location);
         instance = this;
         // instantiate datasource
-        locationDataSource = new LocationRepo(this);
+        LocationRepo locationDataSource = new LocationRepo(this);
         dbService = new DBService(locationDataSource);
         searchLocations = dbService.getAllLocations();
 
@@ -67,15 +70,30 @@ public class SelectLocationActivity extends AppCompatActivity {
                 Log.d("############", locationSelected.getId() + " " + locationSelected.toString());
             }
         });
+        //Initiates template buttons:
+        initiateButtons();
 
+    }
+
+    /**
+     * Initiates the template buttons and set the custom button as selected.
+     */
+    public void initiateButtons(){
         sunButton = (ImageButton) findViewById(R.id.template_sun);
         snowButton = (ImageButton) findViewById(R.id.template_snow);
         windButton = (ImageButton) findViewById(R.id.template_wind);
         hikingButton = (ImageButton) findViewById(R.id.template_hiking);
         rainButton = (ImageButton) findViewById(R.id.template_rain);
-        cutomButton = (ImageButton) findViewById(R.id.template_custom);
-        cutomButton.setSelected(true);
+        customButton = (ImageButton) findViewById(R.id.template_custom);
+        customButton.setSelected(true);
     }
+
+    /**
+     * Custom button selected listener witch generates a radio button effect so the user only can choose
+     * one button at the time.
+     * @param view needs the view of the buttons because the click action is initiated in the location_layout.xml-file
+     *             in the onClick parameter.
+     */
     public void onTemplateButtonClick(View view)
     {
         switch(view.getId()) {
@@ -85,7 +103,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 windButton.setSelected(false);
                 hikingButton.setSelected(false);
                 rainButton.setSelected(false);
-                cutomButton.setSelected(false);
+                customButton.setSelected(false);
                 break;
 
             case R.id.template_snow:
@@ -94,7 +112,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 windButton.setSelected(false);
                 hikingButton.setSelected(false);
                 rainButton.setSelected(false);
-                cutomButton.setSelected(false);
+                customButton.setSelected(false);
                 break;
 
             case R.id.template_wind:
@@ -103,7 +121,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 sunButton.setSelected(false);
                 hikingButton.setSelected(false);
                 rainButton.setSelected(false);
-                cutomButton.setSelected(false);
+                customButton.setSelected(false);
                 break;
             case R.id.template_hiking:
                 hikingButton.setSelected(true);
@@ -111,7 +129,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 sunButton.setSelected(false);
                 windButton.setSelected(false);
                 rainButton.setSelected(false);
-                cutomButton.setSelected(false);
+                customButton.setSelected(false);
                 break;
             case R.id.template_rain:
                 rainButton.setSelected(true);
@@ -119,10 +137,10 @@ public class SelectLocationActivity extends AppCompatActivity {
                 sunButton.setSelected(false);
                 hikingButton.setSelected(false);
                 windButton.setSelected(false);
-                cutomButton.setSelected(false);
+                customButton.setSelected(false);
                 break;
             case R.id.template_custom:
-                cutomButton.setSelected(true);
+                customButton.setSelected(true);
                 rainButton.setSelected(false);
                 snowButton.setSelected(false);
                 sunButton.setSelected(false);
@@ -131,6 +149,12 @@ public class SelectLocationActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    /**
+     * Initiates or pre-populates the SharedPreferences for the AlertSettings object for the location based on
+     * which template button who is selected.
+     * @return true if any of the buttons except the custom template button is selected.
+     */
     public boolean initializeTemplatePreferences(){
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefs = getSharedPreferences(getString(R.string.name_of_prefs_saved), this.MODE_PRIVATE);
@@ -194,6 +218,11 @@ public class SelectLocationActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    /**
+     * Starts the AlertSettingsActivityBeta if the user has selected a location from the auto complete textview
+     * @param v the view of the next button: location_layout.xml
+     */
     public void onNextButtonClick(View v) {
         if (locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())) {
             Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
@@ -208,23 +237,25 @@ public class SelectLocationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Finish the activity if the user wish to cancel the SelectLocationActivity.
+     * @param v the view of the cancel button: location_layout.xml
+     */
     public void onCancelButtonClick(View v) {
         finish();
     }
 
-    @Override
-    public void finish() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
-        super.finish();
-    }
+    /**-------------------------- METHODS FOR TESTING ONY ----------------------------
+     * For testing only. Sets the selected location
+     * @param loc the location to be selected.
+     */
     public void setLocation(Location loc){
         locationSelected = loc;
     }
 
     /**
      * For testing only.
-     * @return
+     * @return instance of the SelectLocationActivity
      */
     public static SelectLocationActivity getInstance(){
         return instance;

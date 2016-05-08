@@ -40,16 +40,18 @@ public class AlarmReceiver extends BroadcastReceiver{
         Integer id = intent.getIntExtra("id", -1);
         String url = intent.getStringExtra("url");
         int compareResult;
+        //if the App is terminated then the locale (language) needs to bee updated:
+        //The notification need to displayed in the right language.
+        Locale language = context.getResources().getConfiguration().locale;
+        MainActivity.setApplicationLocale(language,context);
         //Finding the alertsettings-object  based on the Id contained in the received intent:
         DBService dbService = new DBService(context);
-
         AlertSettings settings = dbService.getCompleteAlertSettingsById(id);
 
         CompareAXService compare = new CompareAXService(context, settings, url);
 
         //run the xml-parser:
         boolean div = compare.runHandleXML();
-        Locale language = context.getResources().getConfiguration().locale;
 
         //if the parsing is done, run findAllOccurences:
         if(div) {
@@ -70,6 +72,11 @@ public class AlarmReceiver extends BroadcastReceiver{
         //Toast.makeText(context, "sup? " + intent.getStringExtra("div"), Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * Updates the icon and the AlertSettings object if MainActivity is running.
+     * @param compareResult
+     * @param settings
+     */
     private void updateAlertSettingsIcon(int compareResult, AlertSettings settings){
         Log.i(TAG, "MainActivity in foreground");
         MainActivity activity = MainActivity.getInstance();

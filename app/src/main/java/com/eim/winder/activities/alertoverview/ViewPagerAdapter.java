@@ -10,8 +10,10 @@ import java.util.List;
 
 /**
  * Created by Mari on 16.03.2016.
+ * Custom view pager adapter for the tabbed layout in AlertOverViewActivity
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
+
 
     private final List<Fragment> fragmentList = new ArrayList<>();
     private final List<String> fragmentTitleList = new ArrayList<>();
@@ -29,11 +31,22 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return fragmentList.size();
     }
+
+    /**
+     * Adds the fragments in the tabbed layout
+     * @param fragment item
+     * @param title of the fragment
+     */
     public void addFragment(Fragment fragment, String title){
         fragmentList.add(fragment);
         fragmentTitleList.add(title);
     }
 
+    /**
+     *
+     * @param position of the fragment
+     * @return title of the fragment
+     */
     @Override
     public CharSequence getPageTitle(int position) {
         return fragmentTitleList.get(position);
