@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 /**
  * Created by Mari on 08.02.2016.
+ * Class which stores the pre-populated database objects for the selectable loacations for weather alerts.
+ * Need to implement Parcelable (similar to Serializable but faster) so that the objects can be sent between activities trough intents and extras.
  */
 public class Location implements Parcelable{
     private int id;

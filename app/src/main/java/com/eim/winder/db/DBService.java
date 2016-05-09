@@ -19,6 +19,11 @@ public class DBService {
 
     public DBService(){}
 
+    /**
+     * Multiple constructors for testing and different use of repo-objects.
+     * @param context is needed to initialize database connection.
+     */
+
     public DBService(Context context){
         this.locationDataSource = new LocationRepo(context);
         this.alertDataSource = new AlertSettingsRepo(context);
@@ -53,23 +58,37 @@ public class DBService {
         this.forecastDataSource = forecastDataSource;
     }
 
+    /**
+     * The AlertSettings object gets stored in the database only with the corresponding Location id,
+     * therefore the Locations need to be fetched afterwards in LocationRepo based on the id inside
+     * the AlertSettings array object.
+     * Contains a connection to AlertSettingsRepo and LocationRepo at the same time.
+     * The database connection gets sent from AlertSettingsRepo to LocationRepo.
+     * This is to avoid opening and closing the database connection multiple times.
+     * @return a ArrayList of AlertSettingsObjects containing Location objects.
+     */
     public ArrayList<AlertSettings> getAllAlertSettingsAndLocations() {
         ArrayList<AlertSettings> results = alertDataSource.getAllAlertSettings();
         Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ results.size());
         if(results != null && results.size() > 0){
-            //numOfLocations= results.size();
             for(int i = 0; i < results.size(); i++){
                 int id = (int) results.get(i).getLocation().getId();
+                //Sends the connecton to LocatonRepo(datasource):
                 Location loc =  locationDataSource.getLocationFromID(id, alertDataSource.getReadDB());
                 results.get(i).setLocation(loc);
             }
-        }/*else {
-           Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ 0);
-           results = Locations.getTestAlertList();
-        }*/
+        }
+        //closes the database connection:
         locationDataSource.close();
         return results;
     }
+
+    /**
+     * The database connection gets sent from AlertSettingsRepo to LocationRepo.
+     * This is to avoid opening and closing the database connection multiple times.
+     * @param id of needed AlertSettings
+     * @return complete AlertSettings object with
+     */
     public AlertSettings getCompleteAlertSettingsById(int id){
         Log.i(TAG, "getCompleteAlertSettingsById()");
         AlertSettings result= alertDataSource.getAlertSettingById(id);
@@ -79,20 +98,43 @@ public class DBService {
         alertDataSource.close();
         return result;
     }
+
+    /**
+     * Deletes AlertSettings objects and saved forecasts for this object in database.
+     * @param alertID Id of AlertSettings
+     * @return true if AlertSettings object was successfully deleted
+     */
     public boolean deleteAlertSettingAndForecasts(int alertID){
         Log.i(TAG, "deleteAlertSettingAndForecasts("+ alertID +")");
         forecastDataSource.deleteForecastByAlertSettingsID(alertID);
         return alertDataSource.deleteAlertSettings(alertID);
     }
+
+    /**
+     *
+     * @return ArrayList of all locations in database
+     */
     public ArrayList<Location> getAllLocations(){
         Log.i(TAG, "getAllLocations()");
         return locationDataSource.getAllLocations();
     }
 
+    /**
+     * Adds a AlertSettings object to database
+     * @param alertSettings new object to be stored
+     * @return number of columns affected in database
+     */
+
     public long addAlertSettings(AlertSettings alertSettings){
         Log.i(TAG, "addAlertSettings()");
         return alertDataSource.insertAlertSettings(alertSettings);
     }
+
+    /**
+     * Update an already existing AlertSettings object.
+     * @param alertSettings Object containing the values to be updated
+     * @return true if successfully updated existing object
+     */
 
     public boolean updateAlertSettings(AlertSettings alertSettings){
         long ok = alertDataSource.updateAlertSettings(alertSettings);
@@ -104,9 +146,22 @@ public class DBService {
             return false;
         }
     }
+
+    /**
+     * Adds a list of forecasts for a AlertSettings in database
+     * @param forecasts the list to be stored
+     * @param alertId the id of AlertSettings
+     * @return true if successfully stored
+     */
     public boolean addForecastList(ArrayList<Forecast> forecasts, int alertId){
         return forecastDataSource.insertForecastList(forecasts, alertId);
     }
+
+    /**
+     * For testing purposes only.
+     * @param id of the object
+     * @return Location object
+     */
     public Location getLocationFromId(int id){
         return locationDataSource.getLocationFromID(id);
     }

@@ -54,7 +54,6 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         setContentView(R.layout.alertprefsettings_layout);
         getSupportActionBar().setTitle(R.string.settings_for_alert);
         getFragmentManager().beginTransaction().replace(R.id.prefFragment, new AlertSettingsPrefFragment()).commit();
-        PreferenceManager.setDefaultValues(this, R.xml.alert_preferences, true);
         bundle = getIntent().getExtras();
         locationSelected = bundle.getParcelable("Location");
         updateMode = bundle.getBoolean("edit");
@@ -142,16 +141,19 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
 
     /**
      * Saves the generated object to the database.
+     * If the updateMode is true: update an already exixting object based on the bundle id alertID
      * @param asd the AlertSettings object that needs to be saved.
      * @return true if saved successfully.
      */
     public boolean saveAlertSettings(AlertSettings asd) {
         Log.i(TAG, "saveAlertSettings()");
         if(updateMode){
+            //Update object:
             asd.setId(bundle.getInt("alertID"));
             if(dbService.updateAlertSettings(asd))scheduleAlarm(asd.getId(), asd.getCheckInterval());
             return true;
         }else {
+            //Save new object:
             long ok = dbService.addAlertSettings(asd);
             if((int) ok != -1){
                 scheduleAlarm((int) ok, asd.getCheckInterval());

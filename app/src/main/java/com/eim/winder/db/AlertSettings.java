@@ -8,6 +8,8 @@ import com.eim.winder.R;
 
 /**
  * Created by Mari on 03.02.2016.
+ * The Class that stores the object with the weather alert settings
+ * Need to implement Parcelable (similar to Serializable but faster) so that the objects can be sent between activities trough intents and extras.
  */
 public class AlertSettings implements Parcelable{
     public static int DEFAULT_TEMP = -274;
