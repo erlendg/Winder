@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.eim.winder.R;
 import com.eim.winder.db.AlertSettings;
+import com.eim.winder.db.DBService;
 import com.eim.winder.db.Forecast;
-import com.eim.winder.db.ForecastRepo;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class EventListFragment extends Fragment {
     private RecyclerView eventList;
     private ArrayList<Forecast> forecastList;
     private EventListRVAdapter listAdapter;
-    private ForecastRepo datasource;
+    private DBService dbService;
     private AlertSettings alertSettings;
     private LinearLayoutManager llmanager;
 
@@ -43,11 +43,11 @@ public class EventListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        datasource = new ForecastRepo(getContext());
-        View v = inflater.inflate(R.layout.fragment_event_list, container, false);
+        dbService = new DBService(getContext());
+        View view = inflater.inflate(R.layout.fragment_event_list, container, false);
         alertSettings = ((AlertOverViewActivity) getActivity()).getAlertSettings();
-        forecastList = datasource.getAllForecastsByAlertSettingsID(alertSettings.getId());
-        eventList = (RecyclerView) v.findViewById(R.id.event_listview);
+        forecastList = dbService.getForecastsById(alertSettings.getId());
+        eventList = (RecyclerView) view.findViewById(R.id.event_listview);
         //Populates the weather/forecast event list:
         if(forecastList != null) {
             listAdapter = new EventListRVAdapter(forecastList);
@@ -56,11 +56,11 @@ public class EventListFragment extends Fragment {
             eventList.setAdapter(listAdapter);
             //If there is no forecasts (or weather events found) the display a message:
             if (forecastList.isEmpty()) {
-                TextView emptyListText = (TextView) v.findViewById(R.id.empty_event_list);
+                TextView emptyListText = (TextView) view.findViewById(R.id.empty_event_list);
                 emptyListText.setVisibility(View.VISIBLE);
             }
         }
-        return v;
+        return view;
     }
 
 }

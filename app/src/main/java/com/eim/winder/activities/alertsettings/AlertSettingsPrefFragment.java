@@ -46,6 +46,14 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         //The current activity:
         activity = (AlertSettingsActivityBeta) getActivity();
         PreferenceManager.setDefaultValues(activity.getApplicationContext(), R.xml.alert_preferences, true);
+        buildPrefViewComponents();
+        initiateTemplatePrefs();
+    }
+
+    /**
+     * Finds and builds view components
+     */
+    private void buildPrefViewComponents(){
         //Visible CheckBoxPreferences and ListPreferences:
         tempPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.temp_pref_key));
         precipPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.precip_pref_key));
@@ -69,14 +77,11 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         windDirPref.setOnPreferenceChangeListener(changeListener);
         windDir.setOnPreferenceChangeListener(changeListener);
         weekdays.setOnPreferenceChangeListener(changeListener);
-
+        //remove the non-selected preferences from screen:
         getPreferenceScreen().removePreference(tempRange);
         getPreferenceScreen().removePreference(precipRange);
         getPreferenceScreen().removePreference(windSpeedRange);
         getPreferenceScreen().removePreference(windDir);
-
-        initializeTemplatePrefs();
-
     }
     /**
      * Initializes the changeLister with OnPreferenceChangeListener
@@ -250,7 +255,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
     /**
      * Builds the PreferenceScreen based on selected weather template form SelectLocationActivity:
      */
-    public void initializeTemplatePrefs(){
+    public void initiateTemplatePrefs(){
         defaultPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if(tempPref.isChecked()) {
             getPreferenceScreen().addPreference(tempRange);

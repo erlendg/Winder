@@ -177,6 +177,7 @@ public class AlertSettingsRepo {
         SQLiteDatabase db = getReadDB();
         //Log.i(TAG, "getAllAlertSettings()");
         ArrayList<AlertSettings> alertsettings = new ArrayList<>();
+        // 10 is the current limit:
         Cursor c = db.query(table, null, null, null, null, null, null, "10");
         c.moveToFirst();
         while(!c.isAfterLast()) {

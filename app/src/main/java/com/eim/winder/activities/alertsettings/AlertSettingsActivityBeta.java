@@ -1,6 +1,5 @@
 package com.eim.winder.activities.alertsettings;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -88,7 +87,6 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         editor.apply();
 
     }
-
     /**
      * If canceled, go back to MainActivity.
      * @param v the view of the cancel button
@@ -97,7 +95,6 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved) );
         finish();
     }
-
     /**
      * Update the reference to shared preferences.
      */
@@ -105,25 +102,24 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         sharedPrefs = getSharedPreferences(getResources().getString(R.string.name_of_prefs_saved), getApplicationContext().MODE_PRIVATE);
         defaultSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
-
     /**
      * Gets called when the user clicks on the save button
-     * @param v the view of the save button
+     * @param view the view of the save button
      */
-    public void onSaveButtonClick(View v) {
+    public void onSaveButtonClick(View view) {
         updatePreferences();
         //Makes an object out of the SharedPreferences settings:
         AlertSettings asd = makeObjFromPreferences(defaultSharedPrefs, sharedPrefs);
         //If the user did not select something then tell him:
         if(!haveSelectedSomething){
-            Snackbar.make(v, getString(R.string.no_settings_selected), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Snackbar.make(view, getString(R.string.no_settings_selected), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             return;
         }
         //If the user has checked the wind direction but has not selected witch wind directions he prefers
         //then tell him:
         if(asd.getWindDirection() != null) {
             if (asd.getWindDirection().equals("NOT VALID")) {
-                Snackbar.make(v, getString(R.string.wind_dir_not_chosen), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, getString(R.string.wind_dir_not_chosen), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 return;
             }
         }
@@ -131,7 +127,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
         boolean ok = saveAlertSettings(asd);
         clearPreferencesSaved(this, getString(R.string.name_of_prefs_saved));
         if (!ok) {
-            Snackbar.make(v, getString(R.string.something_whent_wrong), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Snackbar.make(view, getString(R.string.something_whent_wrong), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         } else {
             Toast.makeText(this, R.string.saved_toast, Toast.LENGTH_LONG).show();
             //Finishes the Activity and return to MainActivity
@@ -142,21 +138,21 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     /**
      * Saves the generated object to the database.
      * If the updateMode is true: update an already exixting object based on the bundle id alertID
-     * @param asd the AlertSettings object that needs to be saved.
+     * @param alertSettings the AlertSettings object that needs to be saved.
      * @return true if saved successfully.
      */
-    public boolean saveAlertSettings(AlertSettings asd) {
+    public boolean saveAlertSettings(AlertSettings alertSettings) {
         Log.i(TAG, "saveAlertSettings()");
         if(updateMode){
             //Update object:
-            asd.setId(bundle.getInt("alertID"));
-            if(dbService.updateAlertSettings(asd))scheduleAlarm(asd.getId(), asd.getCheckInterval());
+            alertSettings.setId(bundle.getInt("alertID"));
+            if(dbService.updateAlertSettings(alertSettings))scheduleAlarm(alertSettings.getId(), alertSettings.getCheckInterval());
             return true;
         }else {
             //Save new object:
-            long ok = dbService.addAlertSettings(asd);
+            long ok = dbService.addAlertSettings(alertSettings);
             if((int) ok != -1){
-                scheduleAlarm((int) ok, asd.getCheckInterval());
+                scheduleAlarm((int) ok, alertSettings.getCheckInterval());
                 return true;
             }
         }
@@ -246,22 +242,22 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
 
     /**
      *
-     * @param id
+     * @param alertId
      * @param interval
      */
-    public void scheduleAlarm(int id, double interval){
+    public void scheduleAlarm(int alertId, double interval){
         long intervalLong = (long)interval*3600000; //  3600000 = millisekund i timen
         long startTime = 5000;
         long nowTime = new GregorianCalendar().getTimeInMillis() + startTime;
-        Log.e(TAG, "scheduleAlarm: " + id);
+        Log.e(TAG, "scheduleAlarm: " + alertId);
         Intent intentAlarm = new Intent(this, AlarmReceiver.class);
-        intentAlarm.putExtra("id", id);
+        intentAlarm.putExtra("id", alertId);
         intentAlarm.putExtra("url", locationSelected.getXmlURL() );
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        PendingIntent toDo = PendingIntent.getBroadcast(this, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alertId, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, toDo);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, pendingIntent);
 
         //Toast.makeText(this, "Alarm scheduled for Id: " + id + "!", Toast.LENGTH_LONG).show();
     }
