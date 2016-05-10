@@ -20,7 +20,7 @@
     <string name="yr_credits">Weather data provided by yr.no</string>
     <string name="last_update">Last update:</string>
     <string name="empty_list_text">Winder finds a matching weather for you</string>
-
+    <string name="manual_refresh">Updating forecasts...</string>
     <string name="settings_for_alert">Choose preferences for alert</string>
     <!-- AlertOverViewActivity-->
     <string name="title_activity_alert_over_view">AlertOverViewActivity</string>

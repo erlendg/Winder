@@ -219,6 +219,10 @@ public class HandleXML {
         return forecast;
     }
 
+    /**
+     * fetchXML opens an InputStream from a http-connection. This is how the xml-data is fetched from the server.
+     * it runs in its own thread, and
+     */
     public void fetchXML(){
         Thread thread = new Thread(new Runnable(){
             @Override

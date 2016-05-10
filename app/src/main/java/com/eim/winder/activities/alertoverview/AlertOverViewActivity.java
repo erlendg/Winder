@@ -43,8 +43,6 @@ public class AlertOverViewActivity extends AppCompatActivity {
     private final String TAG = "AlertOverWievActivity";
     private AlertSettings alertSettings;
     private Location location;
-    private AlertSettingsRepo alertDataSource;
-    private ForecastRepo forecastDataSource;
     private DBService dbService;
     private CollapsingToolbarLayout collapsingToolbar;
     private TabLayout tabLayout;
@@ -68,12 +66,14 @@ public class AlertOverViewActivity extends AppCompatActivity {
         location = alertSettings.getLocation();
 
         //Opens datasource usage:
-        alertDataSource = new AlertSettingsRepo(this);
-        forecastDataSource = new ForecastRepo(this);
-        dbService = new DBService(alertDataSource,forecastDataSource);
+        dbService = new DBService(this);
 
         //Enables databinding to the xml-layout:
         ActivityAlertOverViewBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_alert_over_view);
+
+        buildViewComponents();
+    }
+    private void buildViewComponents(){
         //Enables toolbar:
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,9 +96,9 @@ public class AlertOverViewActivity extends AppCompatActivity {
 
     /**
      * Deletes the selected AlertSettings object from database
-     * @param v the view of the delete button: activity_alert_over_view.xml
+     * @param view the view of the delete button: activity_alert_over_view.xml
      */
-    public void onDeleteButtonClick(View v){
+    public void onDeleteButtonClick(View view){
         new AlertDialog.Builder(this)
                 .setMessage(getString(R.string.delete_message))
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -106,9 +106,9 @@ public class AlertOverViewActivity extends AppCompatActivity {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (dbService.deleteAlertSettingAndForecasts(alertSettings.getId())) {
+                            cancelAlarm(alertSettings.getId());
                             finish();
                             overridePendingTransition(R.anim.pull_in_left_anim, R.anim.push_out_right_anim);
-                            cancelAlarm(alertSettings.getId());
                             Toast.makeText(AlertOverViewActivity.this, getString(R.string.deleted), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(AlertOverViewActivity.this, getString(R.string.something_whent_wrong), Toast.LENGTH_SHORT).show();
@@ -134,8 +134,8 @@ public class AlertOverViewActivity extends AppCompatActivity {
         Log.e(TAG,"cancelAlarm: "+ id );
         Intent intentAlarm = new Intent(this, AlarmReceiver.class);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        PendingIntent toDo = PendingIntent.getBroadcast(this, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.cancel(toDo);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pendingIntent);
 
     }
 
@@ -143,7 +143,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
      * Starts AlertSettingsActivityBeta if the user wishes to edit the weather settings for the Alert (AlertSettings)
      * @param v view of the edit button:
      */
-    public void onEditAlertButtonClick(View v){
+    public void onEditAlertButtonClick(View view){
         Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
         intent.putExtra("Location", alertSettings.getLocation());
         intent.putExtra("edit", true);

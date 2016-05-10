@@ -3,8 +3,6 @@ package com.eim.winder.db;
 import android.content.Context;
 import android.util.Log;
 
-
-
 import java.util.ArrayList;
 
 /**
@@ -13,9 +11,9 @@ import java.util.ArrayList;
 public class DBService {
 
     private static final String TAG = "DBService";
-    private AlertSettingsRepo alertDataSource;
-    private LocationRepo locationDataSource;
-    private ForecastRepo forecastDataSource;
+    private AlertSettingsRepo alertSettingsRepo;
+    private LocationRepo locationRepo;
+    private ForecastRepo forecastRepo;
 
     public DBService(){}
 
@@ -25,37 +23,37 @@ public class DBService {
      */
 
     public DBService(Context context){
-        this.locationDataSource = new LocationRepo(context);
-        this.alertDataSource = new AlertSettingsRepo(context);
-        this.forecastDataSource = new ForecastRepo(context);
+        this.locationRepo = new LocationRepo(context);
+        this.alertSettingsRepo = new AlertSettingsRepo(context);
+        this.forecastRepo = new ForecastRepo(context);
     }
 
-    public DBService(AlertSettingsRepo alertDataSource, LocationRepo locationDataSource, ForecastRepo forecastDataSource) {
-        this.alertDataSource = alertDataSource;
-        this.locationDataSource = locationDataSource;
-        this.forecastDataSource = forecastDataSource;
+    public DBService(AlertSettingsRepo alertSettingsRepo, LocationRepo locationRepo, ForecastRepo forecastRepo) {
+        this.alertSettingsRepo = alertSettingsRepo;
+        this.locationRepo = locationRepo;
+        this.forecastRepo = forecastRepo;
     }
 
-    public DBService(AlertSettingsRepo alertDataSource, LocationRepo locationDataSource) {
-        this.alertDataSource = alertDataSource;
-        this.locationDataSource = locationDataSource;
+    public DBService(AlertSettingsRepo alertSettingsRepo, LocationRepo locationRepo) {
+        this.alertSettingsRepo = alertSettingsRepo;
+        this.locationRepo = locationRepo;
     }
 
-    public DBService(AlertSettingsRepo alertDataSource, ForecastRepo forecastDataSource) {
-        this.alertDataSource = alertDataSource;
-        this.forecastDataSource = forecastDataSource;
+    public DBService(AlertSettingsRepo alertSettingsRepo, ForecastRepo forecastRepo) {
+        this.alertSettingsRepo = alertSettingsRepo;
+        this.forecastRepo = forecastRepo;
     }
 
-    public DBService(AlertSettingsRepo alertDataSource) {
-        this.alertDataSource = alertDataSource;
+    public DBService(AlertSettingsRepo alertSettingsRepo) {
+        this.alertSettingsRepo = alertSettingsRepo;
     }
 
-    public DBService(LocationRepo locationDataSource) {
-        this.locationDataSource = locationDataSource;
+    public DBService(LocationRepo locationRepo) {
+        this.locationRepo = locationRepo;
     }
 
-    public DBService(ForecastRepo forecastDataSource) {
-        this.forecastDataSource = forecastDataSource;
+    public DBService(ForecastRepo forecastRepo) {
+        this.forecastRepo = forecastRepo;
     }
 
     /**
@@ -68,18 +66,18 @@ public class DBService {
      * @return a ArrayList of AlertSettingsObjects containing Location objects.
      */
     public ArrayList<AlertSettings> getAllAlertSettingsAndLocations() {
-        ArrayList<AlertSettings> results = alertDataSource.getAllAlertSettings();
+        ArrayList<AlertSettings> results = alertSettingsRepo.getAllAlertSettings();
         Log.i(TAG, "getAlertSettingsAndLocation() Data size: "+ results.size());
         if(results != null && results.size() > 0){
             for(int i = 0; i < results.size(); i++){
                 int id = (int) results.get(i).getLocation().getId();
                 //Sends the connecton to LocatonRepo(datasource):
-                Location loc =  locationDataSource.getLocationFromID(id, alertDataSource.getReadDB());
+                Location loc =  locationRepo.getLocationFromID(id, alertSettingsRepo.getReadDB());
                 results.get(i).setLocation(loc);
             }
         }
         //closes the database connection:
-        locationDataSource.close();
+        alertSettingsRepo.close();
         return results;
     }
 
@@ -91,11 +89,11 @@ public class DBService {
      */
     public AlertSettings getCompleteAlertSettingsById(int id){
         Log.i(TAG, "getCompleteAlertSettingsById()");
-        AlertSettings result= alertDataSource.getAlertSettingById(id);
+        AlertSettings result= alertSettingsRepo.getAlertSettingById(id);
         //Finds Location-name based på id:
-        Location loc  = locationDataSource.getLocationFromID((int)result.getLocation().getId(), alertDataSource.getReadDB());
+        Location loc  = locationRepo.getLocationFromID((int)result.getLocation().getId(), alertSettingsRepo.getReadDB());
         result.setLocation(loc);
-        alertDataSource.close();
+        alertSettingsRepo.close();
         return result;
     }
 
@@ -106,8 +104,8 @@ public class DBService {
      */
     public boolean deleteAlertSettingAndForecasts(int alertID){
         Log.i(TAG, "deleteAlertSettingAndForecasts("+ alertID +")");
-        forecastDataSource.deleteForecastByAlertSettingsID(alertID);
-        return alertDataSource.deleteAlertSettings(alertID);
+        forecastRepo.deleteForecastByAlertSettingsID(alertID);
+        return alertSettingsRepo.deleteAlertSettings(alertID);
     }
 
     /**
@@ -116,7 +114,7 @@ public class DBService {
      */
     public ArrayList<Location> getAllLocations(){
         Log.i(TAG, "getAllLocations()");
-        return locationDataSource.getAllLocations();
+        return locationRepo.getAllLocations();
     }
 
     /**
@@ -127,7 +125,7 @@ public class DBService {
 
     public long addAlertSettings(AlertSettings alertSettings){
         Log.i(TAG, "addAlertSettings()");
-        return alertDataSource.insertAlertSettings(alertSettings);
+        return alertSettingsRepo.insertAlertSettings(alertSettings);
     }
 
     /**
@@ -137,7 +135,7 @@ public class DBService {
      */
 
     public boolean updateAlertSettings(AlertSettings alertSettings){
-        long ok = alertDataSource.updateAlertSettings(alertSettings);
+        long ok = alertSettingsRepo.updateAlertSettings(alertSettings);
         if((int) ok != 0 && (int) ok != -1){
             Log.i(TAG, "updateAlertSettings() updated: "+ ok);
             return true;
@@ -154,7 +152,7 @@ public class DBService {
      * @return true if successfully stored
      */
     public boolean addForecastList(ArrayList<Forecast> forecasts, int alertId){
-        return forecastDataSource.insertForecastList(forecasts, alertId);
+        return forecastRepo.insertForecastList(forecasts, alertId);
     }
 
     /**
@@ -163,6 +161,14 @@ public class DBService {
      * @return Location object
      */
     public Location getLocationFromId(int id){
-        return locationDataSource.getLocationFromID(id);
+        return locationRepo.getLocationFromID(id);
+    }
+
+    /**
+     * @param alertID AlertSettings object id
+     * @return ArrayList of Forecast objects
+     */
+    public ArrayList<Forecast> getForecastsById(int alertID){
+        return forecastRepo.getAllForecastsByAlertSettingsID(alertID);
     }
 }

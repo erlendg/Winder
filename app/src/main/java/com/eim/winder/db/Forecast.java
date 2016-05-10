@@ -97,10 +97,10 @@ public class Forecast implements Parcelable {
         alertSettingId = in.readInt();
     }
 
-    /*
+    /**
     * This is needed for Android to be able to
     * create new objects, (or array of objects).
-    * */
+     * */
     public static final Parcelable.Creator CREATOR =
             new Parcelable.Creator() {
                 public Forecast createFromParcel(Parcel in) {
@@ -116,6 +116,12 @@ public class Forecast implements Parcelable {
     public String toString() {
         return formatedDate+ " " +formatedInfo;
     }
+
+    /**
+     * takes a date on a certain format and turns it into an int
+     * @param date
+     * @return int on the yyyymmdd format
+     */
     public int getStrippedDate(String date){
         //Log.i("FORECAST", "before getStrippedDate: " + date);
         String result = date.substring(date.length()-23,date.length()-15);
@@ -125,6 +131,12 @@ public class Forecast implements Parcelable {
         //Log.i("FORECAST", "getStrippedDate result: " + result);
         return Integer.parseInt(result);
     }
+
+    /**
+     * Standard compareTo-method for Forecast:
+     * @param other other Forecast-object
+     * @return -1 if this is smaller then other, 0 if equal, 1 if larger
+     */
     public int compareTo(Forecast other){
         if (getStrippedDate(this.getFormatedDate())<getStrippedDate(other.getFormatedDate())){
             return -1;

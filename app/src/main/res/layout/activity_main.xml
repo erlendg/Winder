@@ -35,7 +35,7 @@
         app:borderWidth="0dp"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/colorWhite"
-        android:onClick="startSelectLocationActivity"/>
+        android:onClick="onAddNewButtonClick"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

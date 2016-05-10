@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Mari on 08.02.2016.
- * Repo class for Location. Handel the connection to the Location table in database
+ * Repo class for Location. Handle the connection to the Location table in database
  */
 public class LocationRepo {
     public final static String TAG = "LocationRepo";
@@ -93,13 +93,13 @@ public class LocationRepo {
     /**
      * Finds a Location object based on id and an open database connection
      * @param id of Location in database
-     * @param db database connection
+     * @param connection database connection
      * @return A Location object based on id
      */
-    public Location getLocationFromID(int id, SQLiteDatabase db){
+    public Location getLocationFromID(int id, SQLiteDatabase connection){
         Cursor c;
         Location location = null;
-        c = db.query(table,null,SQLiteDBHelper.L_LOCATION_ID + " = ?", new String[]{""+id}, null, null, null);
+        c = connection.query(table,null,SQLiteDBHelper.L_LOCATION_ID + " = ?", new String[]{""+id}, null, null, null);
         c.moveToFirst();
         while(!c.isAfterLast()) {
             location = cursorToLocation(c);

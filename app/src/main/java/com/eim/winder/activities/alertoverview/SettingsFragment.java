@@ -4,7 +4,6 @@ package com.eim.winder.activities.alertoverview;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.eim.winder.db.AlertSettings;
 public class SettingsFragment extends Fragment {
     private static String TAG = "SettingsFragment";
 
-
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -32,7 +30,7 @@ public class SettingsFragment extends Fragment {
      * @param inflater
      * @param container
      * @param savedInstanceState
-     * @return
+     * @return the inflated view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +40,12 @@ public class SettingsFragment extends Fragment {
         AlertSettings alertSettings = activity.getAlertSettings();
         binding.setAlertsettings(alertSettings);
         binding.setLocation(alertSettings.getLocation());
-        View v = binding.getRoot();
-        TextView weekdays = (TextView) v.findViewById(R.id.row8_column2);
+        View view = binding.getRoot();
+        TextView weekdays = (TextView) view.findViewById(R.id.row8_column2);
         weekdays.setText(alertSettings.getWeekDaysSelected(getResources()));
-        removeDefaultValues(v, activity.getAlertSettings());
-        setCheckInterval(alertSettings.getCheckInterval(), v);
-        return v;
+        removeDefaultValues(view, activity.getAlertSettings());
+        setCheckInterval(alertSettings.getCheckInterval(), view);
+        return view;
     }
 
     /**

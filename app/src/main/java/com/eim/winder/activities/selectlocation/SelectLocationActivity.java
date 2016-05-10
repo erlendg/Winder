@@ -60,6 +60,12 @@ public class SelectLocationActivity extends AppCompatActivity {
         searchLocations = dbService.getAllLocations();
 
         // autocompletetextview is in location_layout.xml
+        initiateSearchView();
+        //Initiates template buttons:
+        initiateTemplateButtons();
+
+    }
+    public void initiateSearchView(){
         searchView = (AutoCompleteTextView) findViewById(R.id.search_view);
         searchAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, searchLocations);
         searchView.setAdapter(searchAdapter);
@@ -70,15 +76,12 @@ public class SelectLocationActivity extends AppCompatActivity {
                 Log.d("############", locationSelected.getId() + " " + locationSelected.toString());
             }
         });
-        //Initiates template buttons:
-        initiateButtons();
-
     }
 
     /**
      * Initiates the template buttons and set the custom button as selected.
      */
-    public void initiateButtons(){
+    public void initiateTemplateButtons(){
         sunButton = (ImageButton) findViewById(R.id.template_sun);
         snowButton = (ImageButton) findViewById(R.id.template_snow);
         windButton = (ImageButton) findViewById(R.id.template_wind);
@@ -221,9 +224,9 @@ public class SelectLocationActivity extends AppCompatActivity {
 
     /**
      * Starts the AlertSettingsActivityBeta if the user has selected a location from the auto complete textview
-     * @param v the view of the next button: location_layout.xml
+     * @param view the view of the next button: location_layout.xml
      */
-    public void onNextButtonClick(View v) {
+    public void onNextButtonClick(View view) {
         if (locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())) {
             Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
             intent.putExtra("Location", locationSelected);
@@ -239,9 +242,9 @@ public class SelectLocationActivity extends AppCompatActivity {
 
     /**
      * Finish the activity if the user wish to cancel the SelectLocationActivity.
-     * @param v the view of the cancel button: location_layout.xml
+     * @param view the view of the cancel button: location_layout.xml
      */
-    public void onCancelButtonClick(View v) {
+    public void onCancelButtonClick(View view) {
         finish();
     }
 
