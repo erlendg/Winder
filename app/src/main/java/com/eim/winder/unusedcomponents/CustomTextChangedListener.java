@@ -5,19 +5,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 
-import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
+import com.eim.winder.activities.alertsettings.AlertSettingsActivity;
 
 /**
  * Created by Mari on 09.02.2016.
  */
 public class CustomTextChangedListener implements TextWatcher{
-    final private AlertSettingsActivityBeta alertsetActivity;
+    final private AlertSettingsActivity alertsetActivity;
     public static final String TAG = "CustomTCListener";
     Context context;
 
     public CustomTextChangedListener(Context context) {
         this.context = context;
-        alertsetActivity = ((AlertSettingsActivityBeta) context);
+        alertsetActivity = ((AlertSettingsActivity) context);
     }
 
     @Override

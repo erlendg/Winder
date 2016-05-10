@@ -18,19 +18,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.support.v7.widget.GridLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.eim.winder.R;
-import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
+import com.eim.winder.activities.alertsettings.AlertSettingsActivity;
 import com.eim.winder.activities.alertsettings.CustomPrecipRangePreference;
 import com.eim.winder.databinding.ActivityAlertOverViewBinding;
 import com.eim.winder.db.AlertSettings;
-import com.eim.winder.db.AlertSettingsRepo;
 import com.eim.winder.db.DBService;
-import com.eim.winder.db.ForecastRepo;
 import com.eim.winder.db.Location;
 import com.eim.winder.scheduler.AlarmReceiver;
 
@@ -140,11 +136,11 @@ public class AlertOverViewActivity extends AppCompatActivity {
     }
 
     /**
-     * Starts AlertSettingsActivityBeta if the user wishes to edit the weather settings for the Alert (AlertSettings)
+     * Starts AlertSettingsActivity if the user wishes to edit the weather settings for the Alert (AlertSettings)
      * @param v view of the edit button:
      */
     public void onEditAlertButtonClick(View view){
-        Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
+        Intent intent = new Intent(this, AlertSettingsActivity.class);
         intent.putExtra("Location", alertSettings.getLocation());
         intent.putExtra("edit", true);
         intent.putExtra("alertID", alertSettings.getId());

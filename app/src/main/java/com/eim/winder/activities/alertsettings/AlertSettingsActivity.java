@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * Created by Mari on 05.04.2016.
  */
-public class AlertSettingsActivityBeta extends AppCompatActivity {
+public class AlertSettingsActivity extends AppCompatActivity {
     private static final String TAG = "ASActivityBeta";
 
     public AlertSettingsRepo alertDataSource;
@@ -39,7 +39,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     Bundle bundle;
 
     /**
-     * Creates the AlertSettingsActivityBeta content view: alertprefsettings_layout.xml,
+     * Creates the AlertSettingsActivity content view: alertprefsettings_layout.xml,
      * sets toolbar title, inflate the preferenceFragment containing the settings view,
      * fetches the selected Location form the bundle extras form the previous activity,
      * sets the updateMode value (if the previous activity is the AlertOverViewActivity)

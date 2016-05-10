@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.eim.winder.R;
-import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
+import com.eim.winder.activities.alertsettings.AlertSettingsActivity;
 import com.eim.winder.activities.alertsettings.CustomPrecipRangePreference;
 import com.eim.winder.db.DBService;
 import com.eim.winder.db.Location;
@@ -223,12 +223,12 @@ public class SelectLocationActivity extends AppCompatActivity {
     }
 
     /**
-     * Starts the AlertSettingsActivityBeta if the user has selected a location from the auto complete textview
+     * Starts the AlertSettingsActivity if the user has selected a location from the auto complete textview
      * @param view the view of the next button: location_layout.xml
      */
     public void onNextButtonClick(View view) {
         if (locationSelected != null && searchView.getText().toString().equals(locationSelected.toString())) {
-            Intent intent = new Intent(this, AlertSettingsActivityBeta.class);
+            Intent intent = new Intent(this, AlertSettingsActivity.class);
             intent.putExtra("Location", locationSelected);
             intent.putExtra("edit", false);
             boolean t = initializeTemplatePreferences();

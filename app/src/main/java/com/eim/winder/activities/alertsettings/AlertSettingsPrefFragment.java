@@ -31,10 +31,10 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
     MultiSelectListPreference weekdays;
     SharedPreferences prefs;
     SharedPreferences defaultPrefs;
-    AlertSettingsActivityBeta activity;
+    AlertSettingsActivity activity;
 
     /**
-     * Creates the inflated AlertSettingsPrefFragment view alert_preferences.xml inside the view of AlertSettingsActivityBeta.
+     * Creates the inflated AlertSettingsPrefFragment view alert_preferences.xml inside the view of AlertSettingsActivity.
      * Builds all preferences and the onPreferencesChanged listener.
      * Fetches the current activity.
      * @param savedInstanceState
@@ -44,7 +44,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.alert_preferences);
         //The current activity:
-        activity = (AlertSettingsActivityBeta) getActivity();
+        activity = (AlertSettingsActivity) getActivity();
         PreferenceManager.setDefaultValues(activity.getApplicationContext(), R.xml.alert_preferences, true);
         buildPrefViewComponents();
         initiateTemplatePrefs();

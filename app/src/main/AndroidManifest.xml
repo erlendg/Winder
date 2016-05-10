@@ -43,7 +43,7 @@
                 android:value=".activities.main.MainActivity" />
         </activity>
         <activity
-            android:name=".activities.alertsettings.AlertSettingsActivityBeta"
+            android:name=".activities.alertsettings.AlertSettingsActivity"
             android:label="@string/app_name" />
         <activity
             android:name=".activities.alertoverview.AlertOverViewActivity"

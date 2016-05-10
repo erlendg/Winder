@@ -5,12 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import com.eim.winder.R;
-import com.eim.winder.activities.alertsettings.AlertSettingsActivityBeta;
-import com.eim.winder.scheduler.AlarmReceiver;
 
 import java.util.GregorianCalendar;
 
