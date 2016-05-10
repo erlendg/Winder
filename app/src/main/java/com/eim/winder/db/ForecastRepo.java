@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Erlend on 08.04.2016.
+ * Repository-class for Forecast. Handles database-transactions needed for Forecast
  */
 public class ForecastRepo {
     private final String TAG = "ForecastRepo";
@@ -23,25 +24,48 @@ public class ForecastRepo {
         this.context = context;
         dbHelper = new SQLiteDBHelper(context);
     }
+
+    /**
+     * For testing purposes only.
+     * @param context to initialize the database
+     * @param sqLiteDBHelper database created
+     */
     public ForecastRepo(Context context, SQLiteDBHelper sqLiteDBHelper){
         this.context = context;
         dbHelper = sqLiteDBHelper;
     }
 
+    /**
+     * get Readable instance of database:
+     * @return database-object
+     */
     public SQLiteDatabase getReadDB(){
         Log.i(TAG, "getReadDB()");
         return dbHelper.getReadableDatabase();
     }
 
+    /**
+     * get Writable instance of database:
+     * @return database-object
+     */
     private SQLiteDatabase getWriteDB(){
         Log.i(TAG, "getWriteDB()");
         return dbHelper.getWritableDatabase();
     }
 
+    /**
+     * close database-connection
+     */
     public void close(){
         dbHelper.close();
         Log.i(TAG, "close()");
     }
+
+    /**
+     * cursorToForecast takes a Cursor containing a row from the database, and transfers the data to a Forecast-object
+     * @param c Cursor-object
+     * @return populated Forecast-object
+     */
     private Forecast cursorToForecast(Cursor c){
         return new Forecast(c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.F_FORECAST_ID)),
                 c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.F_FORMATEDDATE)),
@@ -49,6 +73,12 @@ public class ForecastRepo {
                 c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.F_ICON)),
                 c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.F_ALERT_ID)));
     }
+
+    /**
+     * Get first Forecast for an AlertSetting by its ID
+     * @param id id of AlertSettings-object
+     * @return instance of Forecast found in the database
+     */
     public Forecast getForecastByAlertSettingsID(int id){
         SQLiteDatabase db = getReadDB();
         Cursor c = db.rawQuery("SELECT * FROM " + table + " WHERE alertsettings_id = " + id, null);
@@ -59,6 +89,11 @@ public class ForecastRepo {
         return result;
     }
 
+    /**
+     * returns an ArrayList of Forecast-objects from the database, based on AlertSettingsID
+     * @param id id of AlertSettings-object
+     * @return ArrayList of Forecast-objects
+     */
     public ArrayList<Forecast> getAllForecastsByAlertSettingsID(int id){
         ArrayList<Forecast> list = new ArrayList<>();
         Forecast temp;
@@ -75,6 +110,11 @@ public class ForecastRepo {
         return list;
     }
 
+    /**
+     * checks if there are any rows in the database with the specified AlertSettingsID
+     * @param id id of AlertSettingsObject
+     * @return boolean, true if exists, false if not
+     */
     public boolean findIfForecastsExistsForAlertSettingsID(int id){
         boolean result = true;
         SQLiteDatabase db = getReadDB();
@@ -86,7 +126,11 @@ public class ForecastRepo {
         return result;
     }
 
-
+    /**
+     * deletes all Forecast-rows with the specified id
+     * @param id id of AlertSettings-Object
+     * @return true if successfull, false if not
+     */
     public boolean deleteForecastByAlertSettingsID(int id){
         SQLiteDatabase db = getWriteDB();
         boolean ok = db.delete(table, SQLiteDBHelper.F_ALERT_ID + " = " + id, null) > 0;
@@ -95,6 +139,12 @@ public class ForecastRepo {
         return ok;
     }
 
+    /**
+     * inserts list of Forecast-objects into the database, after deleting all the old forecast-objects for this id.
+     * @param forecastList list of Forecastobjects
+     * @param id id of the related AlertSettings-object
+     * @return
+     */
     public boolean insertForecastList(ArrayList<Forecast> forecastList, int id){
         deleteForecastByAlertSettingsID(id);
         boolean ok = true;

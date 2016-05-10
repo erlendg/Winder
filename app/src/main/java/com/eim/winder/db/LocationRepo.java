@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Mari on 08.02.2016.
- * Repo class for Location. Handel the connection to the Location table in database
+ * Repo class for Location. Handle the connection to the Location table in database
  */
 public class LocationRepo {
     public final static String TAG = "LocationRepo";
