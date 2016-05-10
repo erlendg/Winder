@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
      * Manually refreshes the forecast to the AlertSettings objects
      */
     public void doManualForecastRefresh(){
-        Toast.makeText(this, "Updating forecasts!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.manual_refresh), Toast.LENGTH_SHORT).show();
         for (int i = 0; i < alertSettingsList.size(); i++) {
             //create an instance of CompareAXService:
             compare = new CompareAXService(this, alertSettingsList.get(i));

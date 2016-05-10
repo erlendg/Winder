@@ -639,7 +639,7 @@ public class CompareAXService {
      */
     private int checkTemp(double value){
 
-        if ((double)(alertSettingsObj.getTempMin())<(value)&&(value<(double)(alertSettingsObj.getTempMax()))) {
+        if ((((double)alertSettingsObj.getTempMin())<value)&&(value<((double)alertSettingsObj.getTempMax()))) {
             //Log.d(TAG, "Temp returverdi = 0, innverdi = " + value);
             tempCheck = true;
             return 0;
@@ -657,7 +657,7 @@ public class CompareAXService {
      * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
      */
     private int checkPrecipitation(double value) {
-        if ((alertSettingsObj.getPrecipitationMin()) < (value) && (value < (alertSettingsObj.getPrecipitationMax()))){
+        if ((alertSettingsObj.getPrecipitationMin() <= value) && (value < alertSettingsObj.getPrecipitationMax())){
             //Log.d(TAG, "Nedbør returverdi = 0, innverdi = " + value);
             precipitationCheck = true;
             return 0;
@@ -675,7 +675,7 @@ public class CompareAXService {
      * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
      */
     private int checkWindSpeed(double value){
-        if ((alertSettingsObj.getWindSpeedMin())<(value)&&(value<(alertSettingsObj.getWindSpeedMax()))) {
+        if ((alertSettingsObj.getWindSpeedMin()<= value)&&(value<alertSettingsObj.getWindSpeedMax())) {
             //Log.d(TAG, "Vindstyrke returverdi = 0, innverdi = " + value);
             windSpeedCheck = true;
             return 0;

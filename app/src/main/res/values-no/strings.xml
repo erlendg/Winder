@@ -143,4 +143,5 @@
     <string name="no_last_update">Ingen enda</string>
     <string name="get_started">Trykk + for å komme igang</string>
     <string name="mobile_network_pref_key">prefUseMobileData</string>
+    <string name="manual_refresh">Oppdaterer varsel...</string>
 </resources>
