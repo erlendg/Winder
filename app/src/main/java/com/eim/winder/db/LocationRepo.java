@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Mari on 08.02.2016.
+ * Repo class for Location. Handel the connection to the Location table in database
  */
 public class LocationRepo {
     public final static String TAG = "LocationRepo";
@@ -23,26 +24,35 @@ public class LocationRepo {
         this.context = context;
         dbHelper = new SQLiteDBHelper(context);
     }
-
+    /**
+     * For testing purposes only
+     * @param context to initialize the database
+     * @param sqLiteDBHelper database created
+     */
     public LocationRepo(Context context, SQLiteDBHelper sqLiteDBHelper){
         this.context = context;
         dbHelper = sqLiteDBHelper;
     }
 
+    /**
+     * @return writable database
+     */
     private SQLiteDatabase getReadDB(){
         //Log.i(TAG, "getReadDB()");
         return dbHelper.getReadableDatabase();
     }
 
-    private SQLiteDatabase getWriteDB(){
-        return dbHelper.getWritableDatabase();
-    }
-
+    /**
+     * Close database connection
+     */
     public void close() {
         dbHelper.close();
         Log.i(TAG, "close()");
     }
 
+    /**
+     * @return ArrayList of all locations in the pre-populated database
+     */
     public ArrayList<Location> getAllLocations() {
         SQLiteDatabase db = getReadDB();
         //Log.i(TAG, "getAllLocations");
@@ -61,6 +71,10 @@ public class LocationRepo {
         return locations;
     }
 
+    /**
+     * @param id of location
+     * @return A Location object based on id
+     */
     public Location getLocationFromID(int id){
         Location location = null;
         SQLiteDatabase db = getReadDB();
@@ -75,6 +89,13 @@ public class LocationRepo {
         close();
         return location;
     }
+
+    /**
+     * Finds a Location object based on id and an open database connection
+     * @param id of Location in database
+     * @param db database connection
+     * @return A Location object based on id
+     */
     public Location getLocationFromID(int id, SQLiteDatabase db){
         Cursor c;
         Location location = null;
@@ -87,7 +108,11 @@ public class LocationRepo {
         c.close();
         return location;
     }
-
+    /**
+     * Helping method to parse cursor values and store them inside an Location object
+     * @param c cursor
+     * @return Location object
+     */
     private Location cursorToLocation(Cursor c) {
         return  new Location(c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.L_LOCATION_ID)),
                 c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_NAME)),
@@ -96,7 +121,16 @@ public class LocationRepo {
                 c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_COUNTY)),
                 c.getString(c.getColumnIndexOrThrow(SQLiteDBHelper.L_XMLURL)));
     }
-    //Read records related to the search term:
+
+    /**
+     * Read records related to the search term:
+     * For testing only. the table contains about 11 000 pre populated location objects.
+     * this query returns a stripped ArrayList of objects based on the search term.
+     * Not used, at the moment the system handles a list of 11 000 objects, but when the list
+     * grows this method wil be essential for the system response.
+     * @param searchTerm name of the location in the database
+     * @return List of Location objects
+     */
     public ArrayList<Location> readSearch(String searchTerm) {
         Log.i(TAG, "readSearch()");
         ArrayList<Location> recordsList = new ArrayList();
@@ -122,21 +156,6 @@ public class LocationRepo {
         close();
         // return the list of records
         return recordsList;
-    }
-
-    // Check if a location exists
-    public boolean checkIfExists(String objectName){
-        boolean recordExists = false;
-        SQLiteDatabase db = getReadDB();
-        Cursor cursor = db.query(table, new String[]{ SQLiteDBHelper.L_NAME},SQLiteDBHelper.L_NAME +"= ?",new String[]{objectName}, null,null, null);
-        //rawQuery("SELECT " + SQLiteDBHelper.L_NAME + " FROM " + SQLiteDBHelper.TABLE_LOCATIONS + " WHERE " + SQLiteDBHelper.L_NAME + " = '" + objectName + "'", null);
-        if(cursor!=null) {
-            if(cursor.getCount()>0) {
-                recordExists = true;
-            }
-        }
-        cursor.close();
-        return recordExists;
     }
 
 }

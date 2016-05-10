@@ -121,7 +121,7 @@
     <string name="preferences_interval">Check interval</string>
     <string name="preferences_interval_description">Choose frequency for the automatic weather check</string>
     <string name="choose_winddirection_string">Choose wind direction</string>
-    <string name="choose_weekdays_string">Choose which days you prefer the weather to occur</string>
+    <string name="choose_weekdays_string">Choose which days you prefer the weather to occur (Default is all days)</string>
     <string name="preferences_suncheck">Suncheck</string>
     <string name="info_header">INFO</string>
     <string name="about_header">About</string>

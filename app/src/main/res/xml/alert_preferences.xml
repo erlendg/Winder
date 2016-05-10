@@ -9,7 +9,7 @@
         android:id="@+id/tempPref"
         android:title="@string/preferences_temperature"
         android:summary="@string/preferences_temperature_scale"
-        android:icon="@drawable/temp"
+        android:icon="@drawable/ic_temp"
         android:defaultValue="false"/>
 
     <com.eim.winder.activities.alertsettings.CustomTempRangePreference
@@ -20,7 +20,7 @@
         android:key="@string/precip_pref_key"
         android:title="@string/preferences_precipitation"
         android:summary="@string/preferences_precipitation_amount_period"
-        android:icon="@drawable/nedboer"
+        android:icon="@drawable/ic_nedboer"
         android:defaultValue="false"/>
 
     <com.eim.winder.activities.alertsettings.CustomPrecipRangePreference
@@ -31,7 +31,7 @@
         android:key="@string/windspeed_pref_key"
         android:title="@string/preferences_windspeed"
         android:summary="@string/preferences_windspeed_description"
-        android:icon="@drawable/vindstyrke"
+        android:icon="@drawable/ic_vind_styrke"
         android:defaultValue="false"/>
 
     <com.eim.winder.activities.alertsettings.CustomWindSpRangePreference
@@ -41,7 +41,7 @@
         android:id="@+id/windDirPref"
         android:key="@string/winddir_pref_key"
         android:title="@string/preferences_winddir"
-        android:icon="@drawable/vindretning"
+        android:icon="@drawable/ic_vindretning"
         android:defaultValue="false"/>
 
     <MultiSelectListPreference
@@ -53,7 +53,7 @@
         android:id="@+id/sunnyPref"
         android:key="@string/sunny_pref_key"
         android:title="@string/preferences_suncheck"
-        android:icon="@drawable/sol"
+        android:icon="@drawable/ic_sol"
         android:defaultValue="false"/>
 
     <MultiSelectListPreference
@@ -61,7 +61,7 @@
         android:title="@string/preferences_weekdays_check"
         android:summary="@string/choose_weekdays_string"
         android:entries="@array/weekdays_array"
-        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:icon="@drawable/ic_insert_invitation_black_48dp"
         android:entryValues="@array/weekdays_values"
         />
     <ListPreference
@@ -70,7 +70,7 @@
         android:summary="@string/preferences_interval_description"
         android:entries="@array/checkinterval_array"
         android:entryValues="@array/checkinterval_values"
-        android:icon="@android:drawable/ic_lock_idle_alarm"
+        android:icon="@drawable/ic_alarm_black"
         android:defaultValue="3"/>
 
 </PreferenceScreen>

@@ -6,6 +6,8 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 /**
  * Created by Mari on 05.02.2016.
+ * Creates an connection to the database trough the constructor.
+ * Stores static column and table names.
  */
 public class SQLiteDBHelper extends SQLiteAssetHelper {
     private static final int DATABASE_VERSION = 1;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Mari on 11.02.2016.
+ * Repo class for AlertSettings. Handel the connection to AlertSettings table in database
  */
 public class AlertSettingsRepo {
     public final static String TAG = "AlertSettingsRepo";
@@ -26,39 +27,44 @@ public class AlertSettingsRepo {
         this.context = context;
         dbHelper = new SQLiteDBHelper(context);
     }
-
+    /**
+     * For testing purposes only
+     * @param context to initialize the database
+     * @param sqLiteDBHelper database created
+     */
     public AlertSettingsRepo(Context context, SQLiteDBHelper sqLiteDBHelper){
         this.context = context;
         dbHelper = sqLiteDBHelper;
     }
+
+    /**
+     * @return readable database
+     */
     public SQLiteDatabase getReadDB(){
-        //Log.i(TAG, "getReadDB()");
         return dbHelper.getReadableDatabase();
     }
+    /**
+     * @return writable database
+     */
 
     private SQLiteDatabase getWriteDB(){
-        //Log.i(TAG, "getWriteDB()");
         return dbHelper.getWritableDatabase();
     }
 
+    /**
+     * Close database
+     */
     public void close() {
         dbHelper.close();
         Log.i(TAG, "close()");
     }
-    // Check if an alert already is added for the location:
-    public boolean alertAlreadyExist(Location location){
-        boolean exist = false;
-        SQLiteDatabase db = getReadDB();
-        Cursor c = db.rawQuery("SELECT " + SQLiteDBHelper.A_ALERT_ID + " FROM " + table + " WHERE " + SQLiteDBHelper.A_ALERT_ID + " = '" + location.getId() + "'", null);
-        if(c != null) {
-            if(c.getCount()>0) {
-                exist = true;
-            }
-        }
-        c.close();
-        close();
-        return exist;
-    }
+
+    /**
+     * Updates the field hasevents for the AlertSettings in database
+     * @param id AlertSettings that needs to be updated
+     * @param hasEvents true if it has weather events, false if it doesn't have weather events
+     * @return true if successfully updated in database
+     */
     public boolean updateAlertsettingsHasEvents(int id, int hasEvents){
         Log.i(TAG, "updateAlertsettingsHasEvents(" + id+ ")");
         SQLiteDatabase db = getWriteDB();
@@ -68,6 +74,12 @@ public class AlertSettingsRepo {
         close();
         return ok;
     }
+    /**
+     * Updates the field last for the AlertSettings database
+     * @param id AlertSettings that needs to be updated
+     * @param lastUpdate last time the weather was checked for the location
+     * @return true if successfully updated in database
+     */
     public boolean updateAlertsettingsNewLastUpdate(int id, String lastUpdate){
         Log.i(TAG, "updateAlertsettingsNewLastUpdate(" + id+ ")");
         SQLiteDatabase db = getWriteDB();
@@ -77,7 +89,12 @@ public class AlertSettingsRepo {
         close();
         return ok;
     }
-    // Deletes an alertsetting based on its id:
+
+    /**
+     *  Deletes an alertsetting based on its id:
+     * @param id of AlertSettings
+     * @return true if successfully updated in database
+     */
     public boolean deleteAlertSettings(int id){
         SQLiteDatabase db = getWriteDB();
         boolean ok = db.delete(table, SQLiteDBHelper.A_ALERT_ID + " = " + id, null) > 0;
@@ -85,7 +102,12 @@ public class AlertSettingsRepo {
         close();
         return ok;
     }
-    //Lagre varselinstillinger i database:
+
+    /**
+     * Inserts a new AlertSettings object in database
+     * @param alert new object
+     * @return id of the stored object
+     */
     public long insertAlertSettings(AlertSettings alert){
         //Log.i(TAG, "insertAlertSettings()");
         SQLiteDatabase db = getWriteDB();
@@ -114,6 +136,12 @@ public class AlertSettingsRepo {
         close();
         return res;
     }
+
+    /**
+     * Update AlertSettings object in database based on id
+     * @param alert object containing new values
+     * @return number of rows updated (should be 1)
+     */
     public long updateAlertSettings(AlertSettings alert){
         //Log.i(TAG, "insertAlertSettings()");
         SQLiteDatabase db = getWriteDB();
@@ -141,22 +169,10 @@ public class AlertSettingsRepo {
         close();
         return res;
     }
-    public ArrayList<AlertSettings> getAllAlertSettingsTest(){
-        //Log.i(TAG, "getAllAlertSettings()");
-        ArrayList<AlertSettings> alertsettings = new ArrayList<>();
-        SQLiteDatabase db = getReadDB();
-        Cursor res = db.rawQuery("select * from " + table + " limit 10", null);
-        res.moveToFirst();
-        while(!res.isAfterLast()) {
-            AlertSettings alert = cursorToAlertSettings(res);
-            // add to list
-            alertsettings.add(alert);
-            res.moveToNext();
-        }
-        res.close();
-        close();
-        return alertsettings;
-    }
+
+    /**
+     * @return an ArrayList of AlertSettings objects:
+     */
     public ArrayList<AlertSettings> getAllAlertSettings(){
         SQLiteDatabase db = getReadDB();
         //Log.i(TAG, "getAllAlertSettings()");
@@ -172,6 +188,12 @@ public class AlertSettingsRepo {
         c.close();
         return alertsettings;
     }
+
+    /**
+     * Helping method to parse cursor values and store them inside an AlertSettings object
+     * @param c cursor
+     * @return AlertSettings object
+     */
     private AlertSettings cursorToAlertSettings(Cursor c) {
         AlertSettings alert = new AlertSettings(c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_ALERT_ID)),
                 c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_TEMPMIN)), c.getInt(c.getColumnIndexOrThrow(SQLiteDBHelper.A_TEMPMAX)),
@@ -188,6 +210,11 @@ public class AlertSettingsRepo {
         alert.setLocation(location);
         return alert;
     }
+
+    /**
+     * @param id of AlertSettings
+     * @return a AlertSettings object based on the id
+     */
     public AlertSettings getAlertSettingById(int id){
         //Log.i(TAG, "getAlertSettingById("+ id+")");
         SQLiteDatabase db = getReadDB();

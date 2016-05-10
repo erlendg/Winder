@@ -45,6 +45,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.alert_preferences);
         //The current activity:
         activity = (AlertSettingsActivityBeta) getActivity();
+        PreferenceManager.setDefaultValues(activity.getApplicationContext(), R.xml.alert_preferences, true);
         //Visible CheckBoxPreferences and ListPreferences:
         tempPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.temp_pref_key));
         precipPref = (CheckBoxPreference) findPreference(getResources().getString(R.string.precip_pref_key));
