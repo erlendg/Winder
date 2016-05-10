@@ -140,7 +140,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
     }
 
     /**
-     * Starts AlertSettingsActivity if the user wishes to edit the weather settings for the Alert (AlertSettings)
+     * Starts AlertSettingsActivityBeta if the user wishes to edit the weather settings for the Alert (AlertSettings)
      * @param v view of the edit button:
      */
     public void onEditAlertButtonClick(View v){

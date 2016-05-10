@@ -1,4 +1,4 @@
-package com.eim.winder.div;
+package com.eim.winder.unusedcomponents;
 
 import com.eim.winder.db.AlertSettings;
 import com.eim.winder.db.Location;
@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Mari on 31.01.2016.
+ * For testing only.
+ * Dummy Locations objects
  */
 public class Locations {
     public static final String[] locations = {"Trondheim Sentrum", "Lade", "Ila", "Orkanger", "Stjørdal","Hatmountainvalley", "Åre", "UtiGokk"};

@@ -34,7 +34,7 @@ public class AlertSettingsPrefFragment extends PreferenceFragment {
     AlertSettingsActivityBeta activity;
 
     /**
-     * Creates the inflated AlertSettingsPrefFragment view alert_preferences.xml inside the view of AlertSettingsActivity.
+     * Creates the inflated AlertSettingsPrefFragment view alert_preferences.xml inside the view of AlertSettingsActivityBeta.
      * Builds all preferences and the onPreferencesChanged listener.
      * Fetches the current activity.
      * @param savedInstanceState

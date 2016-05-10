@@ -3,7 +3,7 @@ package com.eim.winder.db;
 import android.content.Context;
 import android.util.Log;
 
-import com.eim.winder.div.Locations;
+
 
 import java.util.ArrayList;
 

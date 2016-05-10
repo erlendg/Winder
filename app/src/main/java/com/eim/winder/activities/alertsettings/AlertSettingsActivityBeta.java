@@ -40,7 +40,7 @@ public class AlertSettingsActivityBeta extends AppCompatActivity {
     Bundle bundle;
 
     /**
-     * Creates the AlertSettingsActivity content view: alertprefsettings_layout.xml,
+     * Creates the AlertSettingsActivityBeta content view: alertprefsettings_layout.xml,
      * sets toolbar title, inflate the preferenceFragment containing the settings view,
      * fetches the selected Location form the bundle extras form the previous activity,
      * sets the updateMode value (if the previous activity is the AlertOverViewActivity)
