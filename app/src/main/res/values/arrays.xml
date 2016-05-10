@@ -1,24 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- gammel shit -->
-    <string-array name="temp_array">
-        <item>30</item><item>25</item><item>20</item><item>15</item><item>10</item><item>5</item><item>3</item><item>0</item>
-        <item>-3</item><item>-5</item><item>-10</item><item>-15</item><item>-20</item><item>-25</item><item>-30</item>
-    </string-array>
-    <string-array name="percipitation_array">
-        <item>millimeter</item><item>0.1 - 1.0</item>
-        <item>1.0 - 3.0</item><item>3.0 - 5.0</item>
-        <item>5.0 - 9.0</item><item>Mer enn 9.0</item>
-    </string-array>
-    <string-array name="windspeed_array">
-        <item>meter/sekund</item><item>1 - 3</item><item>3 - 5</item>
-        <item>3 - 5</item><item>5 - 9</item><item>9 - 12</item><item>Mer enn 12</item>
-    </string-array>
-    <string-array name="checkInterval_array">
-        <item>0.5</item><item>1</item><item>2</item>
-        <item>3</item><item>4</item><item>5</item><item>6</item>
-    </string-array>
-    <!-- gammel shit-->
 
     <string-array name="checkinterval_array">
         <item>@string/checkinterval_one</item>
