@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.ic_stat_name);
         //Cardview:Initiates the list with location alerts and the adapter that "listens" for changes on the list:
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        alertSettingsList = getLocationsAndAlertData();
+        alertSettingsList = getLocationAlertList();
         llManager = new LinearLayoutManager(context);
         buildRecyclerView(recyclerView, llManager, alertSettingsList);
 
@@ -126,8 +126,10 @@ public class MainActivity extends AppCompatActivity {
      * Fetches all the Alertsettings objects the user has saved.
      * @return An ArrayList of Alertsettings objects that the user has added weather alerts for.
      */
-    public ArrayList<AlertSettings> getLocationsAndAlertData(){
+    public ArrayList<AlertSettings> getLocationAlertList(){
+        //Populates the list:
         alertSettingsList = dbService.getAllAlertSettingsAndLocations();
+        //Adds layout:
         LinearLayout emptyListReplacer = (LinearLayout) findViewById(R.id.empty_list_replacer);
         emptyListReplacer.setVisibility(View.VISIBLE);
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -146,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets animation on a FloatingActionAutton (blue + button)
-     * @param fab the button that needs animation
+     * Sets animation on a FloatingActionButton (blue + button)
+     * @param fab the button that need animation
      */
     private void setFabAnimation(FloatingActionButton fab){
         final Animation animation = new AlphaAnimation(1.0f, 0.3f); // Change alpha from fully visible to invisible
@@ -162,16 +164,16 @@ public class MainActivity extends AppCompatActivity {
      * Starts the SelectLocationActivity so the user can add a new location for weather alerts.
      * Only starts if the size of the AlertSettings list is less or equal to 10.
      * Currently there is only allowed to register 10 locations for alert to limit dataflow.
-     * @param v the view of the action that initialize this method. (MainActivity)
+     * @param view the view of the action that initialize this method. (MainActivity)
      */
-    public void startSelectLocationActivity(View v){
+    public void onAddNewButtonClick(View view){
         //Starts the new Activity if there is less then 10 items in the list.
         if(getNumOfLocations() != MAX_LOCATIONS){
             Intent intent = new Intent(this, SelectLocationActivity.class);
             Log.i(TAG, "---> startSelectLocationActivity");
             startActivity(intent);
         }else{
-            Snackbar.make(v, getString(R.string.toast_more_then_ten_alerts), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Snackbar.make(view, getString(R.string.toast_more_then_ten_alerts), Snackbar.LENGTH_LONG).setAction("Action", null).show();
         }
     }
 
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, l.getLanguage());
         if(!isActivityRunning) {
             //Log.i(TAG, "onResume()");
-            alertSettingsList = getLocationsAndAlertData();
+            alertSettingsList = getLocationAlertList();
             setRvAdapter(recyclerView, alertSettingsList);
             isActivityRunning = true;
         }
@@ -272,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
                 String lastUpdate = compare.getTimeAndStoreIt(getResources().getConfiguration().locale);
                 if(compareResult == 1 || compareResult ==3 )notifyAlertSettingsListChanged(i, 1, lastUpdate);
                 else notifyAlertSettingsListChanged(i, 0, lastUpdate);
-                //Si ifra til adapteren med arraylisten av alertsettings at det har skjedd en endring:
             }
             //Toast.makeText(this, "Alertsetting " + alertSettingsList.get(i).getId(), Toast.LENGTH_SHORT).show();
         }
@@ -310,7 +311,6 @@ public class MainActivity extends AppCompatActivity {
         Resources res = context.getResources();
         res.updateConfiguration(config, res.getDisplayMetrics());
     }
-
     /**
      * Extension of the default Adapter.notifyDataSetChanged to update a specific item in the list
      * if there is new weather events. It updates the color of the item and the field "last update".

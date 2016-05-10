@@ -36,9 +36,9 @@ public class Scheduler {
         intentAlarm.putExtra("url", url);
 
         //AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent toDo = PendingIntent.getBroadcast(context, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, toDo);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, nowTime, intervalLong, pendingIntent);
 
         //Toast.makeText(context, "Alarm scheduled for " + id + "!", Toast.LENGTH_SHORT).show();
     }
