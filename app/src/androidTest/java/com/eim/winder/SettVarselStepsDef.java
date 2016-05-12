@@ -74,6 +74,8 @@ public class SettVarselStepsDef extends ActivityTestCase {
 
     /**
      * Test requires the alert list to contain at least one item, with unique name
+     * for Espresson to finds this item and delete it.
+     * Be aware that this test vil delete the location if it succeeds.
      */
     @Test
     public void slett_varsel_scenario(){
@@ -90,6 +92,12 @@ public class SettVarselStepsDef extends ActivityTestCase {
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
     }
+    /**
+     * Custom toolbar title view-matcher that searches trough the view for a toolbar with
+     * a requested title
+     * @param title name of toolbar
+     * @return true if found
+     */
     private static ViewInteraction matchToolbarTitle(
             CharSequence title) {
         return onView(isAssignableFrom(Toolbar.class))
@@ -110,8 +118,7 @@ public class SettVarselStepsDef extends ActivityTestCase {
 
     @Og("^har registrerte steder i listen$")
     public void har_registrerte_steder_i_listen() {
-        //AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
-        //when(testService.getAllAlertSettings()).thenCallRealMethod();
+        //finds the recycleview and checks that it has items or children
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
         size = view.getChildCount();
@@ -143,22 +150,21 @@ public class SettVarselStepsDef extends ActivityTestCase {
 
     @Og("^har trykket på stedet for detaljoversikt$")
     public void har_trykket_på_stedet_for_detaljoversikt(){
+        //Clicks on the first item in the list
         onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
     @Når("^brukeren trykker på slett-knappen$")
     public void brukeren_trykker_på_slett_knappen(){
-        //AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
-        //when(testService.deleteAlertSettings(id)).thenReturn(true);
-        //AlertOverViewActivity testActivity = Mockito.mock(AlertOverViewActivity.class);
-        //BDDMockito.willDoNothing().given(testActivity).cancelAlarm(id);
+        //Clicks
         onView(withId(R.id.fab_deleteItem)).perform(click());
+        //Checks for the confirmation button
         Context context = mainActivity.getActivity().getApplicationContext();
         String deleteMessage = context.getApplicationContext().getString(R.string.delete_message);
         onView(withText(deleteMessage)).check(matches(isDisplayed()));
         onView(withText(android.R.string.yes)).perform(click());
     }
-
+    //checks that the size ig the list is reduced by one.
     @Så("^skal stedet slettes$")
     public void skal_stedet_slettes() {
         Log.v(TAG, "size:" + size);
@@ -173,7 +179,7 @@ public class SettVarselStepsDef extends ActivityTestCase {
         matchToolbarTitle(title);
 
     }
-
+    //Checks for the name in the view, this is why the name of the location to be deletet needs to be unique in the list.
     @Og("^stedet er slettet fra listen med registrerte steder$")
     public void stedet_er_slettet_fra_listen_med_registrerte_steder()  {
         onView(withText(deletedLocation)).check(doesNotExist());
