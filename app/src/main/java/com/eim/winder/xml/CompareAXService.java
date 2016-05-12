@@ -173,7 +173,8 @@ public class CompareAXService {
 
         }
         if(sunCheck){
-            returnString += context.getResources().getString(R.string.generate_clear)+"\n";
+            if (info.getSymbolNumber() ==1) returnString += context.getResources().getString(R.string.generate_clear)+"\n";
+            else if (info.getSymbolNumber() ==2) returnString += context.getResources().getString(R.string.generate_cloudy)+"\n";
         }
         if(precipitationCheck){
             returnString += context.getResources().getString(R.string.generate_precipitatiion)+ " " + info.getPrecipitationValue() + "mm" + "\n";
@@ -530,7 +531,7 @@ public class CompareAXService {
 
         if(checkPrecipitation(div.getPrecipitationValue())==2) return false;
 
-        if(checkSymbolSun(div.getSymbolName())== 2) return false;
+        if(checkSymbolSun(div.getSymbolName(), div.getSymbolNumber())== 2) return false;
 
         if (checkWindDirection(div.getWindDirectionCode())==2) return false;
 
@@ -783,10 +784,11 @@ public class CompareAXService {
      * @param a weatherIcon value
      * @return outcome, 0-2 based on the result, 0= match, 1=ignore, 2=no match
      */
-    private int checkSymbolSun(String a) {
+    private int checkSymbolSun(String a, int b) {
         //Log.d(TAG, "innhold i SunString: " + a);
 
-        if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("clear sky")){
+        //if (alertSettingsObj.isCheckSun() && a.equalsIgnoreCase("klarvær")){
+        if (alertSettingsObj.isCheckSun() && b==1 || b==2){
             //Log.d(TAG, "Sol returverdi = 0, innverdi = " + a);
             sunCheck = true;
             return 0;
