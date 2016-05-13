@@ -9,6 +9,10 @@ import com.eim.winder.activities.alertsettings.AlertSettingsActivity;
 
 /**
  * Created by Mari on 09.02.2016.
+ * Custom Text changed listener for the autocomplete textview that runs an sql-search query for every
+ * input string form the user. This is to avoid loading the entire table content into the autocomplete adapter when
+ * the location list maybe contains over 100 000 locations. For now, to load 11 000 locations is not a problem for
+ * the adapter and is therefore loaded at once, when the user starts searching for locations.
  */
 public class CustomTextChangedListener implements TextWatcher{
     final private AlertSettingsActivity alertsetActivity;

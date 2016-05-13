@@ -1,4 +1,4 @@
-package com.eim.winder.xml;
+package com.eim.winder.unusedcomponents;
 
 import java.util.Date;
 

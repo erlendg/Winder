@@ -116,14 +116,13 @@ public class OppdaterInfoForStedStepDef {
             }
 
             @Override public void describeTo (final Description description) {
-                description.appendText ("ListView should have " + size + " items");
+                description.appendText ("List should have " + size + " items");
             }
         };
     }
 
     @Gitt("^at appen er åpnet$")
     public void at_appen_er_åpnet() {
-        //String title = mainActivity.getActivity().getResources().getString(R.string.app_name);
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
     }
@@ -139,7 +138,7 @@ public class OppdaterInfoForStedStepDef {
                 return textMatcher.matches(toolbar.getTitle());
             }
             @Override public void describeTo(Description description) {
-                description.appendText("has toolbar title: ");
+                description.appendText("toolbar title: ");
                 textMatcher.describeTo(description);
             }
         };

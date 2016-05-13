@@ -18,11 +18,11 @@ public class CustomArrayAdapter extends ArrayAdapter<String> {
         super(context, R.layout.row_layout, text);
     }
     @Override
-    public View getView(int position, View contentView, ViewGroup parent){
+    public View getView(int pos, View contentView, ViewGroup parent){
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View customRowView = inflater.inflate(R.layout.row_layout, parent, false);
 
-        String singleItem = getItem(position);
+        String singleItem = getItem(pos);
         TextView itemNameText = (TextView) customRowView.findViewById(R.id.itemname_textview);
         itemNameText.setText(singleItem);
 
