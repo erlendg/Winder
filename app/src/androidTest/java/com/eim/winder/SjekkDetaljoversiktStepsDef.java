@@ -52,6 +52,9 @@ public class SjekkDetaljoversiktStepsDef {
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
+    /**
+     * Runner:
+     */
     @Test
     public void sjekk_detaljoversikt_scenario(){
         at_brukeren_har_åpnet_appen();
@@ -82,7 +85,7 @@ public class SjekkDetaljoversiktStepsDef {
                 return textMatcher.matches(toolbar.getTitle());
             }
             @Override public void describeTo(Description description) {
-                description.appendText("has toolbar title: ");
+                description.appendText("toolbar title: ");
                 textMatcher.describeTo(description);
             }
 
@@ -100,14 +103,12 @@ public class SjekkDetaljoversiktStepsDef {
     @Når("^brukeren trykker på stedet for detaljoversikt$")
     public void brukeren_trykker_på_stedet_for_detaljoversikt(){
         // clicks on first element in the list:
-        Log.e(TAG, "Når brukeren trykker på stedet for detaljoversikt");
        onView(withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
     }
 
 
     @Så("^skal detaljoversikten vises$")
     public void skal_detaljoversikten_vises(){
-        Log.e(TAG, "Så skal detaljoversikten vises");
         // checks for the location name in the toolbar and checks that the right layout xml-file is displayed
         String name = mainActivity.getActivity().getRecycleViewDataset().get(0).getLocation().getName();
         onView(withId(R.id.activity_alert_over_view)).check(matches(isDisplayed()));
@@ -117,7 +118,6 @@ public class SjekkDetaljoversiktStepsDef {
 
     @Og("^brukeren ser alle hendelser for stedet i oversikten$")
     public void brukeren_ser_alle_hendelser_for_stedet_i_oversikten() {
-        Log.e(TAG, " Og brukeren ser alle hendelser for stedet i oversikten");
         //checks that the eventlist is displayed
         onView(withText(R.string.eventlist)).check(matches(isDisplayed()));
     }

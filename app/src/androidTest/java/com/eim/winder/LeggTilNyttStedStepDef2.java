@@ -39,14 +39,14 @@ import static org.mockito.Mockito.when;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LeggTilNyttStedStepDef2 {
+    /**
+     * Test requires that 10 alerts is registered in the list for the test to succeed.
+     */
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
     private ArrayList<AlertSettings> asd;
     private int size;
 
-    /**
-     * Test requires that 10 alerts is registered in the list for the test to succeed.
-     */
 
     @Test
     public void legg_til_nytt_sted_scenario2(){
@@ -62,8 +62,6 @@ public class LeggTilNyttStedStepDef2 {
         asd = mainActivity.getActivity().getRecycleViewDataset();
         size = asd.size();
         assertTrue(size == 10);
-
-
     }
 
     @Når("^brukeren trykker på legg-til-nytt-sted-knappen$")

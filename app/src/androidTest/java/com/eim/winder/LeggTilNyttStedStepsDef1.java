@@ -1,6 +1,7 @@
 package com.eim.winder;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v7.widget.RecyclerView;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.eim.winder.activities.main.MainActivity;
@@ -40,14 +41,15 @@ import static org.mockito.Mockito.when;
 public class LeggTilNyttStedStepsDef1 {
     private ArrayList<AlertSettings> asd;
     private int size = 0;
-
+    /**
+     * Test requires that less then 10 alerts is registered in the list for the test to succeed.
+     */
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     /**
-     * Test requires that less then 10 alerts is registered in the list for the test to succeed.
+     * Runner:
      */
-
     @Test
     public void legg_til_nytt_sted_scenario1(){
         at_bruker_har_mindre_enn_ti_steder_registrert();
@@ -58,11 +60,8 @@ public class LeggTilNyttStedStepsDef1 {
 
     @Gitt("^at bruker har mindre enn ti steder registrert$")
     public void at_bruker_har_mindre_enn_ti_steder_registrert(){
-        // Express the Regexp above with the code you wish you had
-        AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
-        when(testService.getAllAlertSettings()).thenCallRealMethod();
-        asd = mainActivity.getActivity().getRecycleViewDataset();
-        size = asd.size();
+        RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
+        size = view.getChildCount();
         assertTrue(size < 10);
     }
 
@@ -71,10 +70,11 @@ public class LeggTilNyttStedStepsDef1 {
         onView(withId(R.id.fab)).perform(click());
     }
 
-
+    /**
+     * Checks that no error snackbar is displayed:
+     */
     @Så("^skal forespørselen aksepteres$")
     public void skal_forespørselen_aksepteres() {
-        //onView(withText(R.string.toast_more_then_ten_alerts)).inRoot(withDecorView(not(is(mainActivity.getActivity().getWindow().getDecorView())))).check(doesNotExist());
         onView(withText(R.string.toast_more_then_ten_alerts))
                 .inRoot(withDecorView(not(mainActivity.getActivity().getWindow().getDecorView())))
                 .check(doesNotExist());

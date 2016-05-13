@@ -68,14 +68,17 @@ public class SettVarselStepsDef extends ActivityTestCase {
     private String deletedLocation = "";
     private int size = 0;
     private ArrayList<AlertSettings> asd;
+    /**
+     * Test requires the alert list to contain at least one item, with unique name
+     * for Espresson to finds this item and delete it.
+     * Be aware that this test vil delete the location if it succeeds.
+     */
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     /**
-     * Test requires the alert list to contain at least one item, with unique name
-     * for Espresson to finds this item and delete it.
-     * Be aware that this test vil delete the location if it succeeds.
+     * Runner:
      */
     @Test
     public void slett_varsel_scenario(){
@@ -133,7 +136,7 @@ public class SettVarselStepsDef extends ActivityTestCase {
 
     /**
      * Custom Matcher for list size
-     * @param size
+     * @param size size of the list to be matched
      * @return matcher
      */
     public static Matcher<View> withListSize (final int size) {
@@ -164,7 +167,10 @@ public class SettVarselStepsDef extends ActivityTestCase {
         onView(withText(deleteMessage)).check(matches(isDisplayed()));
         onView(withText(android.R.string.yes)).perform(click());
     }
-    //checks that the size ig the list is reduced by one.
+
+    /**
+     * Checks that the size ig the list is reduced by one.
+     */
     @Så("^skal stedet slettes$")
     public void skal_stedet_slettes() {
         Log.v(TAG, "size:" + size);
@@ -179,7 +185,9 @@ public class SettVarselStepsDef extends ActivityTestCase {
         matchToolbarTitle(title);
 
     }
-    //Checks for the name in the view, this is why the name of the location to be deletet needs to be unique in the list.
+    /**
+     * Checks for the name in the view, this is why the name of the location to be deletet needs to be unique in the list.
+     */
     @Og("^stedet er slettet fra listen med registrerte steder$")
     public void stedet_er_slettet_fra_listen_med_registrerte_steder()  {
         onView(withText(deletedLocation)).check(doesNotExist());

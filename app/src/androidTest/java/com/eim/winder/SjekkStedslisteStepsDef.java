@@ -43,10 +43,10 @@ public class SjekkStedslisteStepsDef {
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
-    @Test
     /**
-     * BDD test
+     * Runner:
      */
+    @Test
     public void sjekk_stedsliste_scenario(){
         at_appen_er_åpnet();
         brukeren_går_inn_på_hovedsiden();
@@ -55,7 +55,6 @@ public class SjekkStedslisteStepsDef {
     }
     @Gitt("^at appen er åpnet$")
     public void at_appen_er_åpnet() {
-        Log.d(TAG, "Gitt at appen er åpen");
         //String title = mainActivity.getActivity().getResources().getString(R.string.app_name);
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
@@ -89,7 +88,6 @@ public class SjekkStedslisteStepsDef {
 
     @Når("^brukeren går inn på hovedsiden$")
     public void brukeren_går_inn_på_hovedsiden() {
-        Log.d(TAG, "Når brukeren går inn på hovedsiden");
         //checks for the right layout.xml
         onView(withId(R.id.activity_main));
     }
@@ -97,7 +95,6 @@ public class SjekkStedslisteStepsDef {
 
     @Så("^skal det framvises en oversikt over brukerens registrerte steder$")
     public void skal_det_framvises_en_oversikt_over_brukerens_registrerte_steder(){
-        Log.d(TAG, "Så skal det framvises en oversikt over brukerens registrerte steder");
         //Checks if the floating actionbutton is present, if so then the view components exist,
         // If there is no elements inside the list view then this button would still be present.
         onView(withId(R.id.fab)).check(matches(isDisplayed()));

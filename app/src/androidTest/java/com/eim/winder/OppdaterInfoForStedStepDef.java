@@ -61,6 +61,11 @@ public class OppdaterInfoForStedStepDef {
      * cannot click on new-button when it is animated on empty list
      */
 
+    /**
+     * Runner
+     * @throws InterruptedException
+     */
+
     @Test
     public void oppdater_informasjon_for_sted_scenario1()throws InterruptedException{
         legg_til_sikre_inst_for_varsel(mainActivity);
@@ -71,6 +76,10 @@ public class OppdaterInfoForStedStepDef {
         Thread.sleep(1000);
         skal_ny_værinformasjonen_framkomme(size);
     }
+
+    /**
+     * Runner
+     */
     @Test
     public void oppdater_informasjon_for_sted_scenario2(){
         legg_til_usikre_inst_for_varsel(mainActivity);
@@ -80,12 +89,18 @@ public class OppdaterInfoForStedStepDef {
         brukeren_trykker_på_oppdater_knappen();
         forekommer_ingen_endringer_hvis_nye_oppdateringer_ikke_er_tilgjengelig(size);
     }
+
+    /**
+     * Inserts an location that is most likely to get a instant match when forecasts is updated
+     * @param mainActivity needs MainActivity to use methods:
+     */
     private void legg_til_sikre_inst_for_varsel(ActivityTestRule mainActivity) {
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
         size = view.getChildCount();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
         int loc_id = 326;
+        //Forced to set the location manually because Espresso could not find the AutocompleteTextView and click on items inside it.
         SelectLocationActivity activity = SelectLocationActivity.getInstance();
         DBService db = new DBService(activity.getApplicationContext());
         activity.setLocation(db.getLocationFromId(loc_id));
@@ -94,12 +109,17 @@ public class OppdaterInfoForStedStepDef {
         onView(withId(R.id.saveButton)).perform(click());
         onView(withId(R.id.recycler_view)).check(matches(withListSize(size + 1)));
     }
+    /**
+     * Inserts an location that is not likely to get a instant match when forecasts is updated
+     * @param mainActivity needs MainActivity to use methods:
+     */
     private void legg_til_usikre_inst_for_varsel(ActivityTestRule mainActivity) {
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
         size = view.getChildCount();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
         int loc_id = 326;
+        //Forced to set the location manually because Espresso could not find the AutocompleteTextView and click on items inside it.
         SelectLocationActivity activity = SelectLocationActivity.getInstance();
         DBService db = new DBService(activity.getApplicationContext());
         activity.setLocation(db.getLocationFromId(loc_id));
@@ -109,6 +129,12 @@ public class OppdaterInfoForStedStepDef {
         onView(withId(R.id.saveButton)).perform(click());
         onView(withId(R.id.recycler_view)).check(matches(withListSize(size + 1)));
     }
+
+    /**
+     * Custom list size matcher
+     * @param size of the list
+     * @return true if the list size is equal to the given number.
+     */
     public static Matcher<View> withListSize (final int size) {
         return new TypeSafeMatcher<View>() {
             @Override public boolean matchesSafely (final View view) {
@@ -126,6 +152,12 @@ public class OppdaterInfoForStedStepDef {
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
     }
+    /**
+     * Custom toolbar title view-matcher that searches trough the view for a toolbar with
+     * a requested title
+     * @param title name of toolbar
+     * @return true if found
+     */
     private static ViewInteraction matchToolbarTitle(
             CharSequence title) {
         return onView(isAssignableFrom(Toolbar.class))
@@ -148,11 +180,19 @@ public class OppdaterInfoForStedStepDef {
         onView(withId(R.id.activity_main));
     }
 
+    /**
+     * Refreshes the forecasts:
+     */
     @Når("^brukeren trykker på oppdater-knappen$")
     public void brukeren_trykker_på_oppdater_knappen() {
         onView(withId(R.id.action_refresh)).perform(click());
     }
 
+    /**
+     * Checks for the green color at a specific position in the list in the main view that sould have weatherevents
+     * @param pos of the item
+     * Green = ImageButton is selected
+     */
     @Så("^skal ny værinformasjonen framkomme$")
     public void skal_ny_værinformasjonen_framkomme(int pos) {
         RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);
@@ -160,7 +200,11 @@ public class OppdaterInfoForStedStepDef {
                 .atPositionOnView(pos, R.id.weather_photo))
                 .check(matches(isSelected()));
     }
-
+    /**
+     * Checks for the blue color at a specific position in the list that should not have any weather events registered
+     * @param pos of the item
+     * Blue = ImageButton is not selected
+     */
     @Så("^forekommer ingen endringer hvis nye oppdateringer ikke er tilgjengelig$")
     public void forekommer_ingen_endringer_hvis_nye_oppdateringer_ikke_er_tilgjengelig(int pos){
         RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);

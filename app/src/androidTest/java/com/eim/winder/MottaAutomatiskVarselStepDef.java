@@ -49,21 +49,27 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MottaAutomatiskVarselStepDef {
-
+    /**
+     * Test requires a 1min delay for the alert to occur after saving.
+     */
     @Rule
     public ActivityTestRule mainActivity = new ActivityTestRule(MainActivity.class);
 
     private UiDevice mDevice;
 
+    /**
+     * This method is needed to setup a UiDevice so that the test can access the notification bar
+     * to search for the alert.
+     */
 
     @Before
     public void setUp(){
         mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
     }
-    /**
-     * Test requires a 1min delay for the alert to occur.
-     */
 
+    /**
+     * Runner:
+     */
     @Test
     public void motta_automatisk_varsel(){
         legg_til_sikre_inst_for_varsel(mainActivity);
@@ -99,6 +105,10 @@ public class MottaAutomatiskVarselStepDef {
         mDevice.wait(Until.hasObject(By.pkg("com.eim.winder")), 1000);
 
     }
+    /**
+     * Inserts an location that is most likely to get a instant match when forecasts is updated
+     * @param mainActivity needs MainActivity to use methods:
+     */
     private void legg_til_sikre_inst_for_varsel(ActivityTestRule mainActivity){
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
         int size = view.getChildCount();
@@ -115,6 +125,12 @@ public class MottaAutomatiskVarselStepDef {
         onView(withId(R.id.recycler_view)).check(matches(withListSize(size + 1)));
 
     }
+
+    /**
+     * Custom list size matcher
+     * @param size
+     * @return
+     */
     public static Matcher<View> withListSize (final int size) {
         return new TypeSafeMatcher<View>() {
             @Override public boolean matchesSafely (final View view) {
@@ -122,7 +138,7 @@ public class MottaAutomatiskVarselStepDef {
             }
 
             @Override public void describeTo (final Description description) {
-                description.appendText ("ListView should have " + size + " items");
+                description.appendText ("List should have " + size + " items");
             }
         };
     }
