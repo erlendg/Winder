@@ -88,6 +88,7 @@
     <string name="generate_temperature">Temperature: </string>
     <string name="generate_precipitatiion">Precipitation: </string>
     <string name="generate_clear">Clear weather!</string>
+    <string name="generate_cloudy">Fair weather!</string>
     <string name="generate_winddirection">Wind direction: </string>
     <string name="generate_windspeed">Wind speed: </string>
 

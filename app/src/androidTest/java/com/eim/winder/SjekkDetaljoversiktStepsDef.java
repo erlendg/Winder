@@ -40,12 +40,15 @@ import static org.hamcrest.Matchers.is;
 
 /**
  * Created by Mari on 15.03.2016.
+
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class SjekkDetaljoversiktStepsDef {
     private String TAG = "SjekkDetaljoversiktStepsDef";
-
+    /** The test requires that there are at least one item in the weaterlocations-list on the main page
+    * To get access to the detailed view.
+    */
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
@@ -61,11 +64,15 @@ public class SjekkDetaljoversiktStepsDef {
 
     @Gitt("^at brukeren har åpnet appen$")
     public void at_brukeren_har_åpnet_appen() {
-        Log.e(TAG, "Gitt at brukeren har åpnet appen");
-        //String title = mainActivity.getActivity().getResources().getString(R.string.app_name);
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
     }
+    /**
+     * Custom toolbar title view-matcher that searches trough the view for a toolbar with
+     * a requested title
+     * @param title name of toolbar
+     * @return true if found
+     */
     private static ViewInteraction matchToolbarTitle(CharSequence title) {
         return onView(isAssignableFrom(Toolbar.class)).check(matches(hasToolbarTitle(is(title))));
     }
@@ -83,8 +90,6 @@ public class SjekkDetaljoversiktStepsDef {
     }
     @Og("^har registrerte steder i listen$")
     public void har_registrerte_steder_i_listen() {
-        //AlertSettingsRepo testService = Mockito.mock(AlertSettingsRepo.class);
-        //when(testService.getAllAlertSettings()).thenCallRealMethod();
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
         int size = view.getChildCount();
@@ -103,6 +108,7 @@ public class SjekkDetaljoversiktStepsDef {
     @Så("^skal detaljoversikten vises$")
     public void skal_detaljoversikten_vises(){
         Log.e(TAG, "Så skal detaljoversikten vises");
+        // checks for the location name in the toolbar and checks that the right layout xml-file is displayed
         String name = mainActivity.getActivity().getRecycleViewDataset().get(0).getLocation().getName();
         onView(withId(R.id.activity_alert_over_view)).check(matches(isDisplayed()));
         onView(withId(R.id.toolbar_layout)).check(matches(isDisplayed()));
@@ -112,6 +118,7 @@ public class SjekkDetaljoversiktStepsDef {
     @Og("^brukeren ser alle hendelser for stedet i oversikten$")
     public void brukeren_ser_alle_hendelser_for_stedet_i_oversikten() {
         Log.e(TAG, " Og brukeren ser alle hendelser for stedet i oversikten");
+        //checks that the eventlist is displayed
         onView(withText(R.string.eventlist)).check(matches(isDisplayed()));
     }
 }

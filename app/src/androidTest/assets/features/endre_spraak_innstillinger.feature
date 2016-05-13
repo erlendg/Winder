@@ -3,8 +3,8 @@
 Egenskap:Endre språkinnstillinger
 
   Bakgrunn: Som en bruker
-    Vil jeg kunne endre ønsket språk for appen
-    Slik at jeg får tilpasset appen til mitt ønskede språk
+            Vil jeg kunne endre ønsket språk for appen
+            Slik at jeg får tilpasset appen til mitt ønskede språk
 
 Scenario: Endre språk
   Gitt at brukeren er inne på siden med appinnstillinger

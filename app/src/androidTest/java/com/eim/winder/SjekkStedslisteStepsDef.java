@@ -44,6 +44,9 @@ public class SjekkStedslisteStepsDef {
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<MainActivity>(MainActivity.class);
 
     @Test
+    /**
+     * BDD test
+     */
     public void sjekk_stedsliste_scenario(){
         at_appen_er_åpnet();
         brukeren_går_inn_på_hovedsiden();
@@ -57,6 +60,13 @@ public class SjekkStedslisteStepsDef {
         CharSequence title = InstrumentationRegistry.getTargetContext().getString(R.string.app_name);
         matchToolbarTitle(title);
     }
+
+    /**
+     * Custom toolbar title view-matcher that searches trough the view for a toolbar with
+     * a requested title
+     * @param title name of toolbar
+     * @return true if found
+     */
     private static ViewInteraction matchToolbarTitle(
             CharSequence title) {
         return onView(isAssignableFrom(Toolbar.class))
@@ -69,7 +79,7 @@ public class SjekkStedslisteStepsDef {
                 return textMatcher.matches(toolbar.getTitle());
             }
             @Override public void describeTo(Description description) {
-                description.appendText("has toolbar title: ");
+                description.appendText("toolbar title: ");
                 textMatcher.describeTo(description);
             }
         };
@@ -80,6 +90,7 @@ public class SjekkStedslisteStepsDef {
     @Når("^brukeren går inn på hovedsiden$")
     public void brukeren_går_inn_på_hovedsiden() {
         Log.d(TAG, "Når brukeren går inn på hovedsiden");
+        //checks for the right layout.xml
         onView(withId(R.id.activity_main));
     }
 
@@ -87,6 +98,8 @@ public class SjekkStedslisteStepsDef {
     @Så("^skal det framvises en oversikt over brukerens registrerte steder$")
     public void skal_det_framvises_en_oversikt_over_brukerens_registrerte_steder(){
         Log.d(TAG, "Så skal det framvises en oversikt over brukerens registrerte steder");
+        //Checks if the floating actionbutton is present, if so then the view components exist,
+        // If there is no elements inside the list view then this button would still be present.
         onView(withId(R.id.fab)).check(matches(isDisplayed()));
     }
 }
