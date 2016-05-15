@@ -124,7 +124,7 @@ public class SettVarselStepsDef extends ActivityTestCase {
         //finds the recycleview and checks that it has items or children
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
-        size = view.getChildCount();
+        size = view.getAdapter().getItemCount();
         assertTrue(size != 0);
 
 
@@ -140,13 +140,13 @@ public class SettVarselStepsDef extends ActivityTestCase {
      * @return matcher
      */
     public static Matcher<View> withListSize (final int size) {
-        return new TypeSafeMatcher<View> () {
+        return new TypeSafeMatcher<View>() {
             @Override public boolean matchesSafely (final View view) {
-                return ((RecyclerView) view).getChildCount () == size;
+                return ((RecyclerView) view).getAdapter().getItemCount() == size;
             }
 
             @Override public void describeTo (final Description description) {
-                description.appendText("RecycleView should have " + size + " items");
+                description.appendText ("List should have " + size + " items");
             }
         };
     }
@@ -175,7 +175,7 @@ public class SettVarselStepsDef extends ActivityTestCase {
     public void skal_stedet_slettes() {
         Log.v(TAG, "size:" + size);
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
-        int newsize = view.getChildCount();
+        int newsize = view.getAdapter().getItemCount();
         assertTrue(size == newsize - 1);
     }
 

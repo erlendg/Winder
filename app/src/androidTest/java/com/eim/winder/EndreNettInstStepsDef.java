@@ -29,12 +29,15 @@ import static junit.framework.Assert.assertTrue;
  * Created by Mari on 04.05.2016.
  */
 @RunWith(AndroidJUnit4.class)
-public class EndreNettInstStepDef {
+public class EndreNettInstStepsDef {
     private SharedPreferences sp;
     boolean useMobileData;
+
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);
-
+    /**
+     * Runner:
+     */
     @Test
     public void endre_nettverksinnstillinger_scenario(){
         at_brukeren_er_inne_på_siden_med_appinnstillinger();
@@ -49,6 +52,9 @@ public class EndreNettInstStepDef {
         onView(withText(R.string.settings_header)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Finds the selected value:
+     */
     @Når("^brukeren trykker på innstillingen for mobildata$")
     public void brukeren_trykker_på_innstillingen_for_mobildata(){
         sp = PreferenceManager.getDefaultSharedPreferences(mainActivity.getActivity().getApplicationContext());
@@ -57,6 +63,9 @@ public class EndreNettInstStepDef {
 
     }
 
+    /**
+     * Checks that the network preferences is changed:
+     */
     @Så("^skal appen endre sine nettverksinnstillinger for henting av værvarsel$")
     public void skal_appen_endre_sine_nettverksinnstillinger_for_henting_av_værvarsel(){
         sp = PreferenceManager.getDefaultSharedPreferences(mainActivity.getActivity().getApplicationContext());

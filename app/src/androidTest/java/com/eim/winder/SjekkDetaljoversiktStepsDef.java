@@ -95,7 +95,7 @@ public class SjekkDetaljoversiktStepsDef {
     public void har_registrerte_steder_i_listen() {
         onView(withId(R.id.recycler_view)).check(matches(isDisplayed()));
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
-        int size = view.getChildCount();
+        int size = view.getAdapter().getItemCount();
         assertTrue(size != 0);
     }
 

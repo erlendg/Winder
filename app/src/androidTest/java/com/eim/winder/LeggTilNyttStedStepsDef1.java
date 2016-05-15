@@ -61,7 +61,7 @@ public class LeggTilNyttStedStepsDef1 {
     @Gitt("^at bruker har mindre enn ti steder registrert$")
     public void at_bruker_har_mindre_enn_ti_steder_registrert(){
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
-        size = view.getChildCount();
+        size = view.getAdapter().getItemCount();
         assertTrue(size < 10);
     }
 

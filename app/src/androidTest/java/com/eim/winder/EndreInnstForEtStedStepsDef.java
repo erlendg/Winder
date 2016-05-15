@@ -34,11 +34,17 @@ import static org.hamcrest.Matchers.is;
  * Created by Mari on 04.05.2016.
  */
 @RunWith(AndroidJUnit4.class)
-public class EndreInnstForEtStedStepDef {
+public class EndreInnstForEtStedStepsDef {
+    /**
+     * Test requires that there are at least one saved locations in the weather alert list:
+     */
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);
 
+    /**
+     * Runner:
+     */
     @Test
     public void endre_innstillinger_for_et_sted_scenario(){
         at_brukeren_har_funnet_stedet_i_listen_over_registrerte_steder();
@@ -66,6 +72,12 @@ public class EndreInnstForEtStedStepDef {
     public void skal_varsel_innstillingene_for_stedet_åpnes(){
         matchToolbarTitle(mainActivity.getActivity().getApplicationContext().getString(R.string.settings_for_alert));
     }
+    /**
+     * Custom toolbar title view-matcher that searches trough the view for a toolbar with
+     * a requested title
+     * @param title name of toolbar
+     * @return true if found
+     */
     private static ViewInteraction matchToolbarTitle(
             CharSequence title) {
         return onView(isAssignableFrom(Toolbar.class))
@@ -84,6 +96,9 @@ public class EndreInnstForEtStedStepDef {
         };
     }
 
+    /**
+     * Changes the settings for the selected location:
+     */
     @Og("^brukeren vil kunne endre de allerede definerte innstillingene til stedet$")
     public void brukeren_vil_kunne_endre_de_allerede_definerte_innstillingene_til_stedet() {
         onView(withText(R.string.preferences_temperature)).perform(click());

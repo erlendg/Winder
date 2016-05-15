@@ -13,61 +13,51 @@ import org.hamcrest.TypeSafeMatcher;
  * Created by Mari on 04.05.2016.
  */
 public class RecyclerViewMatcher {
-    private final int recyclerViewId;
+    private final int id;
 
     public RecyclerViewMatcher(int recyclerViewId) {
-        this.recyclerViewId = recyclerViewId;
+        this.id = recyclerViewId;
     }
 
-    public Matcher<View> atPosition(final int position) {
-        return atPositionOnView(position, -1);
-    }
-
-    public Matcher<View> atPositionOnView(final int position, final int targetViewId) {
+    public Matcher<View> atPositionInView(final int position, final int targetViewId) {
 
         return new TypeSafeMatcher<View>() {
             Resources resources = null;
             View childView;
 
             public void describeTo(Description description) {
-                String idDescription = Integer.toString(recyclerViewId);
+                String descriptionID = Integer.toString(id);
                 if (this.resources != null) {
                     try {
-                        idDescription = this.resources.getResourceName(recyclerViewId);
-                    } catch (Resources.NotFoundException var4) {
-                        idDescription = String.format("%s (resource name not found)",
+                        descriptionID = this.resources.getResourceName(id);
+                    } catch (Resources.NotFoundException e) {
+                        descriptionID = String.format("%s (name of resource not found)",
                                 new Object[] { Integer.valueOf
-                                        (recyclerViewId) });
+                                        (id) });
                     }
                 }
-
-                description.appendText("with id: " + idDescription);
+                description.appendText("with id: " + descriptionID);
             }
 
             public boolean matchesSafely(View view) {
-
                 this.resources = view.getResources();
-
                 if (childView == null) {
                     RecyclerView recyclerView =
-                            (RecyclerView) view.getRootView().findViewById(recyclerViewId);
-                    if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
+                            (RecyclerView) view.getRootView().findViewById(id);
+                    if (recyclerView != null && recyclerView.getId() == id) {
                         childView = recyclerView.getChildAt(position);
                     }
                     else {
                         return false;
                     }
                 }
-
                 if (targetViewId == -1) {
                     return view == childView;
                 } else {
                     View targetView = childView.findViewById(targetViewId);
                     return view == targetView;
                 }
-
             }
         };
     }
-
 }

@@ -39,7 +39,6 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int MAX_LOCATIONS = 10;
-    private static final int RESULT_SETTINGS = 1;
     private static boolean isActivityRunning = false;
 
     private static MainActivity instance;

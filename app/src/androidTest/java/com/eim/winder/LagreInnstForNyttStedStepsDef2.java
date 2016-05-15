@@ -40,9 +40,15 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LagreInnstForNyttStedStepsDef2 {
+    /**
+     * Test requires less then 10 saved locations in the weather alert list:
+     */
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);
 
+    /**
+     * Runner:
+     */
     @Test
     public void lagre_innstillinger_for_nytt_sted_scenario2(){
         at_bruker_har_valgt_et_nytt_sted();
@@ -52,10 +58,11 @@ public class LagreInnstForNyttStedStepsDef2 {
         skal_forespørselen_nektes();
         brukeren_får_en_feilmelding();
     }
-
+    /**
+     * Forced to set the location manually because Espresso could not find the AutocompleteTextView and click on items inside it.
+     */
     @Gitt("^at bruker har valgt et nytt sted$")
     public void at_bruker_har_valgt_et_nytt_sted(){
-        //onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
         int loc_id = 326;
@@ -71,6 +78,12 @@ public class LagreInnstForNyttStedStepsDef2 {
     public void er_inne_på_innstillingssiden() {
         matchToolbarTitle(mainActivity.getActivity().getApplicationContext().getString(R.string.settings_for_alert));
     }
+    /**
+     * Custom toolbar title view-matcher that searches trough the view for a toolbar with
+     * a requested title
+     * @param title name of toolbar
+     * @return true if found
+     */
     private static ViewInteraction matchToolbarTitle(
             CharSequence title) {
         return onView(isAssignableFrom(Toolbar.class))
@@ -88,6 +101,11 @@ public class LagreInnstForNyttStedStepsDef2 {
             }
         };
     }
+
+    /**
+     * If the user clicks on preference for winddirection and doesn't choose a specific one, then there
+     * wil be displayed an error message:
+     */
     @Og("^ikke har valgt gyldige innstillinger$")
     public void ikke_har_valgt_gyldige_innstillinger() {
         onView(withText(R.string.preferences_winddir)).perform(click());
@@ -99,7 +117,9 @@ public class LagreInnstForNyttStedStepsDef2 {
         onView(withId(R.id.saveButton)).perform(click());
     }
 
-
+    /**
+     * Still on the settings view:
+     */
     @Så("^skal forespørselen nektes$")
     public void skal_forespørselen_nektes(){
         matchToolbarTitle(mainActivity.getActivity().getApplicationContext().getString(R.string.settings_for_alert));

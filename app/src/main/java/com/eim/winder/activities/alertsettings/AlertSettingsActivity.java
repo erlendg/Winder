@@ -168,6 +168,7 @@ public class AlertSettingsActivity extends AppCompatActivity {
     public AlertSettings makeObjFromPreferences(SharedPreferences defaultSharedPrefs, SharedPreferences sharedPrefs) {
         AlertSettings asd = new AlertSettings();
         asd.setLocation(locationSelected);
+        haveSelectedSomething = false;
         Log.i(TAG, "------------ Settings for alert ------------");
         //Temperature:
         if (defaultSharedPrefs.getBoolean(getString(R.string.temp_pref_key), false)) {

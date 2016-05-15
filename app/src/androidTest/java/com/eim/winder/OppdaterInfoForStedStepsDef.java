@@ -1,7 +1,9 @@
 package com.eim.winder;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.eim.winder.activities.alertsettings.CustomPrecipRangePreference;
 import com.eim.winder.activities.main.MainActivity;
 import com.eim.winder.activities.selectlocation.SelectLocationActivity;
 import com.eim.winder.db.DBService;
@@ -48,8 +51,9 @@ import static org.hamcrest.Matchers.not;
 /**
  * Created by Mari on 04.05.2016.
  */
-public class OppdaterInfoForStedStepDef {
+public class OppdaterInfoForStedStepsDef {
     private int size;
+    private SharedPreferences sp;
 
 
     @Rule
@@ -96,7 +100,7 @@ public class OppdaterInfoForStedStepDef {
      */
     private void legg_til_sikre_inst_for_varsel(ActivityTestRule mainActivity) {
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
-        size = view.getChildCount();
+        size = view.getAdapter().getItemCount();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
         int loc_id = 326;
@@ -113,9 +117,11 @@ public class OppdaterInfoForStedStepDef {
      * Inserts an location that is not likely to get a instant match when forecasts is updated
      * @param mainActivity needs MainActivity to use methods:
      */
+    private static final String PREF_NAME = "prefValuesSaved";
+    private static final String MIN_PRECIP = "minPrecip";
     private void legg_til_usikre_inst_for_varsel(ActivityTestRule mainActivity) {
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
-        size = view.getChildCount();
+        size = view.getAdapter().getItemCount();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
         int loc_id = 326;
@@ -126,6 +132,11 @@ public class OppdaterInfoForStedStepDef {
         onView(withId(R.id.template_sun)).perform(click());
         onView(withId(R.id.nextButton)).perform(click());
         onView(withText(R.string.preferences_precipitation)).perform(click());
+        //Puts a not so likely min precipitation value into preferences:
+        sp = mainActivity.getActivity().getApplicationContext().getSharedPreferences(PREF_NAME,  mainActivity.getActivity().getApplicationContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        CustomPrecipRangePreference.putDouble(editor, MIN_PRECIP, 20);
+        editor.apply();
         onView(withId(R.id.saveButton)).perform(click());
         onView(withId(R.id.recycler_view)).check(matches(withListSize(size + 1)));
     }
@@ -138,7 +149,7 @@ public class OppdaterInfoForStedStepDef {
     public static Matcher<View> withListSize (final int size) {
         return new TypeSafeMatcher<View>() {
             @Override public boolean matchesSafely (final View view) {
-                return ((RecyclerView) view).getChildCount () == size;
+                return ((RecyclerView) view).getAdapter().getItemCount() == size;
             }
 
             @Override public void describeTo (final Description description) {
@@ -197,7 +208,7 @@ public class OppdaterInfoForStedStepDef {
     public void skal_ny_værinformasjonen_framkomme(int pos) {
         RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);
         onView(rvmatcher
-                .atPositionOnView(pos, R.id.weather_photo))
+                .atPositionInView(pos, R.id.weather_photo))
                 .check(matches(isSelected()));
     }
     /**
@@ -209,7 +220,7 @@ public class OppdaterInfoForStedStepDef {
     public void forekommer_ingen_endringer_hvis_nye_oppdateringer_ikke_er_tilgjengelig(int pos){
         RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);
         onView(rvmatcher
-                .atPositionOnView(pos, R.id.weather_photo))
+                .atPositionInView(pos, R.id.weather_photo))
                 .check(matches(not(isSelected())));
     }
 }

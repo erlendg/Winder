@@ -17,6 +17,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.LargeTest;
@@ -75,11 +76,19 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class LagreInnstForNyttStedStepDef1 {
+public class LagreInnstForNyttStedStepsDef1 {
+    /**
+     * Test requires less then 10 saved locations in the weather alert list:
+     */
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);
 
+    private int beforeSize;
+
+    /**
+     * Runner:
+     */
     @Test
     public void lagre_innstillinger_for_nytt_sted_scenario1(){
         at_bruker_har_valgt_et_nytt_sted();
@@ -89,9 +98,14 @@ public class LagreInnstForNyttStedStepDef1 {
         skal_innstillingene_lagres();
         brukeren_blir_sendt_tilbake_til_hovedsiden();
     }
+
+    /**
+     * Forced to set the location manually because Espresso could not find the AutocompleteTextView and click on items inside it.
+     */
     @Gitt("^at bruker har valgt et nytt sted$")
     public void at_bruker_har_valgt_et_nytt_sted(){
-        //onView(withId(R.id.fab)).perform(click());
+        RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
+        beforeSize = view.getAdapter().getItemCount();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
         int loc_id = 326;
@@ -110,6 +124,12 @@ public class LagreInnstForNyttStedStepDef1 {
     public void er_inne_på_innstillingssiden() {
         matchToolbarTitle(mainActivity.getActivity().getApplicationContext().getString(R.string.settings_for_alert));
     }
+    /**
+     * Custom toolbar title view-matcher that searches trough the view for a toolbar with
+     * a requested title
+     * @param title name of toolbar
+     * @return true if found
+     */
     private static ViewInteraction matchToolbarTitle(
             CharSequence title) {
         return onView(isAssignableFrom(Toolbar.class))
@@ -138,14 +158,14 @@ public class LagreInnstForNyttStedStepDef1 {
         onView(withId(R.id.saveButton)).perform(click());
     }
 
-
+    /**
+     * Checks for increased list size:
+     */
     @Så("^skal innstillingene lagres$")
     public void skal_innstillingene_lagres() {
-        int size = mainActivity.getActivity().getRecycleViewDataset().size();
-        //assertTrue(mainActivity.getActivity().getRecycleViewDataset().size() == size+1);
-        String toast_text = mainActivity.getActivity().getApplicationContext().getString(R.string.saved_toast);
-        //isToastMessageDisplayed(R.string.saved_toast);
-        //onView(withText(toast_text)).inRoot(withDecorView(not(is(mainActivity.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
+        int size = view.getAdapter().getItemCount();
+        assertTrue(size == beforeSize+1);
     }
 
 

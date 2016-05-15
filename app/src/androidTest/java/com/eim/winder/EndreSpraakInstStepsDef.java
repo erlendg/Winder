@@ -31,15 +31,17 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class EndreSpraakInstStepDef {
+public class EndreSpraakInstStepsDef {
     private SharedPreferences sp;
     private String selectedLanguage;
     private String defaultValue = "default";
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);
-    
 
+    /**
+     * Runner:
+     */
 
     @Test
     public void endre_språk_innstillinger_scenario(){
@@ -65,10 +67,14 @@ public class EndreSpraakInstStepDef {
     public void skal_brukeren_få_opp_en_liste_med_mulige_språk_for_appen() {
         onView(withText(R.string.language_default)).check(matches(isDisplayed()));
         onView(withText(R.string.language_default)).perform(click());
+        //Finds the selected language:
         sp = PreferenceManager.getDefaultSharedPreferences(mainActivity.getActivity().getApplicationContext());
         selectedLanguage = sp.getString(mainActivity.getActivity().getResources().getString(R.string.language_pref_key), defaultValue);
     }
 
+    /**
+     * Checks that the language is changed:
+     */
     @Og("^brukeren kan velge ønsket språk fra listen$")
     public void brukeren_kan_velge_ønsket_språk_fra_listen(){
         onView(withText(R.string.language_header)).perform(click());

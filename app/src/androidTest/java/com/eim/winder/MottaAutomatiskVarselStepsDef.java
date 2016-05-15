@@ -48,14 +48,18 @@ import static junit.framework.Assert.assertTrue;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class MottaAutomatiskVarselStepDef {
+public class MottaAutomatiskVarselStepsDef {
     /**
      * Test requires a 1min delay for the alert to occur after saving.
+     * Also requires less then 4 locations in the weather alert list.
+     * Difficult to test android system events, the view needs to be fully displayed, therefore
+     * the Recycleview cannot have too many items so some of them doesn't get displayed
      */
     @Rule
     public ActivityTestRule mainActivity = new ActivityTestRule(MainActivity.class);
 
     private UiDevice mDevice;
+    private int size;
 
     /**
      * This method is needed to setup a UiDevice so that the test can access the notification bar
@@ -79,7 +83,8 @@ public class MottaAutomatiskVarselStepDef {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        de_registrerte_værinnstillingene_inntreffer(1);
+        //Checks green icon on last list item:
+        de_registrerte_værinnstillingene_inntreffer(size);
 
         skal_brukeren_få_et_automatisk_varsel_fra_appen();
     }
@@ -95,14 +100,13 @@ public class MottaAutomatiskVarselStepDef {
     public void de_registrerte_værinnstillingene_inntreffer(int pos)  {
         RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);
         onView(rvmatcher
-                .atPositionOnView(pos, R.id.weather_photo))
+                .atPositionInView(pos, R.id.weather_photo))
                 .check(matches(isSelected()));
     }
 
     @Så("^skal brukeren få et automatisk varsel fra appen$")
     public void skal_brukeren_få_et_automatisk_varsel_fra_appen()  {
         mDevice.openNotification();
-        mDevice.wait(Until.hasObject(By.pkg("com.eim.winder")), 1000);
 
     }
     /**
@@ -111,7 +115,7 @@ public class MottaAutomatiskVarselStepDef {
      */
     private void legg_til_sikre_inst_for_varsel(ActivityTestRule mainActivity){
         RecyclerView view = (RecyclerView) mainActivity.getActivity().findViewById(R.id.recycler_view);
-        int size = view.getChildCount();
+        size = view.getAdapter().getItemCount();
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.search_view)).perform(typeText("Bergli, Grend, (Vestby, Akershus)"), closeSoftKeyboard());
         //need to set location manually because Espresso cannot handle clicks on AutoCompleteTextView's
@@ -123,7 +127,6 @@ public class MottaAutomatiskVarselStepDef {
         onView(withText(R.string.preferences_temperature)).perform(click());
         onView(withId(R.id.saveButton)).perform(click());
         onView(withId(R.id.recycler_view)).check(matches(withListSize(size + 1)));
-
     }
 
     /**
@@ -134,7 +137,7 @@ public class MottaAutomatiskVarselStepDef {
     public static Matcher<View> withListSize (final int size) {
         return new TypeSafeMatcher<View>() {
             @Override public boolean matchesSafely (final View view) {
-                return ((RecyclerView) view).getChildCount () == size;
+                return ((RecyclerView) view).getAdapter().getItemCount() == size;
             }
 
             @Override public void describeTo (final Description description) {
