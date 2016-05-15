@@ -3,18 +3,11 @@ package com.eim.winder;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiSelector;
-import android.support.test.uiautomator.Until;
 import android.support.v7.widget.RecyclerView;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
 
-import com.eim.winder.R;
-import com.eim.winder.RecyclerViewMatcher;
 import com.eim.winder.activities.main.MainActivity;
 import com.eim.winder.activities.selectlocation.SelectLocationActivity;
 import com.eim.winder.db.DBService;
@@ -27,7 +20,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
 import cucumber.api.java.no.Så;
@@ -98,7 +90,7 @@ public class MottaAutomatiskVarselStepsDef {
 
     @Når("^de registrerte værinnstillingene inntreffer$")
     public void de_registrerte_værinnstillingene_inntreffer(int pos)  {
-        RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);
+        RVMatcher rvmatcher = new RVMatcher(R.id.recycler_view);
         onView(rvmatcher
                 .atPositionInView(pos, R.id.weather_photo))
                 .check(matches(isSelected()));

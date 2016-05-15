@@ -1,21 +1,13 @@
 package com.eim.winder;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.matcher.BoundedMatcher;
-import android.support.test.internal.util.Checks;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.eim.winder.activities.alertsettings.CustomPrecipRangePreference;
 import com.eim.winder.activities.main.MainActivity;
@@ -28,17 +20,14 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.no.Gitt;
 import cucumber.api.java.no.Når;
 import cucumber.api.java.no.Og;
 import cucumber.api.java.no.Så;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -206,7 +195,7 @@ public class OppdaterInfoForStedStepsDef {
      */
     @Så("^skal ny værinformasjonen framkomme$")
     public void skal_ny_værinformasjonen_framkomme(int pos) {
-        RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);
+        RVMatcher rvmatcher = new RVMatcher(R.id.recycler_view);
         onView(rvmatcher
                 .atPositionInView(pos, R.id.weather_photo))
                 .check(matches(isSelected()));
@@ -218,7 +207,7 @@ public class OppdaterInfoForStedStepsDef {
      */
     @Så("^forekommer ingen endringer hvis nye oppdateringer ikke er tilgjengelig$")
     public void forekommer_ingen_endringer_hvis_nye_oppdateringer_ikke_er_tilgjengelig(int pos){
-        RecyclerViewMatcher rvmatcher = new RecyclerViewMatcher(R.id.recycler_view);
+        RVMatcher rvmatcher = new RVMatcher(R.id.recycler_view);
         onView(rvmatcher
                 .atPositionInView(pos, R.id.weather_photo))
                 .check(matches(not(isSelected())));
