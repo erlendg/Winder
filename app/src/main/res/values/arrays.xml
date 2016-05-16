@@ -96,5 +96,7 @@
         <item name="1">no</item>
         <item name="2">en</item>
     </string-array>
+    <string-array name="empty_array">
+    </string-array>
 
 </resources>

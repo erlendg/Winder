@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/row3_column1"
                 android:text="@string/temp_interval"
-                android:gravity="left"
+                android:gravity="start"
                 android:padding="10dip"/>
 
             <TextView
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/row4_column1"
                 android:text="@string/nedboer_intervall"
-                android:gravity="left"
+                android:gravity="start"
                 android:padding="10dip"/>
 
             <TextView
@@ -175,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/row5_column1"
                 android:text="@string/vind_styrke"
-                android:gravity="left"
+                android:gravity="start"
                 android:padding="10dip"/>
 
             <TextView
@@ -215,7 +215,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/row6_column1"
                 android:text="@string/vind_retning"
-                android:gravity="left|center_vertical"
+                android:gravity="start|center_vertical"
                 android:padding="10dip"/>
 
             <TextView
@@ -245,7 +245,7 @@
                 android:layout_weight="1"
                 android:id="@+id/row7_column1"
                 android:text="@string/sol_varsel"
-                android:gravity="left"
+                android:gravity="start"
                 android:padding="10dip"/>
 
             <TextView
@@ -272,7 +272,7 @@
                     android:layout_weight="1"
                     android:layout_height="match_parent"
                     android:text="@string/weekdays"
-                    android:gravity="left|center_vertical"
+                    android:gravity="start|center_vertical"
                     android:padding="10dip"
                     />
                 <TextView
@@ -302,7 +302,7 @@
                 android:layout_weight="1"
                 android:id="@+id/row9_column1"
                 android:text="@string/sjekk_intervall"
-                android:gravity="left"
+                android:gravity="start"
                 android:padding="10dip"/>
             <TextView
                 android:layout_weight="2"

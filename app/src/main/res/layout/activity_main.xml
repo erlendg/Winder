@@ -33,7 +33,7 @@
         app:fabSize = "normal"
         android:layout_margin="@dimen/fab_margin"
         app:borderWidth="0dp"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/ic_add"
         android:tint="@color/colorWhite"
         android:onClick="onAddNewButtonClick"/>
 

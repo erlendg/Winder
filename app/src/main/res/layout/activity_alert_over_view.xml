@@ -26,7 +26,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="230dp"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
@@ -73,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_mode_edit_white_48dp"
+        android:src="@drawable/ic_mode_edit"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         android:onClick="onEditAlertButtonClick"/>
@@ -84,6 +84,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="80dp"
+        android:layout_marginEnd="80dp"
         android:src="@android:drawable/ic_delete"
         android:tint="@color/colorWhite"
         android:scaleType="center"

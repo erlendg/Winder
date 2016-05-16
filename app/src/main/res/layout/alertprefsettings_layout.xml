@@ -20,7 +20,6 @@
         tools:context="com.example.mari.preferencetest.MainActivity"
         android:id="@+id/mainActivity_layout">
 
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -45,6 +44,7 @@
                 android:id="@+id/cancelSaveButton"
                 android:layout_marginBottom="10dp"
                 android:text="@string/cancel_prefs_button"
+                android:textAllCaps="true"
                 android:background="@color/transparent"
                 android:textColor="@color/md_blue_500"
                 android:textSize="16sp"
@@ -56,8 +56,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/saveButton"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/save_prefs_button"
+                android:textAllCaps="true"
                 android:background="@color/transparent"
                 android:textColor="@color/md_blue_500"
                 android:textSize="16sp"

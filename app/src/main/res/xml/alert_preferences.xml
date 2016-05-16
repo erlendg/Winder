@@ -48,7 +48,8 @@
         android:key="@string/winddir_select_key"
         android:summary="@string/choose_winddirection_string"
         android:entries="@array/windDirection_array"
-        android:entryValues="@array/windDirection_values"/>
+        android:entryValues="@array/windDirection_values"
+        android:defaultValue="@array/empty_array"/>
     <CheckBoxPreference
         android:id="@+id/sunnyPref"
         android:key="@string/sunny_pref_key"
@@ -63,6 +64,7 @@
         android:entries="@array/weekdays_array"
         android:icon="@drawable/ic_insert_invitation_black_48dp"
         android:entryValues="@array/weekdays_values"
+        android:defaultValue="@array/empty_array"
         />
     <ListPreference
         android:key="@string/checkintr_pref_key"
