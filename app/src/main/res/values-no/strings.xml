@@ -123,7 +123,7 @@
     <string name="action_refresh">Oppdater</string>
     <string name="connection_header">Tilkoblingsinnstillinger</string>
     <string name="info_header">INFO</string>
-    <string name="language_default">Systemstandard</string>
+    <string name="language_default">Mobilstandard</string>
     <string name="language_english">Engelsk</string>
     <string name="language_header">Språk</string>
     <string name="language_norwegian">Norsk</string>
@@ -141,7 +141,7 @@
     <string name="empty_list_text">Winder finner et matchende vær for deg</string>
     <string name="empty_event_list_text">Ingen værhendelser funnet</string>
     <string name="no_last_update">Ingen enda</string>
-    <string name="get_started">Trykk + for å komme igang</string>
+    <string name="get_started">Trykk + for å komme i gang</string>
     <string name="mobile_network_pref_key">prefUseMobileData</string>
     <string name="manual_refresh">Oppdaterer varsel...</string>
     <string name="generate_cloudy">Lettskyet!</string>
