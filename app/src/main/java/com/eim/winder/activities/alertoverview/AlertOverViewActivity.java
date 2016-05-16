@@ -111,7 +111,7 @@ public class AlertOverViewActivity extends AppCompatActivity {
                         }
                     }
                 })
-                .setNegativeButton(android.R.string.no, null).show();
+                .setNegativeButton(R.string.cancel, null).show();
     }
 
     /**
