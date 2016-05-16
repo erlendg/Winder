@@ -65,10 +65,10 @@
     <string name="your_preferences">Dine innstillinger:</string>
     <string name="about">Winder er en applikasjon som er levert av EIM Development. Appen er et hjelpemiddel for deg som er opptatt- eller  avhengig av værforhold i aktiviteter du foretar deg eller planlegger å gjennomføre. Ved å legge inn ønsket varsel selv,  eller ved predefinerte forhåndsinstillinger tilpasset din  aktivitet, vil du motta en notification når dine varselønsker inntreffer. Værvarselet er hentet fra Yr levert av Meteorologisk institutt og NRK</string>
     <string name="action_settings">Innstillinger</string>
-    <string name="choose_weekdays_string">Velg hvilke dager du er interessert i varsel for (Alle dager som standard)</string>
+    <string name="choose_weekdays_string">Velg hvilke dager du er interessert i varsel for (Alle dager er standard)</string>
     <string name="choose_winddirection_string">Velg vindretning</string>
     <string name="preferences_interval">Sjekkintervall</string>
-    <string name="preferences_interval_description">Velg frekvens for automatisk værvarsel</string>
+    <string name="preferences_interval_description">Velg hvor ofte appen skal sjekke værdata</string>
     <string name="preferences_precipitation">Nedbør</string>
     <string name="preferences_precipitation_amount_period">mm, i løpet av 6-timers perioder</string>
     <string name="preferences_suncheck">Solvarsel</string>
