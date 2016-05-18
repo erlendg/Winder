@@ -15,6 +15,7 @@
             android:entryValues="@array/languageArrayValues"
             android:title="@string/language_header"
             android:defaultValue="@string/languagelist_default"
+            android:negativeButtonText="@string/cancel"
             />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/info_header">
