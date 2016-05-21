@@ -33,7 +33,7 @@
     <string name="saturday">Lørdag</string>
     <string name="save_prefs_button">Lagre</string>
     <string name="settings">Innstillinger</string>
-    <string name="settings_for_alert">Velg instillinger for varsel</string>
+    <string name="settings_for_alert">Velg innstillinger for varsel</string>
     <string name="sjekk_intervall">Sjekkintervall:</string>
     <string name="soek_hint">Søk etter stedsnavn...</string>
     <string name="sol_varsel">Solvarsel:</string>
@@ -97,7 +97,7 @@
     <string name="windspeed_pref_key_min">minWindSpeed</string>
     <string name="windspeed_range_key">windSpeedRange</string>
     <string name="weekdays_pref_key">weekdays</string>
-    <string name="yr_credits">Værdata hentet fra yr.no</string>
+    <string name="yr_credits">Værdata hentet fra Yr.no</string>
     <string name="deleted">Stettet</string>
     <string name="something_whent_wrong">Noe gikk galt..</string>
     <string name="delete_message">Ønsker du å slette stedet for værvarsling?</string>

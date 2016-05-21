@@ -27,7 +27,7 @@ import java.util.Set;
  * Created by Mari on 05.04.2016.
  */
 public class AlertSettingsActivity extends AppCompatActivity {
-    private static final String TAG = "ASActivityBeta";
+    private static final String TAG = "ASActivity";
 
     public AlertSettingsRepo alertDataSource;
     private DBService dbService;
