@@ -128,7 +128,7 @@
     <string name="language_header">Språk</string>
     <string name="language_norwegian">Norsk</string>
     <string name="pref_chose_language">Endre språk</string>
-    <string name="pref_connection_summary">Bruk mobildata for varselsoppdateringer</string>
+    <string name="pref_connection_summary">Bruk mobildata for oppdatering av værvarsel</string>
     <string name="pref_language_summary">Ikke valgt</string>
     <string name="pref_use_mobile_data">Mobildata</string>
     <string name="settings_header">INNSTILLINGER</string>
