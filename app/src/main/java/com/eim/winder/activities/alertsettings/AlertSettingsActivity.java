@@ -242,9 +242,9 @@ public class AlertSettingsActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param alertId
-     * @param interval
+     * Schedules a continuous alarm for checking weather forecast for the AlertSettings
+     * @param alertId id of AlertSettings
+     * @param interval for the alarm
      */
     public void scheduleAlarm(int alertId, double interval){
         long intervalLong = (long)interval*3600000; //  3600000 = millisekund i timen
